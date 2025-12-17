@@ -1,0 +1,13 @@
+{
+  "itemGroup.candylands": "Example Mod Tab",
+  "block.candylands.example_block": "Example Block",
+  "item.candylands.example_item": "Example Item",
+
+  "candylands.configuration.title": "Candy Lands Configs",
+  "candylands.configuration.section.candylands.common.toml": "Candy Lands Configs",
+  "candylands.configuration.section.candylands.common.toml.title": "Candy Lands Configs",
+  "candylands.configuration.items": "Item List",
+  "candylands.configuration.logDirtBlock": "Log Dirt Block",
+  "candylands.configuration.magicNumberIntroduction": "Magic Number Text",
+  "candylands.configuration.magicNumber": "Magic Number"
+}
