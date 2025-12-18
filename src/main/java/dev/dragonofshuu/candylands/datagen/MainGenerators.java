@@ -2,6 +2,12 @@ package dev.dragonofshuu.candylands.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
+import dev.dragonofshuu.candylands.CandyLands;
+import dev.dragonofshuu.candylands.datagen.data.MainDataPackProvider;
+import dev.dragonofshuu.candylands.datagen.language.MainLanguageEnUsProvider;
+import dev.dragonofshuu.candylands.datagen.tagProviders.MainBiomeTagsProvider;
+import dev.dragonofshuu.candylands.datagen.tagProviders.MainBlockTagsProvider;
+import dev.dragonofshuu.candylands.datagen.tagProviders.MainItemTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -9,59 +15,30 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-@EventBusSubscriber(modid = "candylands")
+@EventBusSubscriber(modid = CandyLands.MODID)
 public class MainGenerators {
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        // ExistingFileHelper existingFileHelper = event.getExistingFileHelper(); # Does
-        // not work currently, may have been renamed
+    public static void gatherData(GatherDataEvent.Client event) {
+        event.createDatapackRegistryObjects(MainDataPackProvider.getRegistries());
 
         // SERVER
+        event.createProvider(MainItemModelProvider::new);
 
-        // generator.addProvider(
-        // event.includeServer(),
-        // new ModDataPackProvider(output, lookupProvider));
+        event.createProvider(MainRecipeProvider.Runner::new);
 
-        // generator.addProvider(
-        // event.includeServer(),
-        // new ModRecipeProvider(output, lookupProvider));
+        event.createProvider(MainLootTableProvider::new);
 
-        // generator.addProvider(
-        // event.includeServer(),
-        // new ModLootTableProvider(output, lookupProvider));
+        event.createProvider(MainBlockTagsProvider::new);
 
-        // ModBlockTagsProvider blockTagProvider = generator.addProvider(
-        // event.includeServer(),
-        // new ModBlockTagsProvider(output, lookupProvider, existingFileHelper));
+        event.createProvider(MainItemTagsProvider::new);
 
-        // generator.addProvider(
-        // event.includeServer(),
-        // new ModItemTagsProvider(output, lookupProvider,
-        // blockTagProvider.contentsGetter()));
+        event.createProvider(MainBiomeTagsProvider::new);
 
-        // generator.addProvider(
-        // event.includeServer(),
-        // new ModBiomeTagsProvider(output, lookupProvider, existingFileHelper));
+        // CLIENT
+        event.createProvider(MainLanguageEnUsProvider::new);
 
-        // // CLIENT
+        event.createProvider(MainItemModelProvider::new);
 
-        // generator.addProvider(
-        // event.includeClient(),
-        // new ModLanguageEnUsProvider(output));
-
-        // generator.addProvider(
-        // event.includeClient(),
-        // new ModBlockstateProvider(output, existingFileHelper));
-
-        // generator.addProvider(
-        // event.includeClient(),
-        // new ModItemModelProvider(output, existingFileHelper));
-
-        // generator.addProvider(
-        // event.includeClient(),
-        // new ModSoundProvider(output, existingFileHelper));
+        event.createProvider(MainSoundProvider::new);
     }
 }
