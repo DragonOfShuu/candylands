@@ -14,7 +14,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
 
-public class MainRecipeProvider extends RecipeProvider {
+public class MainRecipeProvider extends MainRecipeProviderBase {
 
     protected MainRecipeProvider(Provider registries, RecipeOutput output) {
         super(registries, output);

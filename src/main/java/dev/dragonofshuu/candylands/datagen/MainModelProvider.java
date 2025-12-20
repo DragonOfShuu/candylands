@@ -1,6 +1,7 @@
 package dev.dragonofshuu.candylands.datagen;
 
 import dev.dragonofshuu.candylands.CandyLands;
+import dev.dragonofshuu.candylands.block.MainBlocks;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -10,14 +11,16 @@ import net.minecraft.world.level.block.Block;
 
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-public class MainItemModelProvider extends ModelProvider {
-    public MainItemModelProvider(PackOutput output) {
+public class MainModelProvider extends ModelProvider {
+    public MainModelProvider(PackOutput output) {
         super(output, CandyLands.MODID);
     }
 
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
-        // TODO
+        // blockModels.createTrivialCube(MainBlocks.CANDY_GRASS_BLOCK.get());
+        // blockModels.
+        // blockModels.
     }
 
     // private <T extends Block> String asBlockParent(DeferredBlock<T> block) {

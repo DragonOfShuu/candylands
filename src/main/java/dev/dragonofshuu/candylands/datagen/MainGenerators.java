@@ -22,8 +22,6 @@ public class MainGenerators {
         event.createDatapackRegistryObjects(MainDataPackProvider.getRegistries());
 
         // SERVER
-        event.createProvider(MainItemModelProvider::new);
-
         event.createProvider(MainRecipeProvider.Runner::new);
 
         event.createProvider(MainLootTableProvider::new);
@@ -37,7 +35,7 @@ public class MainGenerators {
         // CLIENT
         event.createProvider(MainLanguageEnUsProvider::new);
 
-        event.createProvider(MainItemModelProvider::new);
+        event.createProvider(MainModelProvider::new);
 
         event.createProvider(MainSoundProvider::new);
     }

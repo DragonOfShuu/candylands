@@ -39,14 +39,14 @@ public class CandyLands {
     // Creates a creative tab with the id "candylands:example_tab" for the example
     // item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS
-            .register("example_tab", () -> CreativeModeTab.builder()
+            .register("candylands_tab", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.candylands")) // The language key for the title of your
                                                                            // CreativeModeTab
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    // .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+                    .icon(() -> MainBlocks.CANDY_GRASS_BLOCK.toStack())
                     .displayItems((parameters, output) -> {
-                        // output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For
-                        // your own tabs, this method is preferred over the event
+                        MainBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        MainItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build());
 
     // The constructor for the mod class is the first code that is run when your mod
@@ -56,7 +56,6 @@ public class CandyLands {
     public CandyLands(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-
         // Register the Deferred Register to the mod event bus so blocks get registered
         MainBlocks.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
@@ -80,16 +79,7 @@ public class CandyLands {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
 
-        if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
-            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-        }
-
-        LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
-
-        Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
     }
 
     // Add the example block item to the building blocks tab
