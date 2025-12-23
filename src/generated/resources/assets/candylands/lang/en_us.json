@@ -3,5 +3,6 @@
   "CandyLands.configuration.section.candylands.common.toml": "Candy Lands Configs",
   "CandyLands.configuration.section.candylands.common.toml.title": "Candy Lands Configs",
   "CandyLands.configuration.title": "Candy Lands Configs",
+  "block.candylands.candy_dirt_block": "Candy Dirt Block",
   "block.candylands.candy_grass_block": "Candy Grass Block"
 }

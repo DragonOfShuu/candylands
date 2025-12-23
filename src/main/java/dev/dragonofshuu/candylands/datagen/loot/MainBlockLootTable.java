@@ -25,6 +25,7 @@ public class MainBlockLootTable extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(MainBlocks.CANDY_GRASS_BLOCK.get());
+        dropSelf(MainBlocks.CANDY_DIRT_BLOCK.get());
     }
 
     public void dropSlab(Block block) {

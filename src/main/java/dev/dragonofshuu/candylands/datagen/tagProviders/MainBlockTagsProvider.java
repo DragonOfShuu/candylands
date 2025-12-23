@@ -10,22 +10,25 @@ import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 
 public class MainBlockTagsProvider extends BlockTagsProvider {
-    public MainBlockTagsProvider(PackOutput output, CompletableFuture<Provider> lookupProvider) {
-        super(output, lookupProvider, CandyLands.MODID);
-    }
+        public MainBlockTagsProvider(PackOutput output, CompletableFuture<Provider> lookupProvider) {
+                super(output, lookupProvider, CandyLands.MODID);
+        }
 
-    @Override
-    protected void addTags(Provider provider) {
-        tag(BlockTags.MINEABLE_WITH_SHOVEL)
-                .add(MainBlocks.CANDY_GRASS_BLOCK.get());
+        @Override
+        protected void addTags(Provider provider) {
+                tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                                .add(MainBlocks.CANDY_GRASS_BLOCK.get())
+                                .add(MainBlocks.CANDY_DIRT_BLOCK.get());
 
-        tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(MainBlocks.CANDY_GRASS_BLOCK.get());
+                tag(BlockTags.NEEDS_STONE_TOOL)
+                                .add(MainBlocks.CANDY_GRASS_BLOCK.get())
+                                .add(MainBlocks.CANDY_DIRT_BLOCK.get());
 
-        tag(BlockTags.REPLACEABLE_BY_TREES)
-                .add(MainBlocks.CANDY_GRASS_BLOCK.get());
+                tag(BlockTags.REPLACEABLE_BY_TREES)
+                                .add(MainBlocks.CANDY_GRASS_BLOCK.get());
 
-        tag(BlockTags.REPLACEABLE)
-                .add(MainBlocks.CANDY_GRASS_BLOCK.get());
-    }
+                tag(BlockTags.REPLACEABLE)
+                                .add(MainBlocks.CANDY_GRASS_BLOCK.get())
+                                .add(MainBlocks.CANDY_DIRT_BLOCK.get());
+        }
 }

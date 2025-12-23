@@ -28,6 +28,7 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
     @Override
     protected void addTranslations() {
         add(MainBlocks.CANDY_GRASS_BLOCK.get(), "Candy Grass Block");
+        add(MainBlocks.CANDY_DIRT_BLOCK.get(), "Candy Dirt Block");
         add("CandyLands.configuration.title", "Candy Lands Configs");
         add("CandyLands.configuration.section.candylands.common.toml", "Candy Lands Configs");
         add("CandyLands.configuration.section.candylands.common.toml.title", "Candy Lands Configs");

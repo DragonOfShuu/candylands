@@ -10,7 +10,10 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -20,9 +23,12 @@ public class MainBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CandyLands.MODID);
 
     public static final DeferredBlock<Block> CANDY_GRASS_BLOCK = registerBlock("candy_grass_block",
-            Block::new,
-            () -> BlockBehaviour.Properties.of().strength(0.6f).friction(0.6f));
+            CandyGrassBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_PINK));
 
+    public static final DeferredBlock<Block> CANDY_DIRT_BLOCK = registerBlock("candy_dirt_block",
+            Block::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.CRIMSON_NYLIUM));
     // private static <T extends Block> DeferredBlock<T> registerBlock(String name,
     // Function<Properties, ? extends Block> block,
     // BlockBehaviour.Properties properties, String descKey) {
