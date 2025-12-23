@@ -157,6 +157,6 @@ public class CandyGrassBlock extends Block implements BonemealableBlock, IOnJump
 
     @Override
     public void OnJumpOn(LivingEntity entity) {
-        entity.push(0, 0, 0);
+        
     }
 }
