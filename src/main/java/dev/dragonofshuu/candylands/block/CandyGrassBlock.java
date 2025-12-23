@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LightEngine;
 
-public class CandyGrassBlock extends Block implements BonemealableBlock, IOnJump {
+public class CandyGrassBlock extends Block implements BonemealableBlock {
     public CandyGrassBlock(Properties properties) {
         super(properties);
     }
@@ -148,15 +148,5 @@ public class CandyGrassBlock extends Block implements BonemealableBlock, IOnJump
             int i = LightEngine.getLightBlockInto(state, blockstate, Direction.UP, blockstate.getLightBlock());
             return i < 15;
         }
-    }
-
-    @Override
-    public void OnJumpIn(LivingEntity entity) {
-
-    }
-
-    @Override
-    public void OnJumpOn(LivingEntity entity) {
-        
     }
 }
