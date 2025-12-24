@@ -2,18 +2,16 @@ package dev.dragonofshuu.candylands.block;
 
 import com.mojang.serialization.MapCodec;
 
-import dev.dragonofshuu.candylands.block.custom.IOnJump;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-// import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LightEngine;
 
@@ -113,35 +111,50 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
     @Override
     protected void randomTick(BlockState currentBlockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
         if (!canBeGrass(currentBlockState, level, blockPos)) {
+            // Forge: prevent loading unloaded chunks when checking neighbor's light and
+            // spreading
             if (!level.isAreaLoaded(blockPos, 1))
-                return; // Forge: prevent loading unloaded chunks when checking neighbor's light and
-                        // spreading
+                return;
             level.setBlockAndUpdate(blockPos, MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState());
-        } else {
-            if (!level.isAreaLoaded(blockPos, 3))
-                return; // Forge: prevent loading unloaded chunks when checking neighbor's light and
-                        // spreading
-            if (level.getMaxLocalRawBrightness(blockPos.above()) >= 9) {
-                BlockState blockstate = this.defaultBlockState();
+        }
 
-                for (int i = 0; i < 4; i++) {
-                    BlockPos blockpos = blockPos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3,
-                            random.nextInt(3) - 1);
-                    if (level.getBlockState(blockpos).is(MainBlocks.CANDY_DIRT_BLOCK.get())
-                            && canPropagate(blockstate, level, blockpos)) {
-                        level.setBlockAndUpdate(blockpos, blockstate);
-                    }
-                }
+        // Forge: prevent loading unloaded chunks when checking neighbor's light and
+        // spreading
+        if (!level.isAreaLoaded(blockPos, 3))
+            return;
+
+        if (level.getMaxLocalRawBrightness(blockPos.above()) < 9)
+            return;
+
+        BlockState candyGrassBlockState = this.defaultBlockState();
+        BlockState candyDirtBlockState = MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState();
+
+        for (int i = 0; i < 4; i++) {
+            BlockPos randomBlockPos = blockPos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3,
+                    random.nextInt(3) - 1);
+
+            if (level.getBlockState(randomBlockPos).is(Blocks.GRASS_BLOCK)
+                    && canPropagate(candyGrassBlockState, level, randomBlockPos)) {
+                level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
+            }
+
+            if (level.getBlockState(randomBlockPos).is(MainBlocks.CANDY_DIRT_BLOCK.get())
+                    && canPropagate(candyGrassBlockState, level, randomBlockPos)) {
+                level.setBlockAndUpdate(randomBlockPos, candyGrassBlockState);
+            }
+
+            if (randomBlockPos.getX() == blockPos.getX() && randomBlockPos.getZ() == blockPos.getZ()
+                    && randomBlockPos.getY() + 1 == blockPos.getY()
+                    && level.getBlockState(randomBlockPos).is(Blocks.DIRT)) {
+                level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
             }
         }
+
     }
 
     private static boolean canBeGrass(BlockState state, LevelReader levelReader, BlockPos pos) {
-        BlockPos blockpos = pos.above();
-        BlockState blockstate = levelReader.getBlockState(blockpos);
-        // if (blockstate.is(Blocks.SNOW) && blockstate.getValue(SnowLayerBlock.LAYERS)
-        // == 1) {
-        // return true;
+        BlockPos blockAbove = pos.above();
+        BlockState blockstate = levelReader.getBlockState(blockAbove);
         if (blockstate.getFluidState().getAmount() == 8) {
             return false;
         } else {

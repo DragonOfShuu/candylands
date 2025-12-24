@@ -27,7 +27,7 @@ public class MainBlocks {
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_PINK));
 
     public static final DeferredBlock<Block> CANDY_DIRT_BLOCK = registerBlock("candy_dirt_block",
-            Block::new,
+            CandyDirtBlock::new,
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.CRIMSON_NYLIUM));
     // private static <T extends Block> DeferredBlock<T> registerBlock(String name,
     // Function<Properties, ? extends Block> block,
