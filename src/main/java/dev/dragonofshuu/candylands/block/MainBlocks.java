@@ -24,11 +24,13 @@ public class MainBlocks {
 
     public static final DeferredBlock<Block> CANDY_GRASS_BLOCK = registerBlock("candy_grass_block",
             CandyGrassBlock::new,
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_PINK));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_PINK)
+                    .requiresCorrectToolForDrops());
 
     public static final DeferredBlock<Block> CANDY_DIRT_BLOCK = registerBlock("candy_dirt_block",
             CandyDirtBlock::new,
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.CRIMSON_NYLIUM));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).randomTicks().mapColor(MapColor.CRIMSON_NYLIUM)
+                    .requiresCorrectToolForDrops());
     // private static <T extends Block> DeferredBlock<T> registerBlock(String name,
     // Function<Properties, ? extends Block> block,
     // BlockBehaviour.Properties properties, String descKey) {

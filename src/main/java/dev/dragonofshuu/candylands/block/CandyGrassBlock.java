@@ -133,16 +133,21 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
             BlockPos randomBlockPos = blockPos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3,
                     random.nextInt(3) - 1);
 
-            if (level.getBlockState(randomBlockPos).is(Blocks.GRASS_BLOCK)
-                    && canPropagate(candyGrassBlockState, level, randomBlockPos)) {
-                level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
-            }
-
+            // Spreads candy grass blocks across candy dirt blocks
             if (level.getBlockState(randomBlockPos).is(MainBlocks.CANDY_DIRT_BLOCK.get())
                     && canPropagate(candyGrassBlockState, level, randomBlockPos)) {
                 level.setBlockAndUpdate(randomBlockPos, candyGrassBlockState);
             }
 
+            // Spreads candy dirt blocks across grass blocks
+            if (level.getBlockState(randomBlockPos).is(Blocks.GRASS_BLOCK)
+                    && canPropagate(candyGrassBlockState, level, randomBlockPos)) {
+                if (random.nextInt(100) == 50) {
+                    level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
+                }
+            }
+
+            // Spreads down dirt blocks
             if (randomBlockPos.getX() == blockPos.getX() && randomBlockPos.getZ() == blockPos.getZ()
                     && randomBlockPos.getY() + 1 == blockPos.getY()
                     && level.getBlockState(randomBlockPos).is(Blocks.DIRT)) {
