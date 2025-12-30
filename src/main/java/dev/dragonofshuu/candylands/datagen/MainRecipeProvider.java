@@ -1,18 +1,19 @@
 package dev.dragonofshuu.candylands.datagen;
 
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
+import dev.dragonofshuu.candylands.block.MainBlocks;
+import dev.dragonofshuu.candylands.data.MainBlockFamilies;
+import dev.dragonofshuu.candylands.util.MainTags;
 import net.minecraft.core.HolderLookup;
-// import dev.dragonofshuu.block.ModBlocks;
-// import dev.dragonofshuu.items.ModItems;
 import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.BlockFamilies;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
 
 public class MainRecipeProvider extends MainRecipeProviderBase {
 
@@ -22,7 +23,13 @@ public class MainRecipeProvider extends MainRecipeProviderBase {
 
     @Override
     protected void buildRecipes() {
+        this.generateForEnabledBlockFamilies(FeatureFlagSet.of(FeatureFlags.VANILLA));
+        this.planksFromLog(MainBlocks.LICORICE_PLANKS.asItem(), MainTags.Items.LICORICE_LOGS, 4);
+    }
 
+    protected void generateForEnabledBlockFamilies(FeatureFlagSet enabledFeatures) {
+        MainBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateRecipe)
+                .forEach(family -> this.generateRecipes(family, enabledFeatures));
     }
 
     public static class Runner extends RecipeProvider.Runner {

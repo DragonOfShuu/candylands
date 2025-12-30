@@ -26,6 +26,18 @@ public class MainBlockLootTable extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(MainBlocks.CANDY_GRASS_BLOCK.get());
         dropSelf(MainBlocks.CANDY_DIRT_BLOCK.get());
+        dropSelf(MainBlocks.LICORICE_WOOD.get());
+        add(MainBlocks.LICORICE_LEAVES.get(), block -> this.createLeavesDrops(block, MainBlocks.LICORICE_SPROUT.get(),
+                NORMAL_LEAVES_SAPLING_CHANCES));
+        dropSelf(MainBlocks.LICORICE_SPROUT.get());
+
+        dropSelf(MainBlocks.LICORICE_PLANKS.get());
+        dropSlab(MainBlocks.LICORICE_SLAB.get());
+        dropSelf(MainBlocks.LICORICE_BUTTON.get());
+        dropSelf(MainBlocks.LICORICE_PRESSURE_PLATE.get());
+        dropSelf(MainBlocks.LICORICE_FENCE.get());
+        dropSelf(MainBlocks.LICORICE_FENCE_GATE.get());
+        dropSelf(MainBlocks.LICORICE_STAIRS.get());
     }
 
     public void dropSlab(Block block) {

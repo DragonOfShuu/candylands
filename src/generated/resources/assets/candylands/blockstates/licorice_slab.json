@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "candylands:block/licorice_slab"
+    },
+    "type=double": {
+      "model": "candylands:block/licorice_planks"
+    },
+    "type=top": {
+      "model": "candylands:block/licorice_slab_top"
+    }
+  }
+}

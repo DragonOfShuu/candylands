@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "#candylands:licorice_logs"
+  ],
+  "result": {
+    "count": 4,
+    "id": "candylands:licorice_planks"
+  }
+}

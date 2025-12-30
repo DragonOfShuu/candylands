@@ -19,7 +19,7 @@ public class MainTags {
     }
 
     public static class Items {
-        // public static final TagKey<Item> DIRT = tag("dirt");
+        public static final TagKey<Item> LICORICE_LOGS = tag("licorice_logs");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(CandyLands.MODID, name));

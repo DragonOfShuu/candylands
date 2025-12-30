@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "candylands:block/licorice_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "candylands:block/licorice_wood"
+    },
+    "axis=z": {
+      "model": "candylands:block/licorice_wood",
+      "x": 90
+    }
+  }
+}
