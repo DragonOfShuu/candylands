@@ -8,12 +8,13 @@ import com.google.common.collect.Maps;
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
+import net.minecraft.data.BlockFamily.Variant;
 import net.minecraft.world.level.block.Block;
 
 public class MainBlockFamilies {
     private static final Map<Block, BlockFamily> MAP = Maps.newHashMap();
-    private static final String RECIPE_GROUP_PREFIX_WOODEN = "wooden";
-    private static final String RECIPE_UNLOCKED_BY_HAS_PLANKS = "has_planks";
+    public static final String RECIPE_GROUP_PREFIX_WOODEN = "wooden";
+    public static final String RECIPE_UNLOCKED_BY_HAS_PLANKS = "has_planks";
 
     public static final BlockFamily LICORICE_WOOD = familyBuilder(MainBlocks.LICORICE_PLANKS.get())
             .slab(MainBlocks.LICORICE_SLAB.get())
@@ -35,6 +36,37 @@ public class MainBlockFamilies {
         } else {
             return blockfamily$builder;
         }
+    }
+
+    public static Stream<Block> getVariantFromBlockFamilies(Variant variant) {
+        return getAllFamilies()
+                .map(family -> family.get(variant));
+    }
+
+    public static Stream<Block> getBaseBlocksFromBlockFamilies() {
+        return getAllFamilies()
+                .map(family -> family.getBaseBlock());
+    }
+
+    public static Stream<Block> getVariantFromWoodBlockFamilies(Variant variant) {
+        return getAllFamilies()
+                .filter(family -> isFamilyWooden(family))
+                .map(family -> family.get(variant));
+    }
+
+    public static Stream<Block> getBaseBlocksFromWoodBlockFamilies() {
+        return getAllFamilies()
+                .filter(family -> isFamilyWooden(family))
+                .map(family -> family.getBaseBlock());
+    }
+
+    public static Stream<BlockFamily> getWoodBlockFamilies() {
+        return getAllFamilies()
+                .filter(family -> isFamilyWooden(family));
+    }
+
+    public static boolean isFamilyWooden(BlockFamily family) {
+        return family.getRecipeGroupPrefix().orElse("").equals(RECIPE_GROUP_PREFIX_WOODEN);
     }
 
     public static Stream<BlockFamily> getAllFamilies() {

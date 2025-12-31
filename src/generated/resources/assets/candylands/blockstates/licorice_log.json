@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "candylands:block/licorice_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "candylands:block/licorice_log"
+    },
+    "axis=z": {
+      "model": "candylands:block/licorice_log",
+      "x": 90
+    }
+  }
+}

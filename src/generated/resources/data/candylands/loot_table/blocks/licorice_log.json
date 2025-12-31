@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "candylands:licorice_wood"
+          "name": "candylands:licorice_log"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "candylands:blocks/licorice_wood"
+  "random_sequence": "candylands:blocks/licorice_log"
 }

@@ -30,7 +30,7 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
         add(MainBlocks.CANDY_GRASS_BLOCK.get(), "Candy Grass Block");
         add(MainBlocks.CANDY_DIRT_BLOCK.get(), "Candy Dirt Block");
 
-        add(MainBlocks.LICORICE_WOOD.get(), "Licorice Wood");
+        add(MainBlocks.LICORICE_LOG.get(), "Licorice Wood");
         add(MainBlocks.LICORICE_LEAVES.get(), "Licorice Leaves");
         add(MainBlocks.LICORICE_SPROUT.get(), "Licorice Sprout");
 

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "candylands:block/licorice_wood_top",
-    "side": "candylands:block/licorice_wood"
-  }
-}

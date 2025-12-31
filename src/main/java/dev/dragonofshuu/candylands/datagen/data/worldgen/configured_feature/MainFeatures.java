@@ -12,6 +12,7 @@ public class MainFeatures extends FeatureUtils {
   public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> bootstrap) {
     MainCaveFeatures.bootstrap(bootstrap);
     MainOreFeatures.bootstrap(bootstrap);
+    MainTreeFeatures.bootstrap(bootstrap);
   }
 
   public static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
