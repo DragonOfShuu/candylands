@@ -4,6 +4,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import dev.dragonofshuu.candylands.CandyLands;
+import dev.dragonofshuu.candylands.block.custom.FlammableRotatedPillarBlock;
 import dev.dragonofshuu.candylands.block.grower.MainTreeGrower;
 import dev.dragonofshuu.candylands.data.MainBlockSetTypes;
 import dev.dragonofshuu.candylands.data.MainWoodTypes;
@@ -45,7 +46,7 @@ public class MainBlocks {
 
         // ------ Licorice Wood Set ------
         public static final DeferredBlock<Block> LICORICE_LOG = registerBlock("licorice_log",
-                        RotatedPillarBlock::new,
+                        FlammableRotatedPillarBlock::new,
                         () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).mapColor(MapColor.COLOR_PINK));
         public static final DeferredBlock<Block> LICORICE_SPROUT = registerBlock("licorice_sprout",
                         properties -> new SaplingBlock(MainTreeGrower.LICORICE, properties),
