@@ -6,11 +6,13 @@ import com.mojang.logging.LogUtils;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.item.MainItems;
+import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -79,7 +81,7 @@ public class CandyLands {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-
+        MainGameRules.registerAll();
     }
 
     // Add the example block item to the building blocks tab

@@ -6,6 +6,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
 public class FlammableRotatedPillarBlock extends RotatedPillarBlock {
 

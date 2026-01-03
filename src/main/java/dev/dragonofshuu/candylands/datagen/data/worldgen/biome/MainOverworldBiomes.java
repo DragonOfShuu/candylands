@@ -42,7 +42,26 @@ public class MainOverworldBiomes {
         // BiomeDefaultFeatures.addDefaultMushrooms(biomegenerationsettings$builder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(biomegenerationsettings$builder, true);
         // BiomeDefaultFeatures.addInfestedStone(biomegenerationsettings$builder);
-        return biome(true, 2.0F, 0.3F, mobspawnsettings$builder, biomegenerationsettings$builder, NORMAL_MUSIC);
+
+        var specialEffects = new BiomeSpecialEffects.Builder()
+                .waterColor(0x9a21eb)
+                .waterFogColor(0xbc10e3)
+                .fogColor(0xd8a8e3)
+                .skyColor(0xffffff)
+                .grassColorOverride(0xfbb7ec)
+                .foliageColorOverride(0xab85cc)
+                .dryFoliageColorOverride(0xfbb7ec)
+                .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                .backgroundMusic(NORMAL_MUSIC);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(-0.5F)
+                .downfall(0.4F)
+                .specialEffects(specialEffects.build())
+                .mobSpawnSettings(mobspawnsettings$builder.build())
+                .generationSettings(biomegenerationsettings$builder.build())
+                .build();
     }
 
     public static void globalOverworldGeneration(BiomeGenerationSettings.Builder generationSettings) {

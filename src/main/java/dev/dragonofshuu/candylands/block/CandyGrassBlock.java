@@ -1,18 +1,37 @@
 package dev.dragonofshuu.candylands.block;
 
+import java.util.List;
+import java.util.function.Predicate;
+
+import org.apache.commons.lang3.mutable.MutableInt;
+
 import com.mojang.serialization.MapCodec;
 
+import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
+import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.QuartPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeResolver;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.lighting.LightEngine;
 
 public class CandyGrassBlock extends Block implements BonemealableBlock {
@@ -142,10 +161,10 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
             // Spreads candy dirt blocks across grass blocks and dirt blocks
             if ((level.getBlockState(randomBlockPos).is(Blocks.GRASS_BLOCK)
                     || level.getBlockState(randomBlockPos).is(Blocks.DIRT))
-                    && canPropagate(candyGrassBlockState, level, randomBlockPos)) {
-                if (random.nextInt(100) == 50) {
-                    level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
-                }
+                    && canPropagate(candyGrassBlockState, level, randomBlockPos)
+                    && randomSpreadChance(level, random)) {
+                level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
+                spreadCandylands(level, blockPos, randomBlockPos);
             }
 
             // Spreads down dirt blocks
@@ -155,7 +174,45 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
                 level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
             }
         }
+    }
 
+    private void spreadCandylands(ServerLevel level, BlockPos blockPos, BlockPos randomBlockPos) {
+        var chunk = level.getChunk(randomBlockPos);
+
+        Holder<Biome> biome = level.registryAccess().holderOrThrow(MainBiomes.LICORICE_FOREST);
+
+        chunk.fillBiomesFromNoise(
+                makeResolver(chunk, BoundingBox.fromCorners(blockPos, randomBlockPos).inflatedBy(3, 8, 3), biome,
+                        (oldBiome) -> true),
+                level.getChunkSource().randomState().sampler());
+        chunk.markUnsaved();
+        level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunk));
+    }
+
+    private static boolean randomSpreadChance(ServerLevel level, RandomSource random) {
+        int value = level.getGameRules().getInt(MainGameRules.RULE_CANDY_SPREAD_CHANCE);
+
+        if (value <= 0) {
+            return true;
+        }
+
+        return random.nextInt(Math.clamp(value, 1, Integer.MAX_VALUE)) == 0;
+    }
+
+    private static BiomeResolver makeResolver(
+            ChunkAccess chunk, BoundingBox targetRegion, Holder<Biome> newBiome,
+            Predicate<Holder<Biome>> filter) {
+        return (p_262550_, p_262551_, p_262552_, p_262553_) -> {
+            int i = QuartPos.toBlock(p_262550_);
+            int j = QuartPos.toBlock(p_262551_);
+            int k = QuartPos.toBlock(p_262552_);
+            Holder<Biome> holder = chunk.getNoiseBiome(p_262550_, p_262551_, p_262552_);
+            if (targetRegion.isInside(i, j, k) && filter.test(holder)) {
+                return newBiome;
+            } else {
+                return holder;
+            }
+        };
     }
 
     private static boolean canBeGrass(BlockState state, LevelReader levelReader, BlockPos pos) {
