@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import dev.dragonofshuu.candylands.CandyLands;
+import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomeData;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.configured_feature.MainFeatures;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.RegistrySetBuilder;
@@ -19,9 +20,9 @@ public class MainDataPackProvider extends DatapackBuiltinEntriesProvider {
 
     public static RegistrySetBuilder getRegistries() {
         return new RegistrySetBuilder()
-                .add(Registries.CONFIGURED_FEATURE, MainFeatures::bootstrap);
+                .add(Registries.CONFIGURED_FEATURE, MainFeatures::bootstrap)
+                .add(Registries.BIOME, MainBiomeData::bootstrap);
         // .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
-        // .add(Registries.BIOME, ModBiomeData::bootstrap)
         // .add(Registries.TEMPLATE_POOL, ModStructurePoolData::bootstrap)
         // .add(Registries.STRUCTURE, ModStructureData::bootstrap)
         // .add(Registries.STRUCTURE_SET, ModStructureSetData::bootstrap)
