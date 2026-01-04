@@ -44,6 +44,10 @@ public class MainBlocks {
                                         .mapColor(MapColor.CRIMSON_NYLIUM)
                                         .requiresCorrectToolForDrops());
 
+        public static final DeferredBlock<Block> CANDY_ICE_BLOCK = registerBlock("candy_ice_block",
+                        CandyIceBlock::new,
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.FROSTED_ICE));
+
         // ------ Licorice Wood Set ------
         public static final DeferredBlock<Block> LICORICE_LOG = registerBlock("licorice_log",
                         FlammableRotatedPillarBlock::new,

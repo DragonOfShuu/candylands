@@ -3,8 +3,10 @@
   "CandyLands.configuration.section.candylands.common.toml": "Candy Lands Configs",
   "CandyLands.configuration.section.candylands.common.toml.title": "Candy Lands Configs",
   "CandyLands.configuration.title": "Candy Lands Configs",
+  "biome.candylands.licorice_forest": "Licorice Forest",
   "block.candylands.candy_dirt_block": "Candy Dirt Block",
   "block.candylands.candy_grass_block": "Candy Grass Block",
+  "block.candylands.candy_ice_block": "Candy Ice Block",
   "block.candylands.licorice_button": "Licorice Button",
   "block.candylands.licorice_fence": "Licorice Fence",
   "block.candylands.licorice_fence_gate": "Licorice Fence Gate",
@@ -14,5 +16,6 @@
   "block.candylands.licorice_pressure_plate": "Licorice Pressure Plate",
   "block.candylands.licorice_slab": "Licorice Slab",
   "block.candylands.licorice_sprout": "Licorice Sprout",
-  "block.candylands.licorice_stairs": "Licorice Stairs"
+  "block.candylands.licorice_stairs": "Licorice Stairs",
+  "gamerule.candySpreadChance": "Candy Spread Chance"
 }

@@ -27,6 +27,8 @@ public class MainBlockLootTable extends BlockLootSubProvider {
         add(MainBlocks.CANDY_GRASS_BLOCK.get(),
                 block -> this.createSingleItemTableWithSilkTouch(block, MainBlocks.CANDY_DIRT_BLOCK.get()));
         dropSelf(MainBlocks.CANDY_DIRT_BLOCK.get());
+        dropWhenSilkTouch(MainBlocks.CANDY_ICE_BLOCK.get());
+
         dropSelf(MainBlocks.LICORICE_LOG.get());
         add(MainBlocks.LICORICE_LEAVES.get(), block -> this.createLeavesDrops(block, MainBlocks.LICORICE_SPROUT.get(),
                 NORMAL_LEAVES_SAPLING_CHANCES));

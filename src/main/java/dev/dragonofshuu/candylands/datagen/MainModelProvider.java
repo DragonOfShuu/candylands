@@ -31,6 +31,7 @@ public class MainModelProvider extends ModelProvider {
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(MainBlocks.CANDY_DIRT_BLOCK.get());
         simpleBlockState(blockModels, MainBlocks.CANDY_GRASS_BLOCK);
+        createTrivialTranslucentCube(blockModels, MainBlocks.CANDY_ICE_BLOCK);
 
         var licoriceWood = MainBlocks.LICORICE_LOG.get();
         blockModels.woodProvider(licoriceWood).log(licoriceWood);
@@ -45,6 +46,17 @@ public class MainModelProvider extends ModelProvider {
     private void createTrivialCutoutCube(BlockModelGenerators blockModels,
             DeferredBlock<? extends Block> block) {
         blockModels.createTrivialBlock(block.get(), MainTexturedModel.CUBE_ALL_CUTOUT);
+    }
+
+    // private void createTrivialCutoutMippedCube(BlockModelGenerators blockModels,
+    // Block block) {
+    // blockModels.createTrivialBlock(block,
+    // MainTexturedModel.CUBE_ALL_CUTOUT_MIPPED);
+    // }
+
+    private void createTrivialTranslucentCube(BlockModelGenerators blockModels,
+            DeferredBlock<? extends Block> block) {
+        blockModels.createTrivialBlock(block.get(), MainTexturedModel.CUBE_ALL_TRANSLUCENT);
     }
 
     private void simpleBlockState(BlockModelGenerators blockModels, DeferredBlock<? extends Block> block) {

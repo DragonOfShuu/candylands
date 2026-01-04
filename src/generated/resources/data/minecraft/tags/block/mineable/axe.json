@@ -1,11 +1,11 @@
 {
   "values": [
-    "candylands:licorice_pressure_plate",
-    "candylands:licorice_slab",
-    "candylands:licorice_fence",
-    "candylands:licorice_fence_gate",
     "candylands:licorice_stairs",
     "candylands:licorice_button",
+    "candylands:licorice_pressure_plate",
+    "candylands:licorice_slab",
+    "candylands:licorice_fence_gate",
+    "candylands:licorice_fence",
     "candylands:licorice_log"
   ]
 }

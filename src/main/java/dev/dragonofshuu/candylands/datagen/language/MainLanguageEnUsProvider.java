@@ -2,6 +2,7 @@ package dev.dragonofshuu.candylands.datagen.language;
 
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.MainBlocks;
+import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import net.minecraft.data.PackOutput;
 
 public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
@@ -29,6 +30,7 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
     protected void addTranslations() {
         add(MainBlocks.CANDY_GRASS_BLOCK.get(), "Candy Grass Block");
         add(MainBlocks.CANDY_DIRT_BLOCK.get(), "Candy Dirt Block");
+        add(MainBlocks.CANDY_ICE_BLOCK.get(), "Candy Ice Block");
 
         add(MainBlocks.LICORICE_LOG.get(), "Licorice Log");
         add(MainBlocks.LICORICE_LEAVES.get(), "Licorice Leaves");
@@ -42,9 +44,13 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
         add(MainBlocks.LICORICE_FENCE_GATE.get(), "Licorice Fence Gate");
         add(MainBlocks.LICORICE_STAIRS.get(), "Licorice Stairs");
 
+        addBiome(MainBiomes.LICORICE_FOREST, "Licorice Forest");
+
         add("CandyLands.configuration.title", "Candy Lands Configs");
         add("CandyLands.configuration.section.candylands.common.toml", "Candy Lands Configs");
         add("CandyLands.configuration.section.candylands.common.toml.title", "Candy Lands Configs");
         add("CandyLands.configuration.items", "Item List");
+
+        add("gamerule.candySpreadChance", "Candy Spread Chance");
     }
 }
