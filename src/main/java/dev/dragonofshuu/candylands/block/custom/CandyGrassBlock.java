@@ -1,31 +1,24 @@
-package dev.dragonofshuu.candylands.block;
+package dev.dragonofshuu.candylands.block.custom;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.apache.commons.lang3.mutable.MutableInt;
-
 import com.mojang.serialization.MapCodec;
 
+import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.QuartPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeResolver;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;

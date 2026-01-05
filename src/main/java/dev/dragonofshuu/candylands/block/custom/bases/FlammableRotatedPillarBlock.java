@@ -1,4 +1,4 @@
-package dev.dragonofshuu.candylands.block.custom;
+package dev.dragonofshuu.candylands.block.custom.bases;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
