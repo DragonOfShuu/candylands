@@ -6,12 +6,16 @@ import java.util.function.Predicate;
 import com.mojang.serialization.MapCodec;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
+import dev.dragonofshuu.candylands.block.custom.spread.SpreadRules;
+import dev.dragonofshuu.candylands.block.custom.spread.SpreadContext;
+import dev.dragonofshuu.candylands.block.custom.spread.SpreadFunctionBuilder;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -26,8 +30,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.lighting.LightEngine;
+import net.minecraft.world.phys.Vec3;
 
 public class CandyGrassBlock extends Block implements BonemealableBlock {
+    // private static SpreadFunctionBuilder spreadFunction =
+    // SpreadFunctionBuilder.make().useSpreaders((defaultSpreader) ->
+    // List.of(defaultSpreader.extend()
+    // .setSourceBlock(MainBlocks.CANDY_GRASS_BLOCK.get())
+    // .addTargetBlock(MainBlocks.CANDY_DIRT_BLOCK.get())
+    // .addConvertToBlock(MainBlocks.CANDY_GRASS_BLOCK.get().defaultBlockState())
+    // .setMaxDistances(new Vec3i(1, 1, 1))
+    // .addCondition(CandyGrassBlock::canPropagate)
+    // .addCondition(CandyGrassBlock::randomSpreadChance)));
+
     public CandyGrassBlock(Properties properties) {
         super(properties);
     }
@@ -115,6 +130,10 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         return BonemealableBlock.Type.NEIGHBOR_SPREADER;
     }
 
+    private static boolean canPropagate(SpreadContext context) {
+        return canPropagate(context.sourceState, context.level, context.blockPos);
+    }
+
     private static boolean canPropagate(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.above();
         return canBeGrass(state, level, pos) && !level.getFluidState(blockpos).is(FluidTags.WATER);
@@ -167,6 +186,8 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
                 level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
             }
         }
+
+        // spreadFunction.tick(currentBlockState, level, blockPos, random);
     }
 
     private void spreadCandylands(ServerLevel level, BlockPos blockPos, BlockPos randomBlockPos) {
@@ -180,6 +201,10 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
                 level.getChunkSource().randomState().sampler());
         chunk.markUnsaved();
         level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunk));
+    }
+
+    private static boolean randomSpreadChance(SpreadContext context) {
+        return randomSpreadChance(context.level, context.random);
     }
 
     private static boolean randomSpreadChance(ServerLevel level, RandomSource random) {
