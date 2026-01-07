@@ -1,5 +1,6 @@
 package dev.dragonofshuu.candylands.block.custom.spread;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -11,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SpreadFunctionBuilder {
     protected SpreadRules defaultSpreadRules = SpreadRules.spreadRules();
-    protected List<SpreadRules> spreaders = List.of();
+    protected List<SpreadRules> spreaders = new ArrayList<SpreadRules>();
 
     public static SpreadFunctionBuilder make() {
         return new SpreadFunctionBuilder();

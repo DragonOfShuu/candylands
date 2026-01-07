@@ -33,15 +33,7 @@ import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.phys.Vec3;
 
 public class CandyGrassBlock extends Block implements BonemealableBlock {
-    // private static SpreadFunctionBuilder spreadFunction =
-    // SpreadFunctionBuilder.make().useSpreaders((defaultSpreader) ->
-    // List.of(defaultSpreader.extend()
-    // .setSourceBlock(MainBlocks.CANDY_GRASS_BLOCK.get())
-    // .addTargetBlock(MainBlocks.CANDY_DIRT_BLOCK.get())
-    // .addConvertToBlock(MainBlocks.CANDY_GRASS_BLOCK.get().defaultBlockState())
-    // .setMaxDistances(new Vec3i(1, 1, 1))
-    // .addCondition(CandyGrassBlock::canPropagate)
-    // .addCondition(CandyGrassBlock::randomSpreadChance)));
+    private final SpreadFunctionBuilder spreadFunction = null;
 
     public CandyGrassBlock(Properties properties) {
         super(properties);
@@ -139,6 +131,20 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         return canBeGrass(state, level, pos) && !level.getFluidState(blockpos).is(FluidTags.WATER);
     }
 
+    protected SpreadFunctionBuilder getSpreadFunction() {
+        if (spreadFunction != null) {
+            return spreadFunction;
+        }
+        return SpreadFunctionBuilder.make()
+                .useSpreaders((defaultSpreader) -> List.of(defaultSpreader.extend()
+                        .setSourceBlock(this)
+                        .addTargetBlock(MainBlocks.CANDY_DIRT_BLOCK.get())
+                        .addConvertToBlock(this.defaultBlockState())
+                        .setMaxDistances(new Vec3i(1, 1, 1))
+                        .addCondition(CandyGrassBlock::canPropagate)
+                        .addCondition(CandyGrassBlock::randomSpreadChance)));
+    }
+
     @Override
     protected void randomTick(BlockState currentBlockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
         if (!canBeGrass(currentBlockState, level, blockPos)) {
@@ -187,7 +193,7 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
             }
         }
 
-        // spreadFunction.tick(currentBlockState, level, blockPos, random);
+        getSpreadFunction().tick(currentBlockState, level, blockPos, random);
     }
 
     private void spreadCandylands(ServerLevel level, BlockPos blockPos, BlockPos randomBlockPos) {

@@ -1,5 +1,6 @@
 package dev.dragonofshuu.candylands.block.custom.spread;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,12 +12,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SpreadRules {
     protected Block sourceBlock = null;
-    protected List<Block> targetBlocks = List.of();
-    protected List<BlockState> convertToBlocks = List.of();
+    protected List<Block> targetBlocks = new ArrayList<Block>();
+    protected List<BlockState> convertToBlocks = new ArrayList<BlockState>();
     protected Vec3i maxDistances = new Vec3i(1, 1, 1);
-    protected List<SpreadCondition> conditions = List.of();
+    protected List<SpreadCondition> conditions = new ArrayList<SpreadCondition>();
     protected Holder<Biome> biome = null;
-    protected SpreadChance getSpreadChanceFunction = (context) -> 0.0d;
 
     public static SpreadRules spreadRules() {
         return new SpreadRules();
@@ -33,6 +33,8 @@ public class SpreadRules {
     }
 
     public SpreadRules addTargetBlocks(Collection<Block> targetBlocks) {
+        if (targetBlocks == null || targetBlocks.isEmpty())
+            return this;
         this.targetBlocks.addAll(targetBlocks);
         return this;
     }
@@ -43,6 +45,8 @@ public class SpreadRules {
     }
 
     public SpreadRules addConvertToBlocks(Collection<BlockState> convertToBlocks) {
+        if (convertToBlocks == null || convertToBlocks.isEmpty())
+            return this;
         this.convertToBlocks.addAll(convertToBlocks);
         return this;
     }
@@ -58,17 +62,14 @@ public class SpreadRules {
     }
 
     public SpreadRules addConditions(Collection<SpreadCondition> conditions) {
+        if (conditions == null || conditions.isEmpty())
+            return this;
         this.conditions.addAll(conditions);
         return this;
     }
 
     public SpreadRules setBiome(Holder<Biome> biome) {
         this.biome = biome;
-        return this;
-    }
-
-    public SpreadRules setGetSpreadChanceFunction(SpreadChance spreadChance) {
-        this.getSpreadChanceFunction = spreadChance;
         return this;
     }
 
