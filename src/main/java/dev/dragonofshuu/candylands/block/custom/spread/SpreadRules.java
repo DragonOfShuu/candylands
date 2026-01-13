@@ -17,6 +17,7 @@ public class SpreadRules {
     protected Vec3i maxDistances = new Vec3i(1, 1, 1);
     protected List<SpreadCondition> conditions = new ArrayList<SpreadCondition>();
     protected Holder<Biome> biome = null;
+    protected boolean isSmart = false;
 
     public static SpreadRules spreadRules() {
         return new SpreadRules();
@@ -82,6 +83,21 @@ public class SpreadRules {
         };
     }
 
+    public SpreadRules isSmart(boolean isSmart) {
+        this.isSmart = isSmart;
+        return this;
+    }
+
+    public SpreadRules smart() {
+        this.isSmart = true;
+        return this;
+    }
+
+    public SpreadRules dumb() {
+        this.isSmart = false;
+        return this;
+    }
+
     public SpreadRules extend() {
         return new SpreadRules()
                 .setSourceBlock(this.sourceBlock)
@@ -89,6 +105,7 @@ public class SpreadRules {
                 .addConvertToBlocks(this.convertToBlocks)
                 .setMaxDistances(this.maxDistances)
                 .addConditions(this.conditions)
-                .setBiome(this.biome);
+                .setBiome(this.biome)
+                .isSmart(this.isSmart);
     }
 }
