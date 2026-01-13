@@ -15,6 +15,9 @@ public class SpreadRules {
     protected List<Block> targetBlocks = new ArrayList<Block>();
     protected List<BlockState> convertToBlocks = new ArrayList<BlockState>();
     protected Vec3i maxDistances = new Vec3i(1, 1, 1);
+    protected int maxAttempts = 10;
+    protected int maxConversions = 1;
+    protected int minConversions = 1;
     protected List<SpreadCondition> conditions = new ArrayList<SpreadCondition>();
     protected Holder<Biome> biome = null;
     protected boolean isSmart = false;
@@ -98,6 +101,17 @@ public class SpreadRules {
         return this;
     }
 
+    public SpreadRules setMaxAttempts(int maxAttempts) {
+        this.maxAttempts = maxAttempts;
+        return this;
+    }
+
+    public SpreadRules setMinMaxConversions(int minConversions, int maxConversions) {
+        this.minConversions = minConversions;
+        this.maxConversions = maxConversions;
+        return this;
+    }
+
     public SpreadRules extend() {
         return new SpreadRules()
                 .setSourceBlock(this.sourceBlock)
@@ -106,6 +120,8 @@ public class SpreadRules {
                 .setMaxDistances(this.maxDistances)
                 .addConditions(this.conditions)
                 .setBiome(this.biome)
-                .isSmart(this.isSmart);
+                .isSmart(this.isSmart)
+                .setMaxAttempts(this.maxAttempts)
+                .setMinMaxConversions(this.minConversions, this.maxConversions);
     }
 }
