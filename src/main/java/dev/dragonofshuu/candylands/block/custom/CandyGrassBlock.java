@@ -8,9 +8,11 @@ import com.mojang.serialization.MapCodec;
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.block.custom.spread.SpreadRules;
 import dev.dragonofshuu.candylands.block.custom.spread.SpreadContext;
+import dev.dragonofshuu.candylands.block.custom.spread.SpreadConverter;
 import dev.dragonofshuu.candylands.block.custom.spread.SpreadFunctionBuilder;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.util.MainGameRules;
+import net.minecraft.client.data.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -33,7 +35,7 @@ import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.phys.Vec3;
 
 public class CandyGrassBlock extends Block implements BonemealableBlock {
-    private final SpreadFunctionBuilder spreadFunction = null;
+    private SpreadFunctionBuilder spreadFunction = null;
 
     public CandyGrassBlock(Properties properties) {
         super(properties);
@@ -123,7 +125,7 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
     }
 
     private static boolean canPropagate(SpreadContext context) {
-        return canPropagate(context.sourceState, context.level, context.blockPos);
+        return canPropagate(context.sourceState(), context.level(), context.blockPos());
     }
 
     private static boolean canPropagate(BlockState state, LevelReader level, BlockPos pos) {
@@ -131,18 +133,32 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         return canBeGrass(state, level, pos) && !level.getFluidState(blockpos).is(FluidTags.WATER);
     }
 
-    protected SpreadFunctionBuilder getSpreadFunction() {
+    protected SpreadFunctionBuilder getSpreadFunction(Level level) {
         if (spreadFunction != null) {
             return spreadFunction;
         }
-        return SpreadFunctionBuilder.make()
-                .useSpreaders((defaultSpreader) -> List.of(defaultSpreader.extend()
-                        .setSourceBlock(this)
-                        .addTargetBlock(MainBlocks.CANDY_DIRT_BLOCK.get())
-                        .addConvertToBlock(this.defaultBlockState())
-                        .setMaxDistances(new Vec3i(1, 1, 1))
-                        .addCondition(CandyGrassBlock::canPropagate)
-                        .addCondition(CandyGrassBlock::randomSpreadChance)));
+        Holder<Biome> licorice_forest_biome = level.registryAccess().holderOrThrow(MainBiomes.LICORICE_FOREST);
+        spreadFunction = SpreadFunctionBuilder.make()
+                .usingDefaultSpreadRule(
+                        SpreadRules.spreadRules()
+                                .setSourceBlock(this)
+                                .addCondition(CandyGrassBlock::randomSpreadChance)
+                                .setMaxDistances(new Vec3i(2, 3, 2))
+                                .smart())
+                .useSpreaders((defaultSpreader) -> List.of(
+                        defaultSpreader.extend()
+                                .addConversion(MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState(),
+                                        SpreadConverter.of(MainBlocks.CANDY_GRASS_BLOCK.get().defaultBlockState(),
+                                                CandyGrassBlock::canPropagate))
+                                .addConversion(Blocks.DIRT.defaultBlockState(),
+                                        MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState())
+                                .setMinMaxConversions(3, 20)
+                                .setBiome(licorice_forest_biome),
+                        defaultSpreader.extend()
+                                .addConversion(Blocks.GRASS_BLOCK.defaultBlockState(),
+                                        MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState())
+                                .setMinMaxConversions(1, 5)));
+        return spreadFunction;
     }
 
     @Override
@@ -152,7 +168,8 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
             // spreading
             if (!level.isAreaLoaded(blockPos, 1))
                 return;
-            level.setBlockAndUpdate(blockPos, MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState());
+            level.setBlockAndUpdate(blockPos,
+                    MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState());
         }
 
         // Forge: prevent loading unloaded chunks when checking neighbor's light and
@@ -163,54 +180,11 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         if (level.getMaxLocalRawBrightness(blockPos.above()) < 9)
             return;
 
-        BlockState candyGrassBlockState = this.defaultBlockState();
-        BlockState candyDirtBlockState = MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState();
-
-        for (int i = 0; i < 4; i++) {
-            BlockPos randomBlockPos = blockPos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3,
-                    random.nextInt(3) - 1);
-
-            // Spreads candy grass blocks across candy dirt blocks
-            if (level.getBlockState(randomBlockPos).is(MainBlocks.CANDY_DIRT_BLOCK.get())
-                    && canPropagate(candyGrassBlockState, level, randomBlockPos)) {
-                level.setBlockAndUpdate(randomBlockPos, candyGrassBlockState);
-            }
-
-            // Spreads candy dirt blocks across grass blocks and dirt blocks
-            if ((level.getBlockState(randomBlockPos).is(Blocks.GRASS_BLOCK)
-                    || level.getBlockState(randomBlockPos).is(Blocks.DIRT))
-                    && canPropagate(candyGrassBlockState, level, randomBlockPos)
-                    && randomSpreadChance(level, random)) {
-                level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
-                spreadCandylands(level, blockPos, randomBlockPos);
-            }
-
-            // Spreads down dirt blocks
-            if (randomBlockPos.getX() == blockPos.getX() && randomBlockPos.getZ() == blockPos.getZ()
-                    && randomBlockPos.getY() + 1 == blockPos.getY()
-                    && level.getBlockState(randomBlockPos).is(Blocks.DIRT)) {
-                level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
-            }
-        }
-
-        getSpreadFunction().tick(currentBlockState, level, blockPos, random);
-    }
-
-    private void spreadCandylands(ServerLevel level, BlockPos blockPos, BlockPos randomBlockPos) {
-        var chunk = level.getChunk(randomBlockPos);
-
-        Holder<Biome> biome = level.registryAccess().holderOrThrow(MainBiomes.LICORICE_FOREST);
-
-        chunk.fillBiomesFromNoise(
-                makeResolver(chunk, BoundingBox.fromCorners(blockPos, randomBlockPos).inflatedBy(3, 8, 3), biome,
-                        (oldBiome) -> true),
-                level.getChunkSource().randomState().sampler());
-        chunk.markUnsaved();
-        level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunk));
+        getSpreadFunction(level).tick(currentBlockState, level, blockPos, random);
     }
 
     private static boolean randomSpreadChance(SpreadContext context) {
-        return randomSpreadChance(context.level, context.random);
+        return randomSpreadChance(context.level(), context.random());
     }
 
     private static boolean randomSpreadChance(ServerLevel level, RandomSource random) {
@@ -221,22 +195,6 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         }
 
         return random.nextInt(Math.clamp(value, 1, Integer.MAX_VALUE)) == 0;
-    }
-
-    private static BiomeResolver makeResolver(
-            ChunkAccess chunk, BoundingBox targetRegion, Holder<Biome> newBiome,
-            Predicate<Holder<Biome>> filter) {
-        return (p_262550_, p_262551_, p_262552_, p_262553_) -> {
-            int i = QuartPos.toBlock(p_262550_);
-            int j = QuartPos.toBlock(p_262551_);
-            int k = QuartPos.toBlock(p_262552_);
-            Holder<Biome> holder = chunk.getNoiseBiome(p_262550_, p_262551_, p_262552_);
-            if (targetRegion.isInside(i, j, k) && filter.test(holder)) {
-                return newBiome;
-            } else {
-                return holder;
-            }
-        };
     }
 
     private static boolean canBeGrass(BlockState state, LevelReader levelReader, BlockPos pos) {

@@ -39,6 +39,11 @@ public class SpreadFunctionBuilder {
     }
 
     protected void spreadIt(List<SpreadRules> spreaders, SpreadContext context) {
-
+        for (var spreadRules : spreaders) {
+            var didSpread = SpreadFunction.applySpread(context, spreadRules);
+            if (didSpread && spreadRules.cancelOnSuccess) {
+                return;
+            }
+        }
     }
 }

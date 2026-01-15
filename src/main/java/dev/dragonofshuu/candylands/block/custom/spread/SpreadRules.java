@@ -2,6 +2,7 @@ package dev.dragonofshuu.candylands.block.custom.spread;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.core.Holder;
@@ -11,16 +12,37 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SpreadRules {
+    /* The source block from which spreading originates */
     protected Block sourceBlock = null;
-    protected List<Block> targetBlocks = new ArrayList<Block>();
-    protected List<BlockState> convertToBlocks = new ArrayList<BlockState>();
+    // /* The blocks that can be targeted for spreading */
+    // protected List<Block> targetBlocks = new ArrayList<Block>();
+    // /* The blocks to which the target blocks will be converted */
+    // protected List<BlockState> convertToBlocks = new ArrayList<BlockState>();
+    protected HashMap<BlockState, SpreadConverter> conversionMap = new HashMap<BlockState, SpreadConverter>();
+    /* The maximum distances in each direction for spreading */
     protected Vec3i maxDistances = new Vec3i(1, 1, 1);
+    /*
+     * The maximum number of attempts to spread (when using the dumb method)
+     * 
+     * To be more specific, this is the number of random positions that will be
+     * sampled
+     * within the defined maxDistances to find target blocks for conversion.
+     * 
+     * For example, grass blocks sample 4 positions around them to spread to.
+     */
     protected int maxAttempts = 10;
+    /* The maximum number of conversions that can occur during spreading */
     protected int maxConversions = 1;
+    /* The minimum number of conversions that can occur during spreading */
     protected int minConversions = 1;
+    /* The conditions that must be met for spreading to occur */
     protected List<SpreadCondition> conditions = new ArrayList<SpreadCondition>();
+    /* The biome that is spread around */
     protected Holder<Biome> biome = null;
+    /* Whether to use smart spreading or dumb spreading */
     protected boolean isSmart = false;
+    /* Cancel spreading if a spreader has already succeeded */
+    protected boolean cancelOnSuccess = false;
 
     public static SpreadRules spreadRules() {
         return new SpreadRules();
@@ -31,27 +53,54 @@ public class SpreadRules {
         return this;
     }
 
-    public SpreadRules addTargetBlock(Block targetBlock) {
-        this.targetBlocks.add(targetBlock);
+    public SpreadRules addConversion(BlockState from, BlockState to) {
+        this.conversionMap.put(from, SpreadConverter.of(to));
         return this;
     }
 
-    public SpreadRules addTargetBlocks(Collection<Block> targetBlocks) {
-        if (targetBlocks == null || targetBlocks.isEmpty())
+    public SpreadRules addConversions(HashMap<BlockState, SpreadConverter> conversions) {
+        if (conversions == null || conversions.isEmpty())
             return this;
-        this.targetBlocks.addAll(targetBlocks);
+        for (var entry : conversions.entrySet()) {
+            this.conversionMap.put(entry.getKey(), entry.getValue());
+        }
         return this;
     }
 
-    public SpreadRules addConvertToBlock(BlockState candyGrassBlockState) {
-        this.convertToBlocks.add(candyGrassBlockState);
-        return this;
-    }
-
-    public SpreadRules addConvertToBlocks(Collection<BlockState> convertToBlocks) {
-        if (convertToBlocks == null || convertToBlocks.isEmpty())
+    public SpreadRules addConversions(Collection<BlockState> fromStates, Collection<BlockState> toStates) {
+        if (fromStates == null || toStates == null)
             return this;
-        this.convertToBlocks.addAll(convertToBlocks);
+        int size = Math.min(fromStates.size(), toStates.size());
+        if (size == 0)
+            return this;
+        List<BlockState> fromList = new ArrayList<BlockState>(fromStates);
+        List<BlockState> toList = new ArrayList<BlockState>(toStates);
+        for (int i = 0; i < size; i++) {
+            this.conversionMap.put(fromList.get(i), SpreadConverter.of(toList.get(i)));
+        }
+        return this;
+    }
+
+    public SpreadRules addConversions(Collection<BlockState> states, BlockState toState) {
+        if (states == null || states.isEmpty())
+            return this;
+        for (BlockState fromState : states) {
+            this.conversionMap.put(fromState, SpreadConverter.of(toState));
+        }
+        return this;
+    }
+
+    public SpreadRules addConversions(BlockState fromState, Collection<BlockState> toStates) {
+        if (toStates == null || toStates.isEmpty())
+            return this;
+        for (BlockState toState : toStates) {
+            this.conversionMap.put(fromState, SpreadConverter.of(toState));
+        }
+        return this;
+    }
+
+    public SpreadRules addConversion(BlockState fromState, SpreadConverter toConverter) {
+        this.conversionMap.put(fromState, toConverter);
         return this;
     }
 
@@ -112,11 +161,20 @@ public class SpreadRules {
         return this;
     }
 
+    public SpreadRules cancelOnSuccess() {
+        this.cancelOnSuccess = true;
+        return this;
+    }
+
+    public SpreadRules dontCancelOnSuccess() {
+        this.cancelOnSuccess = false;
+        return this;
+    }
+
     public SpreadRules extend() {
         return new SpreadRules()
                 .setSourceBlock(this.sourceBlock)
-                .addTargetBlocks(this.targetBlocks)
-                .addConvertToBlocks(this.convertToBlocks)
+                .addConversions(this.conversionMap)
                 .setMaxDistances(this.maxDistances)
                 .addConditions(this.conditions)
                 .setBiome(this.biome)
