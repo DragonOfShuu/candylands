@@ -1,41 +1,25 @@
 package dev.dragonofshuu.candylands.block.custom;
 
-import java.util.List;
-import java.util.function.Predicate;
-
 import com.mojang.serialization.MapCodec;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
-import dev.dragonofshuu.candylands.block.custom.spread.SpreadRules;
-import dev.dragonofshuu.candylands.block.custom.spread.SpreadContext;
-import dev.dragonofshuu.candylands.block.custom.spread.SpreadConverter;
-import dev.dragonofshuu.candylands.block.custom.spread.SpreadFunctionBuilder;
-import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
+import dev.dragonofshuu.candylands.spread.MainSpreads;
+import dev.dragonofshuu.candylands.spread.spread.SpreadContext;
 import dev.dragonofshuu.candylands.util.MainGameRules;
-import net.minecraft.client.data.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.QuartPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeResolver;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.lighting.LightEngine;
-import net.minecraft.world.phys.Vec3;
 
 public class CandyGrassBlock extends Block implements BonemealableBlock {
-    private SpreadFunctionBuilder spreadFunction = null;
+    // private SpreadFunction spreadFunction = null;
 
     public CandyGrassBlock(Properties properties) {
         super(properties);
@@ -124,41 +108,13 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         return BonemealableBlock.Type.NEIGHBOR_SPREADER;
     }
 
-    private static boolean canPropagate(SpreadContext context) {
+    public static boolean canPropagate(SpreadContext context) {
         return canPropagate(context.sourceState(), context.level(), context.blockPos());
     }
 
     private static boolean canPropagate(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.above();
         return canBeGrass(state, level, pos) && !level.getFluidState(blockpos).is(FluidTags.WATER);
-    }
-
-    protected SpreadFunctionBuilder getSpreadFunction(Level level) {
-        if (spreadFunction != null) {
-            return spreadFunction;
-        }
-        Holder<Biome> licorice_forest_biome = level.registryAccess().holderOrThrow(MainBiomes.LICORICE_FOREST);
-        spreadFunction = SpreadFunctionBuilder.make()
-                .usingDefaultSpreadRule(
-                        SpreadRules.spreadRules()
-                                .setSourceBlock(this)
-                                .addCondition(CandyGrassBlock::randomSpreadChance)
-                                .setMaxDistances(new Vec3i(2, 3, 2))
-                                .smart())
-                .useSpreaders((defaultSpreader) -> List.of(
-                        defaultSpreader.extend()
-                                .addConversion(MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState(),
-                                        SpreadConverter.of(MainBlocks.CANDY_GRASS_BLOCK.get().defaultBlockState(),
-                                                CandyGrassBlock::canPropagate))
-                                .addConversion(Blocks.DIRT.defaultBlockState(),
-                                        MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState())
-                                .setMinMaxConversions(3, 20)
-                                .setBiome(licorice_forest_biome),
-                        defaultSpreader.extend()
-                                .addConversion(Blocks.GRASS_BLOCK.defaultBlockState(),
-                                        MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState())
-                                .setMinMaxConversions(1, 5)));
-        return spreadFunction;
     }
 
     @Override
@@ -180,10 +136,10 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         if (level.getMaxLocalRawBrightness(blockPos.above()) < 9)
             return;
 
-        getSpreadFunction(level).tick(currentBlockState, level, blockPos, random);
+        MainSpreads.CANDY_GRASS_SPREAD.get().tick(currentBlockState, level, blockPos, random);
     }
 
-    private static boolean randomSpreadChance(SpreadContext context) {
+    public static boolean randomSpreadChance(SpreadContext context) {
         return randomSpreadChance(context.level(), context.random());
     }
 

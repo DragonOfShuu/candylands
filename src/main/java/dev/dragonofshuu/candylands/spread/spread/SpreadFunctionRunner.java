@@ -1,4 +1,4 @@
-package dev.dragonofshuu.candylands.block.custom.spread;
+package dev.dragonofshuu.candylands.spread.spread;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
-public class SpreadFunction {
+public class SpreadFunctionRunner {
     public static boolean applySpread(SpreadContext context, SpreadRules rules) {
         // Check conditions
         for (SpreadCondition condition : rules.conditions) {
@@ -41,7 +42,8 @@ public class SpreadFunction {
             }
             didSpread = context.level().setBlock(blockPos, conversionRules.toState(), 3) || didSpread;
             if (rules.biome != null && didSpread) {
-                spreadBiome(context.level(), rules.biome, context.blockPos(), blockPos);
+                spreadBiome(context.level(), getBiomeHolder(context.level(), rules.biome), context.blockPos(),
+                        blockPos);
             }
         }
         return didSpread;
@@ -116,6 +118,12 @@ public class SpreadFunction {
             availablePositions.add(blockPos.immutable());
         }
         return availablePositions;
+    }
+
+    private static Holder<Biome> getBiomeHolder(ServerLevel level, ResourceKey<Biome> biomeKey) {
+        var registryAccess = level.registryAccess();
+        var biome = registryAccess.holderOrThrow(biomeKey);
+        return biome;
     }
 
     private static void spreadBiome(ServerLevel level, Holder<Biome> biome, BlockPos blockPos,

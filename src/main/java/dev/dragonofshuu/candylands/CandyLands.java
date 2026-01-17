@@ -6,6 +6,7 @@ import com.mojang.logging.LogUtils;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.item.MainItems;
+import dev.dragonofshuu.candylands.spread.MainSpreads;
 import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -64,6 +65,9 @@ public class CandyLands {
         MainItems.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        // Customer Registries
+        MainSpreads.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (CandyLands)

@@ -1,19 +1,16 @@
-package dev.dragonofshuu.candylands.block.custom.spread;
+package dev.dragonofshuu.candylands.spread.spread;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SpreadRules {
-    /* The source block from which spreading originates */
-    protected Block sourceBlock = null;
     // /* The blocks that can be targeted for spreading */
     // protected List<Block> targetBlocks = new ArrayList<Block>();
     // /* The blocks to which the target blocks will be converted */
@@ -38,7 +35,7 @@ public class SpreadRules {
     /* The conditions that must be met for spreading to occur */
     protected List<SpreadCondition> conditions = new ArrayList<SpreadCondition>();
     /* The biome that is spread around */
-    protected Holder<Biome> biome = null;
+    protected ResourceKey<Biome> biome = null;
     /* Whether to use smart spreading or dumb spreading */
     protected boolean isSmart = false;
     /* Cancel spreading if a spreader has already succeeded */
@@ -46,11 +43,6 @@ public class SpreadRules {
 
     public static SpreadRules spreadRules() {
         return new SpreadRules();
-    }
-
-    public SpreadRules setSourceBlock(Block sourceBlock) {
-        this.sourceBlock = sourceBlock;
-        return this;
     }
 
     public SpreadRules addConversion(BlockState from, BlockState to) {
@@ -121,7 +113,7 @@ public class SpreadRules {
         return this;
     }
 
-    public SpreadRules setBiome(Holder<Biome> biome) {
+    public SpreadRules setBiome(ResourceKey<Biome> biome) {
         this.biome = biome;
         return this;
     }
@@ -173,7 +165,6 @@ public class SpreadRules {
 
     public SpreadRules extend() {
         return new SpreadRules()
-                .setSourceBlock(this.sourceBlock)
                 .addConversions(this.conversionMap)
                 .setMaxDistances(this.maxDistances)
                 .addConditions(this.conditions)

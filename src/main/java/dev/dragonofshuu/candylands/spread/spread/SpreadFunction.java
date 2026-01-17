@@ -1,4 +1,4 @@
-package dev.dragonofshuu.candylands.block.custom.spread;
+package dev.dragonofshuu.candylands.spread.spread;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,20 +10,20 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SpreadFunctionBuilder {
+public class SpreadFunction {
     protected SpreadRules defaultSpreadRules = SpreadRules.spreadRules();
     protected List<SpreadRules> spreaders = new ArrayList<SpreadRules>();
 
-    public static SpreadFunctionBuilder make() {
-        return new SpreadFunctionBuilder();
+    public static SpreadFunction make() {
+        return new SpreadFunction();
     }
 
-    public SpreadFunctionBuilder usingDefaultSpreadRule(SpreadRules spreadRules) {
+    public SpreadFunction usingDefaultSpreadRule(SpreadRules spreadRules) {
         this.defaultSpreadRules = spreadRules;
         return this;
     }
 
-    public SpreadFunctionBuilder useSpreaders(Function<LockedSpreadRules, Collection<SpreadRules>> spreaders) {
+    public SpreadFunction useSpreaders(Function<LockedSpreadRules, Collection<SpreadRules>> spreaders) {
         // Baking it immediately after setting so that
         // the programmer can reuse the `withDefaultSpreadrule`
         // function
@@ -40,7 +40,7 @@ public class SpreadFunctionBuilder {
 
     protected void spreadIt(List<SpreadRules> spreaders, SpreadContext context) {
         for (var spreadRules : spreaders) {
-            var didSpread = SpreadFunction.applySpread(context, spreadRules);
+            var didSpread = SpreadFunctionRunner.applySpread(context, spreadRules);
             if (didSpread && spreadRules.cancelOnSuccess) {
                 return;
             }

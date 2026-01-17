@@ -1,4 +1,4 @@
-package dev.dragonofshuu.candylands.block.custom.spread;
+package dev.dragonofshuu.candylands.spread.spread;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

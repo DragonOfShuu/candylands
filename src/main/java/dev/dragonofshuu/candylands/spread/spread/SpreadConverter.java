@@ -1,4 +1,4 @@
-package dev.dragonofshuu.candylands.block.custom.spread;
+package dev.dragonofshuu.candylands.spread.spread;
 
 import java.util.Collection;
 import java.util.List;
