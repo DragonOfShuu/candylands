@@ -1,9 +1,11 @@
-package dev.dragonofshuu.candylands.spread.spread;
+package dev.dragonofshuu.candylands.registries.spread;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -19,16 +21,20 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public class SpreadFunctionRunner {
-    public static boolean applySpread(SpreadContext context, SpreadRules rules) {
+    public static SpreadReturnType applySpread(SpreadContext context, SpreadRules rules) {
         // Check conditions
         for (SpreadCondition condition : rules.conditions) {
             if (!condition.canSpread(context)) {
-                return false;
+                return new SpreadReturnType(false, false, true);
             }
         }
 
         // Gather blocks to convert
         List<BlockPos> blocksToConvert = fetchConvertableBlocks(context, rules);
+
+        if (blocksToConvert == null) {
+            return new SpreadReturnType(false, false, false);
+        }
 
         // Convert blocks
         boolean didSpread = false;
@@ -46,35 +52,49 @@ public class SpreadFunctionRunner {
                         blockPos);
             }
         }
-        return didSpread;
+        return new SpreadReturnType(didSpread, !blocksToConvert.isEmpty(), false);
     }
 
-    private static List<BlockPos> fetchConvertableBlocks(SpreadContext context, SpreadRules rules) {
+    private static @Nullable List<BlockPos> fetchConvertableBlocks(SpreadContext context, SpreadRules rules) {
         BlockPos centerPos = context.blockPos();
-        List<BlockPos> potentialBlocks = rules.isSmart
-                ? getAllNearbyBlocks(context.level(), rules.maxDistances, centerPos, context.random())
-                : getRandomNearbyBlocks(context.level(), rules.maxAttempts, rules.maxDistances, centerPos,
-                        context.random());
+        List<BlockPos> potentialBlocks = getAllNearbyBlocks(context.level(), rules.maxDistances, centerPos,
+                context.random());
         List<BlockPos> potentialButConvertableBlocks = filterConvertableBlocks(context.level(), potentialBlocks,
                 rules.conversionMap.keySet());
-        List<BlockPos> chosenBlocks = selectRandomQuantityOfBlocks(
-                potentialButConvertableBlocks,
+
+        if (potentialButConvertableBlocks.isEmpty()) {
+            return null;
+        }
+
+        if (rules.isSmart) {
+            return selectRandomQuantityOfBlocks(
+                    potentialButConvertableBlocks,
+                    rules.minConversions,
+                    rules.maxConversions,
+                    rules.isSmart,
+                    context.random());
+        }
+
+        return selectRandomQuantityOfBlocks(
+                potentialBlocks,
                 rules.minConversions,
                 rules.maxConversions,
+                rules.isSmart,
                 context.random());
-        return chosenBlocks;
     }
 
     private static List<BlockPos> selectRandomQuantityOfBlocks(
             List<BlockPos> potentialButConvertableBlocks,
             int minConversions,
             int maxConversions,
+            boolean isSmart,
             RandomSource random) {
         List<BlockPos> chosenBlocks = new ArrayList<BlockPos>();
         int conversions = random.nextIntBetweenInclusive(minConversions, maxConversions);
         for (int i = 0; i < Math.min(conversions, potentialButConvertableBlocks.size()); i++) {
             int index = random.nextInt(potentialButConvertableBlocks.size());
-            chosenBlocks.add(potentialButConvertableBlocks.remove(index));
+            chosenBlocks.add(
+                    isSmart ? potentialButConvertableBlocks.remove(index) : potentialButConvertableBlocks.get(index));
         }
         return chosenBlocks;
     }
@@ -92,18 +112,19 @@ public class SpreadFunctionRunner {
         return potentialButConvertableBlocks;
     }
 
-    private static List<BlockPos> getRandomNearbyBlocks(ServerLevel level, int maxAttempts, Vec3i maxDistances,
-            BlockPos centerPos, RandomSource random) {
-        List<BlockPos> potentialBlocks = new ArrayList<BlockPos>();
-        for (int i = 0; i < maxAttempts; i++) {
-            BlockPos targetPos = centerPos.offset(
-                    random.nextInt(1 + maxDistances.getX() * 2) - maxDistances.getX(),
-                    random.nextInt(1 + maxDistances.getY() * 2) - maxDistances.getY(),
-                    random.nextInt(1 + maxDistances.getZ() * 2) - maxDistances.getZ());
-            potentialBlocks.add(targetPos);
-        }
-        return potentialBlocks;
-    }
+    // private static List<BlockPos> getRandomNearbyBlocks(ServerLevel level, int
+    // maxAttempts, Vec3i maxDistances,
+    // BlockPos centerPos, RandomSource random) {
+    // List<BlockPos> potentialBlocks = new ArrayList<BlockPos>();
+    // for (int i = 0; i < maxAttempts; i++) {
+    // BlockPos targetPos = centerPos.offset(
+    // random.nextInt(1 + maxDistances.getX() * 2) - maxDistances.getX(),
+    // random.nextInt(1 + maxDistances.getY() * 2) - maxDistances.getY(),
+    // random.nextInt(1 + maxDistances.getZ() * 2) - maxDistances.getZ());
+    // potentialBlocks.add(targetPos);
+    // }
+    // return potentialBlocks;
+    // }
 
     private static List<BlockPos> getAllNearbyBlocks(ServerLevel level, Vec3i maxDistances, BlockPos centerPos,
             RandomSource random) {

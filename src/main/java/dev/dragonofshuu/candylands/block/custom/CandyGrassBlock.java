@@ -3,8 +3,8 @@ package dev.dragonofshuu.candylands.block.custom;
 import com.mojang.serialization.MapCodec;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
-import dev.dragonofshuu.candylands.spread.MainSpreads;
-import dev.dragonofshuu.candylands.spread.spread.SpreadContext;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
 import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

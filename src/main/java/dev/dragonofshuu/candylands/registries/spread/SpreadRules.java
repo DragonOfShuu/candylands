@@ -1,4 +1,4 @@
-package dev.dragonofshuu.candylands.spread.spread;
+package dev.dragonofshuu.candylands.registries.spread;
 
 import java.util.ArrayList;
 import java.util.Collection;

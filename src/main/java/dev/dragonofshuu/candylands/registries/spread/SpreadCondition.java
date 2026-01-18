@@ -1,4 +1,4 @@
-package dev.dragonofshuu.candylands.spread.spread;
+package dev.dragonofshuu.candylands.registries.spread;
 
 public interface SpreadCondition {
     boolean canSpread(SpreadContext context);

@@ -1,8 +1,9 @@
-package dev.dragonofshuu.candylands.spread.spread;
+package dev.dragonofshuu.candylands.registries.spread;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import net.minecraft.core.BlockPos;
@@ -34,16 +35,38 @@ public class SpreadFunction {
     }
 
     public void tick(BlockState currentBlockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
-        var spreadContext = new SpreadContext(currentBlockState, level, blockPos, random);
-        spreadIt(this.spreaders, spreadContext);
+        Consumer<SpreadContext> noop = (context) -> {
+        };
+        this.tick(currentBlockState, level, blockPos, noop, noop, level.getRandom());
     }
 
-    protected void spreadIt(List<SpreadRules> spreaders, SpreadContext context) {
+    public void tick(BlockState currentBlockState, ServerLevel level, BlockPos blockPos,
+            Consumer<SpreadContext> onCantSpread, Consumer<SpreadContext> onDidSpread, RandomSource random) {
+        var spreadContext = new SpreadContext(currentBlockState, level, blockPos, random);
+        SpreadReturnType spreadReturn = spreadIt(this.spreaders, spreadContext);
+        if (!spreadReturn.canSpread()) {
+            onCantSpread.accept(spreadContext);
+        }
+        if (spreadReturn.didSpread()) {
+            onDidSpread.accept(spreadContext);
+        }
+    }
+
+    protected SpreadReturnType spreadIt(List<SpreadRules> spreaders, SpreadContext context) {
+        var didSpread = false;
+        var cantSpreadCount = 0;
         for (var spreadRules : spreaders) {
-            var didSpread = SpreadFunctionRunner.applySpread(context, spreadRules);
+            SpreadReturnType spreadReturn = SpreadFunctionRunner.applySpread(context, spreadRules);
+            didSpread = didSpread || spreadReturn.didSpread();
+            if (!spreadReturn.canSpread() && !spreadReturn.isNoOp()) {
+                cantSpreadCount++;
+            }
             if (didSpread && spreadRules.cancelOnSuccess) {
-                return;
+                return new SpreadReturnType(true, true, false);
             }
         }
+
+        // didspread, canspread, isnoop
+        return new SpreadReturnType(didSpread, cantSpreadCount != spreaders.size(), false);
     }
 }

@@ -6,7 +6,7 @@ import com.mojang.logging.LogUtils;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.item.MainItems;
-import dev.dragonofshuu.candylands.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
 import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
