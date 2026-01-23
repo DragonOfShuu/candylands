@@ -43,12 +43,12 @@ public class SpreadFunctionRunner {
             if (conversionRules == null) {
                 throw new IllegalStateException("No conversion mapping found for block state: " + blockPos);
             }
-            if (!conversionRules.canConvert(context)) {
+            if (!conversionRules.canConvert(context.withTarget(blockPos))) {
                 continue;
             }
             didSpread = context.level().setBlock(blockPos, conversionRules.toState(), 3) || didSpread;
             if (rules.biome != null && didSpread) {
-                spreadBiome(context.level(), getBiomeHolder(context.level(), rules.biome), context.blockPos(),
+                spreadBiome(context.level(), getBiomeHolder(context.level(), rules.biome), context.sourcePos(),
                         blockPos);
             }
         }
@@ -56,7 +56,7 @@ public class SpreadFunctionRunner {
     }
 
     private static @Nullable List<BlockPos> fetchConvertableBlocks(SpreadContext context, SpreadRules rules) {
-        BlockPos centerPos = context.blockPos();
+        BlockPos centerPos = context.sourcePos();
         List<BlockPos> potentialBlocks = getAllNearbyBlocks(context.level(), rules.maxDistances, centerPos,
                 context.random());
         List<BlockPos> potentialButConvertableBlocks = filterConvertableBlocks(context.level(), potentialBlocks,
@@ -111,20 +111,6 @@ public class SpreadFunctionRunner {
         }
         return potentialButConvertableBlocks;
     }
-
-    // private static List<BlockPos> getRandomNearbyBlocks(ServerLevel level, int
-    // maxAttempts, Vec3i maxDistances,
-    // BlockPos centerPos, RandomSource random) {
-    // List<BlockPos> potentialBlocks = new ArrayList<BlockPos>();
-    // for (int i = 0; i < maxAttempts; i++) {
-    // BlockPos targetPos = centerPos.offset(
-    // random.nextInt(1 + maxDistances.getX() * 2) - maxDistances.getX(),
-    // random.nextInt(1 + maxDistances.getY() * 2) - maxDistances.getY(),
-    // random.nextInt(1 + maxDistances.getZ() * 2) - maxDistances.getZ());
-    // potentialBlocks.add(targetPos);
-    // }
-    // return potentialBlocks;
-    // }
 
     private static List<BlockPos> getAllNearbyBlocks(ServerLevel level, Vec3i maxDistances, BlockPos centerPos,
             RandomSource random) {

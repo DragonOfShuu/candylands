@@ -42,7 +42,7 @@ public class SpreadFunction {
 
     public void tick(BlockState currentBlockState, ServerLevel level, BlockPos blockPos,
             Consumer<SpreadContext> onCantSpread, Consumer<SpreadContext> onDidSpread, RandomSource random) {
-        var spreadContext = new SpreadContext(currentBlockState, level, blockPos, random);
+        var spreadContext = new SpreadContext(currentBlockState, blockPos, level, random);
         SpreadReturnType spreadReturn = spreadIt(this.spreaders, spreadContext);
         if (!spreadReturn.canSpread()) {
             onCantSpread.accept(spreadContext);

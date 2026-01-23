@@ -44,9 +44,11 @@ public class MainSpreads {
                             defaultSpreader.extend()
                                     .addConversion(Blocks.GRASS_BLOCK
                                             .defaultBlockState(),
-                                            MainBlocks.CANDY_DIRT_BLOCK
-                                                    .get()
-                                                    .defaultBlockState())
+                                            SpreadConverter.of(
+                                                    MainBlocks.CANDY_DIRT_BLOCK
+                                                            .get()
+                                                            .defaultBlockState(),
+                                                    CandyGrassBlock::canPropagate))
                                     .setMinMaxConversions(1, 5))));
 
     /**

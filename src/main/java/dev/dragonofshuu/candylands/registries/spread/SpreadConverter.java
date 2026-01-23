@@ -5,21 +5,21 @@ import java.util.List;
 
 import net.minecraft.world.level.block.state.BlockState;
 
-public record SpreadConverter(BlockState toState, Collection<SpreadCondition> conditions) {
-    public static SpreadConverter of(BlockState toState, SpreadCondition condition) {
+public record SpreadConverter(BlockState toState, Collection<SpreadCondition.Target> conditions) {
+    public static SpreadConverter of(BlockState toState, SpreadCondition.Target condition) {
         return new SpreadConverter(toState, List.of(condition));
     }
 
-    public static SpreadConverter of(BlockState toState, Collection<SpreadCondition> conditions) {
+    public static SpreadConverter of(BlockState toState, Collection<SpreadCondition.Target> conditions) {
         return new SpreadConverter(toState, conditions);
     }
 
     public static SpreadConverter of(BlockState toState) {
-        return new SpreadConverter(toState, List.of(SpreadCondition.always()));
+        return new SpreadConverter(toState, List.of(SpreadCondition.Target.always()));
     }
 
-    public boolean canConvert(SpreadContext context) {
-        for (SpreadCondition condition : this.conditions) {
+    public boolean canConvert(SpreadContext.Target context) {
+        for (SpreadCondition.Target condition : this.conditions) {
             if (!condition.canSpread(context)) {
                 return false;
             }

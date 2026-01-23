@@ -108,8 +108,8 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         return BonemealableBlock.Type.NEIGHBOR_SPREADER;
     }
 
-    public static boolean canPropagate(SpreadContext context) {
-        return canPropagate(context.sourceState(), context.level(), context.blockPos());
+    public static boolean canPropagate(SpreadContext.Target context) {
+        return canPropagate(context.sourceState(), context.level(), context.targetPos());
     }
 
     private static boolean canPropagate(BlockState state, LevelReader level, BlockPos pos) {
