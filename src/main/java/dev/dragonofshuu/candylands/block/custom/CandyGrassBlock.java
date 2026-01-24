@@ -1,10 +1,16 @@
 package dev.dragonofshuu.candylands.block.custom;
 
+import java.util.function.Consumer;
+
+import org.slf4j.Logger;
+
 import com.mojang.serialization.MapCodec;
 
+import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
 import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
+import dev.dragonofshuu.candylands.registries.spread.SpreadMemoizer;
 import dev.dragonofshuu.candylands.util.MainGameRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,23 +19,55 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.lighting.LightEngine;
 
 public class CandyGrassBlock extends Block implements BonemealableBlock {
-    // private SpreadFunction spreadFunction = null;
+    public static final MapCodec<CandyGrassBlock> CODEC = simpleCodec(CandyGrassBlock::new);
+    public static final int MAX_SPREAD_ATTEMPTS = 3;
+    public static final IntegerProperty SPREAD_ATTEMPTS = IntegerProperty.create("spread_attempts", 0, 3);
+    // private static final Logger LOGGER = CandyLands.LOGGER;
+    private static final SpreadMemoizer SPREAD_MEMOIZER = new SpreadMemoizer(SPREAD_ATTEMPTS,
+            MAX_SPREAD_ATTEMPTS);
 
     public CandyGrassBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(stateDefinition.any()
+                .setValue(SPREAD_ATTEMPTS, Integer.valueOf(0)));
     }
-
-    public static final MapCodec<CandyGrassBlock> CODEC = simpleCodec(CandyGrassBlock::new);
 
     @Override
     public MapCodec<CandyGrassBlock> codec() {
         return CODEC;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+        builder.add(SPREAD_ATTEMPTS);
+    }
+
+    // public int getSpreadAttempts(BlockState state) {
+    // return state.getValue(SPREAD_ATTEMPTS);
+    // }
+
+    // public BlockState getStateWithSpreadAttempts(int attempts) {
+    // return this.defaultBlockState().setValue(SPREAD_ATTEMPTS,
+    // Math.min(Integer.valueOf(attempts), MAX_SPREAD_ATTEMPTS));
+    // }
+
+    // public void setSpreadAttempts(Level level, BlockPos pos, int attempts) {
+    // level.setBlockAndUpdate(pos, this.getStateWithSpreadAttempts(attempts));
+    // }
+
+    @Override
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess,
+            BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        return SPREAD_MEMOIZER.updateShapeSpreadBlock(state, neighborState);
     }
 
     @Override
@@ -128,6 +166,13 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
                     MainBlocks.CANDY_DIRT_BLOCK.get().defaultBlockState());
         }
 
+        // if (this.getSpreadAttempts(currentBlockState) >= MAX_SPREAD_ATTEMPTS) {
+        // return;
+        // }
+        if (!SPREAD_MEMOIZER.canTrySpread(currentBlockState)) {
+            return;
+        }
+
         // Forge: prevent loading unloaded chunks when checking neighbor's light and
         // spreading
         if (!level.isAreaLoaded(blockPos, 3))
@@ -136,7 +181,11 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         if (level.getMaxLocalRawBrightness(blockPos.above()) < 9)
             return;
 
-        MainSpreads.CANDY_GRASS_SPREAD.get().tick(currentBlockState, level, blockPos, random);
+        Consumer<SpreadContext> onCantSpread = (context) -> {
+            SPREAD_MEMOIZER.setSpreadAttempts(level, currentBlockState, blockPos, (old) -> old + 1);
+        };
+        MainSpreads.CANDY_GRASS_SPREAD.get().tick(currentBlockState, level, blockPos, onCantSpread, (context) -> {
+        }, random);
     }
 
     public static boolean randomSpreadChance(SpreadContext context) {

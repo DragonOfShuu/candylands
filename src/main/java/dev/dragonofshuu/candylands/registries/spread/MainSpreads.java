@@ -39,6 +39,10 @@ public class MainSpreads {
                                             MainBlocks.CANDY_DIRT_BLOCK
                                                     .get()
                                                     .defaultBlockState())
+                                    .addConversion(Blocks.ICE.defaultBlockState(),
+                                            MainBlocks.CANDY_ICE_BLOCK
+                                                    .get()
+                                                    .defaultBlockState())
                                     .setMinMaxConversions(3, 20)
                                     .setBiome(MainBiomes.LICORICE_FOREST),
                             defaultSpreader.extend()
@@ -51,8 +55,27 @@ public class MainSpreads {
                                                     CandyGrassBlock::canPropagate))
                                     .setMinMaxConversions(1, 5))));
 
+    public static final Supplier<SpreadFunction> VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS.register(
+            "vertical_only_spread",
+            () -> SpreadFunction.make()
+                    .usingDefaultSpreadRule(
+                            SpreadRules.spreadRules()
+                                    .setMaxDistances(new Vec3i(0, 3, 0))
+                                    .setBiome(MainBiomes.LICORICE_FOREST)
+                                    .smart())
+                    .useSpreaders((defaultSpreader) -> List.of(
+                            defaultSpreader.extend()
+                                    .addConversion(Blocks.DIRT.defaultBlockState(),
+                                            MainBlocks.CANDY_DIRT_BLOCK
+                                                    .get()
+                                                    .defaultBlockState())
+                                    .addConversion(Blocks.ICE.defaultBlockState(),
+                                            MainBlocks.CANDY_ICE_BLOCK.get()
+                                                    .defaultBlockState())
+                                    .setMinMaxConversions(1, 5))));
+
     /**
-     * This registers the new customer registry.
+     * This registers the new custom registry.
      * 
      * @param event
      */

@@ -1,44 +1,38 @@
 package dev.dragonofshuu.candylands.block.custom;
 
+import java.util.function.Consumer;
+
 import com.mojang.serialization.MapCodec;
 
+import dev.dragonofshuu.candylands.block.custom.bases.MemoizedSpreadBlock;
+import dev.dragonofshuu.candylands.registries.MainRegistries;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CandyDirtBlock extends Block {
-
+public class CandyDirtBlock extends MemoizedSpreadBlock {
     public static final MapCodec<CandyDirtBlock> CODEC = simpleCodec(CandyDirtBlock::new);
-
-    @Override
-    public MapCodec<CandyDirtBlock> codec() {
-        return CODEC;
-    }
 
     public CandyDirtBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    protected void randomTick(BlockState currentBlockState, ServerLevel level,
-            BlockPos blockPos, RandomSource random) {
-        // Forge: prevent loading unloaded chunks when checking neighbor's light and
-        // spreading
-        if (!level.isAreaLoaded(blockPos, 2))
-            return;
+    protected void spreadTick(BlockState state, ServerLevel level, BlockPos pos,
+            Consumer<SpreadContext> cantSpreadHook,
+            RandomSource random) {
 
-        BlockState candyDirtBlockState = this.defaultBlockState();
+        Consumer<SpreadContext> onDidSpread = (context) -> {
+        };
+        MainSpreads.VERTICAL_ONLY_SPREAD.get().tick(state, level, pos,
+                cantSpreadHook, onDidSpread, random);
+    }
 
-        for (int i = 0; i < 4; i++) {
-            BlockPos randomBlockPos = blockPos.offset(0, random.nextInt(5) - 3,
-                    0);
-
-            if (level.getBlockState(randomBlockPos).is(Blocks.DIRT)) {
-                level.setBlockAndUpdate(randomBlockPos, candyDirtBlockState);
-            }
-        }
+    @Override
+    public MapCodec<? extends MemoizedSpreadBlock> codec() {
+        return CODEC;
     }
 }

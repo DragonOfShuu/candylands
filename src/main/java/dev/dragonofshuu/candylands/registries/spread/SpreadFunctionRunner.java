@@ -52,7 +52,13 @@ public class SpreadFunctionRunner {
                         blockPos);
             }
         }
-        return new SpreadReturnType(didSpread, !blocksToConvert.isEmpty(), false);
+        // return new SpreadReturnType(didSpread, !blocksToConvert.isEmpty(), false);
+        // canSpread is true if there were blocks that we did convert, as the only
+        // thing that will stop it from converting is conditions not being met,
+        // but it's possible there is a block we could convert but the conversion
+        // conditions
+        // are not met, for example dirt blocks surrounded by stone.
+        return new SpreadReturnType(didSpread, didSpread, false);
     }
 
     private static @Nullable List<BlockPos> fetchConvertableBlocks(SpreadContext context, SpreadRules rules) {

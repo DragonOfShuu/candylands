@@ -31,6 +31,7 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
                 spawningTags();
                 replaceableTags();
                 growsOnTags();
+                spreadableTags();
                 miscTags();
         }
 
@@ -197,6 +198,13 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
                 tag(BlockTags.DRY_VEGETATION_MAY_PLACE_ON)
                                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                                 .add(MainBlocks.CANDY_GRASS_BLOCK.get());
+        }
+
+        private void spreadableTags() {
+                tag(MainTags.Blocks.CANDY_SPREADABLES)
+                                .add(MainBlocks.CANDY_GRASS_BLOCK.get())
+                                .add(MainBlocks.CANDY_DIRT_BLOCK.get())
+                                .add(MainBlocks.CANDY_ICE_BLOCK.get());
         }
 
         private void miscTags() {

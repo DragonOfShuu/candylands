@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 public class MainTags {
     public static class Blocks {
         public static final TagKey<Block> DIRT = tag("dirt");
+        public static final TagKey<Block> CANDY_SPREADABLES = tag("candy_spreadables");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(CandyLands.MODID, name));

@@ -4,14 +4,15 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import dev.dragonofshuu.candylands.CandyLands;
-import dev.dragonofshuu.candylands.block.custom.CandyDirtBlock;
 import dev.dragonofshuu.candylands.block.custom.CandyGrassBlock;
 import dev.dragonofshuu.candylands.block.custom.CandyIceBlock;
+import dev.dragonofshuu.candylands.block.custom.CandyVerticalSpread;
 import dev.dragonofshuu.candylands.block.custom.TintedParticularParticleLeavesBlock;
 import dev.dragonofshuu.candylands.block.custom.bases.FlammableRotatedPillarBlock;
 import dev.dragonofshuu.candylands.block.grower.MainTreeGrower;
 import dev.dragonofshuu.candylands.data.MainBlockSetTypes;
 import dev.dragonofshuu.candylands.data.MainWoodTypes;
+import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.item.MainItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -41,14 +42,14 @@ public class MainBlocks {
                                         .requiresCorrectToolForDrops());
 
         public static final DeferredBlock<Block> CANDY_DIRT_BLOCK = registerBlock("candy_dirt_block",
-                        CandyDirtBlock::new,
+                        (properties) -> new CandyVerticalSpread(MainBiomes.LICORICE_FOREST, properties),
                         () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).randomTicks()
                                         .mapColor(MapColor.CRIMSON_NYLIUM)
                                         .requiresCorrectToolForDrops());
 
         public static final DeferredBlock<Block> CANDY_ICE_BLOCK = registerBlock("candy_ice_block",
                         CandyIceBlock::new,
-                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.FROSTED_ICE));
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.FROSTED_ICE).randomTicks());
 
         // ------ Licorice Wood Set ------
         public static final DeferredBlock<Block> LICORICE_LOG = registerBlock("licorice_log",
