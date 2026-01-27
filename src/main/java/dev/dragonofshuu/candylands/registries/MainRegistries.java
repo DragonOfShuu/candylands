@@ -1,7 +1,7 @@
 package dev.dragonofshuu.candylands.registries;
 
 import dev.dragonofshuu.candylands.CandyLands;
-import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.registries.spread.SpreadFunction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -23,6 +23,6 @@ public class MainRegistries {
 
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
-        MainSpreads.registerNewRegister(event);
+        MainSpreadFunctions.registerNewRegister(event);
     }
 }

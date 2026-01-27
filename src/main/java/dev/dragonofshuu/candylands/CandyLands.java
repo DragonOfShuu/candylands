@@ -6,15 +6,12 @@ import com.mojang.logging.LogUtils;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.item.MainItems;
-import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.util.MainGameRules;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -67,7 +64,7 @@ public class CandyLands {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         // Customer Registries
-        MainSpreads.register(modEventBus);
+        MainSpreadFunctions.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (CandyLands)

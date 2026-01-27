@@ -69,4 +69,10 @@ public class SpreadFunction {
         // didspread, canspread, isnoop
         return new SpreadReturnType(didSpread, cantSpreadCount != spreaders.size(), false);
     }
+
+    public SpreadFunction extend() {
+        return (new SpreadFunction())
+                .usingDefaultSpreadRule(this.defaultSpreadRules.extend())
+                .useSpreaders((locked) -> this.spreaders.stream().map((sr) -> sr.extend()).toList());
+    }
 }

@@ -14,7 +14,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
-public class MainSpreads {
+public class MainSpreadFunctions {
     public static final DeferredRegister<SpreadFunction> SPREAD_FUNCTIONS = DeferredRegister
             .create(MainRegistries.SPREAD_FUNCTION, CandyLands.MODID);
 
@@ -57,19 +57,18 @@ public class MainSpreads {
 
     public static final Supplier<SpreadFunction> VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS.register(
             "vertical_only_spread",
-            () -> SpreadFunction.make()
-                    .usingDefaultSpreadRule(
-                            SpreadRules.spreadRules()
-                                    .setMaxDistances(new Vec3i(0, 3, 0))
-                                    .setBiome(MainBiomes.LICORICE_FOREST)
-                                    .smart())
+            () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER.extend());
+
+    public static final Supplier<SpreadFunction> ICE_SPREAD = SPREAD_FUNCTIONS.register(
+            "ice_spread",
+            () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER.extend()
                     .useSpreaders((defaultSpreader) -> List.of(
                             defaultSpreader.extend()
-                                    .addConversion(Blocks.DIRT.defaultBlockState(),
-                                            MainBlocks.CANDY_DIRT_BLOCK
-                                                    .get()
-                                                    .defaultBlockState())
-                                    .addConversion(Blocks.ICE.defaultBlockState(),
+                                    .setMaxDistances(new Vec3i(2, 3, 2))
+                                    .setBiome(null)
+                                    .addConversions(List.of(Blocks.ICE.defaultBlockState(),
+                                            Blocks.PACKED_ICE.defaultBlockState(), Blocks.BLUE_ICE.defaultBlockState(),
+                                            Blocks.FROSTED_ICE.defaultBlockState()),
                                             MainBlocks.CANDY_ICE_BLOCK.get()
                                                     .defaultBlockState())
                                     .setMinMaxConversions(1, 5))));

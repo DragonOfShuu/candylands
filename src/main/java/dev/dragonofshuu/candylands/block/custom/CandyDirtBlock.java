@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 
 import dev.dragonofshuu.candylands.block.custom.bases.MemoizedSpreadBlock;
 import dev.dragonofshuu.candylands.registries.MainRegistries;
-import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +27,7 @@ public class CandyDirtBlock extends MemoizedSpreadBlock {
 
         Consumer<SpreadContext> onDidSpread = (context) -> {
         };
-        MainSpreads.VERTICAL_ONLY_SPREAD.get().tick(state, level, pos,
+        MainSpreadFunctions.VERTICAL_ONLY_SPREAD.get().tick(state, level, pos,
                 cantSpreadHook, onDidSpread, random);
     }
 

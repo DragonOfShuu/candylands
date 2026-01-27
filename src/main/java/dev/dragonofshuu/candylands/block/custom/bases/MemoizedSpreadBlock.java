@@ -7,7 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import dev.dragonofshuu.candylands.block.custom.CandyVerticalSpread;
 import dev.dragonofshuu.candylands.registries.MainRegistries;
-import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
 import dev.dragonofshuu.candylands.registries.spread.SpreadFunction;
 import dev.dragonofshuu.candylands.registries.spread.SpreadMemoizer;
@@ -27,29 +27,14 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class MemoizedSpreadBlock extends Block {
     public static final MapCodec<MemoizedSpreadBlock> CODEC = simpleCodec(MemoizedSpreadBlock::new);
-    // public static final MapCodec<MemoizedSpreadBlock> CODEC =
-    // RecordCodecBuilder.mapCodec((instance) -> {
-    // return instance.group(
-    // ResourceKey.codec(MainRegistries.SPREAD_FUNCTION.key()).fieldOf("spread_function")
-    // .forGetter((block) -> {
-    // return block.spreadFunctionKey;
-    // }),
-    // propertiesCodec())
-    // .apply(instance,
-    // (spreadFunctionKey, properties) -> new MemoizedSpreadBlock(spreadFunctionKey,
-    // properties));
-    // });
 
     private static final int MAX_SPREAD_ATTEMPTS = 3;
     private static final IntegerProperty SPREAD_ATTEMPTS = IntegerProperty.create("spread_attempts", 0, 3);
     private static final SpreadMemoizer SPREAD_MEMOIZER = new SpreadMemoizer(SPREAD_ATTEMPTS,
             MAX_SPREAD_ATTEMPTS);
 
-    // public ResourceKey<SpreadFunction> spreadFunctionKey;
-
     public MemoizedSpreadBlock(Properties properties) {
         super(properties);
-        // this.spreadFunctionKey = spreadFunctionKey;
     }
 
     @Override
@@ -91,10 +76,7 @@ public class MemoizedSpreadBlock extends Block {
 
     protected void spreadTick(BlockState state, ServerLevel level, BlockPos pos, Consumer<SpreadContext> cantSpreadHook,
             RandomSource random) {
-        // SpreadFunction spreadFunction =
-        // level.registryAccess().get(this.spreadFunctionKey).get().value();
-        // spreadFunction.tick(state, level, pos, cantSpreadHook, (context) -> {
-        // }, random);
+        // Overrideable by subclasses
     }
 
     @Override

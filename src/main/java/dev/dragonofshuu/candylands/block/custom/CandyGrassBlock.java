@@ -8,7 +8,7 @@ import com.mojang.serialization.MapCodec;
 
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.MainBlocks;
-import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
 import dev.dragonofshuu.candylands.registries.spread.SpreadMemoizer;
 import dev.dragonofshuu.candylands.util.MainGameRules;
@@ -184,8 +184,9 @@ public class CandyGrassBlock extends Block implements BonemealableBlock {
         Consumer<SpreadContext> onCantSpread = (context) -> {
             SPREAD_MEMOIZER.setSpreadAttempts(level, currentBlockState, blockPos, (old) -> old + 1);
         };
-        MainSpreads.CANDY_GRASS_SPREAD.get().tick(currentBlockState, level, blockPos, onCantSpread, (context) -> {
-        }, random);
+        MainSpreadFunctions.CANDY_GRASS_SPREAD.get().tick(currentBlockState, level, blockPos, onCantSpread,
+                (context) -> {
+                }, random);
     }
 
     public static boolean randomSpreadChance(SpreadContext context) {

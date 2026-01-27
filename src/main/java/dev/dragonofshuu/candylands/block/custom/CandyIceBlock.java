@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import com.mojang.serialization.MapCodec;
 
-import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
 import dev.dragonofshuu.candylands.registries.spread.SpreadMemoizer;
 import net.minecraft.core.BlockPos;
@@ -52,7 +52,7 @@ public class CandyIceBlock extends IceBlock {
         Consumer<SpreadContext> onCantSpread = (context) -> {
             SPREAD_MEMOIZER.setSpreadAttempts(level, state, pos, (old) -> old + 1);
         };
-        MainSpreads.VERTICAL_ONLY_SPREAD.get().tick(state, level, pos, onCantSpread, (c) -> {
+        MainSpreadFunctions.ICE_SPREAD.get().tick(state, level, pos, onCantSpread, (c) -> {
         }, random);
     }
 

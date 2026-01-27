@@ -8,7 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.custom.bases.MemoizedSpreadBlock;
 import dev.dragonofshuu.candylands.registries.MainRegistries;
-import dev.dragonofshuu.candylands.registries.spread.MainSpreads;
+import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
 import dev.dragonofshuu.candylands.registries.spread.SpreadMemoizer;
 import net.minecraft.core.BlockPos;
@@ -37,6 +37,6 @@ public class CandyVerticalSpread extends MemoizedSpreadBlock {
     @Override
     protected void spreadTick(BlockState state, ServerLevel level, BlockPos pos, Consumer<SpreadContext> cantSpreadHook,
             RandomSource random) {
-        MainSpreads.VERTICAL_ONLY_SPREAD.get().tick(state, level, pos, random);
+        MainSpreadFunctions.VERTICAL_ONLY_SPREAD.get().tick(state, level, pos, random);
     }
 }
