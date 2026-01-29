@@ -15,6 +15,8 @@ public class MainPlacedFeatures {
 
         MainPlacedOres.register(bootstrap, configuredFeatureHolder);
         MainPlacedCaveFeatures.register(bootstrap, configuredFeatureHolder);
+        MainPlacedTreeFeatures.register(bootstrap, configuredFeatureHolder);
+        MainPlacedVegetationFeatures.register(bootstrap, configuredFeatureHolder);
     }
 
     public static ResourceKey<PlacedFeature> createKey(String key) {

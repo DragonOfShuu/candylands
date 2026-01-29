@@ -74,6 +74,7 @@
     ],
     [
       "minecraft:glow_lichen",
+      "candylands:trees_candy",
       "minecraft:patch_pumpkin",
       "minecraft:patch_sugar_cane",
       "minecraft:patch_firefly_bush_near_water"
