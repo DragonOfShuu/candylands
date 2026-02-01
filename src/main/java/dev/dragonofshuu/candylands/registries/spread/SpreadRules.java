@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SpreadRules {
@@ -16,6 +17,7 @@ public class SpreadRules {
     // /* The blocks to which the target blocks will be converted */
     // protected List<BlockState> convertToBlocks = new ArrayList<BlockState>();
     protected HashMap<BlockState, SpreadConverter> conversionMap = new HashMap<BlockState, SpreadConverter>();
+    protected HashMap<Block, SpreadConverter> blockConversionMap = new HashMap<Block, SpreadConverter>();
     /* The maximum distances in each direction for spreading */
     protected Vec3i maxDistances = new Vec3i(1, 1, 1);
     /*
@@ -50,11 +52,25 @@ public class SpreadRules {
         return this;
     }
 
+    public SpreadRules addBlockConversion(Block from, BlockState to) {
+        this.blockConversionMap.put(from, SpreadConverter.of(to));
+        return this;
+    }
+
     public SpreadRules addConversions(HashMap<BlockState, SpreadConverter> conversions) {
         if (conversions == null || conversions.isEmpty())
             return this;
         for (var entry : conversions.entrySet()) {
             this.conversionMap.put(entry.getKey(), entry.getValue());
+        }
+        return this;
+    }
+
+    public SpreadRules addBlockConversions(HashMap<Block, SpreadConverter> conversions) {
+        if (conversions == null || conversions.isEmpty())
+            return this;
+        for (var entry : conversions.entrySet()) {
+            this.blockConversionMap.put(entry.getKey(), entry.getValue());
         }
         return this;
     }
@@ -73,11 +89,34 @@ public class SpreadRules {
         return this;
     }
 
+    public SpreadRules addBlockConversions(Collection<Block> fromBlocks, Collection<BlockState> toStates) {
+        if (fromBlocks == null || toStates == null)
+            return this;
+        int size = Math.min(fromBlocks.size(), toStates.size());
+        if (size == 0)
+            return this;
+        List<Block> fromList = new ArrayList<Block>(fromBlocks);
+        List<BlockState> toList = new ArrayList<BlockState>(toStates);
+        for (int i = 0; i < size; i++) {
+            this.blockConversionMap.put(fromList.get(i), SpreadConverter.of(toList.get(i)));
+        }
+        return this;
+    }
+
     public SpreadRules addConversions(Collection<BlockState> states, BlockState toState) {
         if (states == null || states.isEmpty())
             return this;
         for (BlockState fromState : states) {
             this.conversionMap.put(fromState, SpreadConverter.of(toState));
+        }
+        return this;
+    }
+
+    public SpreadRules addBlockConversions(Collection<Block> blocks, BlockState toState) {
+        if (blocks == null || blocks.isEmpty())
+            return this;
+        for (Block fromBlock : blocks) {
+            this.blockConversionMap.put(fromBlock, SpreadConverter.of(toState));
         }
         return this;
     }
@@ -91,8 +130,22 @@ public class SpreadRules {
         return this;
     }
 
+    public SpreadRules addBlockConversions(Block fromBlock, Collection<BlockState> toStates) {
+        if (toStates == null || toStates.isEmpty())
+            return this;
+        for (BlockState toState : toStates) {
+            this.blockConversionMap.put(fromBlock, SpreadConverter.of(toState));
+        }
+        return this;
+    }
+
     public SpreadRules addConversion(BlockState fromState, SpreadConverter toConverter) {
         this.conversionMap.put(fromState, toConverter);
+        return this;
+    }
+
+    public SpreadRules addBlockConversion(Block fromBlock, SpreadConverter toConverter) {
+        this.blockConversionMap.put(fromBlock, toConverter);
         return this;
     }
 
@@ -163,9 +216,15 @@ public class SpreadRules {
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     public SpreadRules extend() {
         return new SpreadRules()
+                // .addConversions((HashMap<BlockState, SpreadConverter>)
+                // this.conversionMap.clone())
+                // .addBlockConversions((HashMap<Block, SpreadConverter>)
+                // this.blockConversionMap.clone())
                 .addConversions(this.conversionMap)
+                .addBlockConversions(this.blockConversionMap)
                 .setMaxDistances(this.maxDistances)
                 .addConditions(this.conditions)
                 .setBiome(this.biome)

@@ -28,26 +28,24 @@ public class MainSpreadFunctions {
                                     .smart())
                     .useSpreaders((defaultSpreader) -> List.of(
                             defaultSpreader.extend()
-                                    .addConversion(MainBlocks.CANDY_DIRT_BLOCK.get()
-                                            .defaultBlockState(),
+                                    .addBlockConversion(MainBlocks.CANDY_DIRT_BLOCK.get(),
                                             SpreadConverter.of(
                                                     MainBlocks.CANDY_GRASS_BLOCK
                                                             .get()
                                                             .defaultBlockState(),
                                                     CandyGrassBlock::canPropagate))
-                                    .addConversion(Blocks.DIRT.defaultBlockState(),
+                                    .addBlockConversion(Blocks.DIRT,
                                             MainBlocks.CANDY_DIRT_BLOCK
                                                     .get()
                                                     .defaultBlockState())
-                                    .addConversion(Blocks.ICE.defaultBlockState(),
+                                    .addBlockConversion(Blocks.ICE,
                                             MainBlocks.CANDY_ICE_BLOCK
                                                     .get()
                                                     .defaultBlockState())
                                     .setMinMaxConversions(3, 20)
                                     .setBiome(MainBiomes.LICORICE_FOREST),
                             defaultSpreader.extend()
-                                    .addConversion(Blocks.GRASS_BLOCK
-                                            .defaultBlockState(),
+                                    .addBlockConversion(Blocks.GRASS_BLOCK,
                                             SpreadConverter.of(
                                                     MainBlocks.CANDY_DIRT_BLOCK
                                                             .get()
@@ -66,11 +64,10 @@ public class MainSpreadFunctions {
                             defaultSpreader.extend()
                                     .setMaxDistances(new Vec3i(2, 3, 2))
                                     .setBiome(null)
-                                    .addConversions(List.of(Blocks.ICE.defaultBlockState(),
-                                            Blocks.PACKED_ICE.defaultBlockState(), Blocks.BLUE_ICE.defaultBlockState(),
-                                            Blocks.FROSTED_ICE.defaultBlockState()),
-                                            MainBlocks.CANDY_ICE_BLOCK.get()
-                                                    .defaultBlockState())
+                                    .addBlockConversions(List.of(Blocks.ICE,
+                                            Blocks.PACKED_ICE, Blocks.BLUE_ICE,
+                                            Blocks.FROSTED_ICE),
+                                            MainBlocks.CANDY_ICE_BLOCK.get().defaultBlockState())
                                     .setMinMaxConversions(1, 5))));
 
     /**

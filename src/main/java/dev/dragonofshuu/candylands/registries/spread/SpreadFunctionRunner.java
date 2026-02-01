@@ -7,6 +7,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -39,11 +41,15 @@ public class SpreadFunctionRunner {
         // Convert blocks
         boolean didSpread = false;
         for (BlockPos blockPos : blocksToConvert) {
-            SpreadConverter conversionRules = rules.conversionMap.get(context.level().getBlockState(blockPos));
+            SpreadContext.Target blockTarget = context.withTarget(blockPos);
+            BlockState blockTargetState = blockTarget.targetState();
+
+            SpreadConverter conversionRules = getConversionRulesForBlockState(blockTargetState, rules);
+
             if (conversionRules == null) {
                 throw new IllegalStateException("No conversion mapping found for block state: " + blockPos);
             }
-            if (!conversionRules.canConvert(context.withTarget(blockPos))) {
+            if (!conversionRules.canConvert(blockTarget)) {
                 continue;
             }
             didSpread = context.level().setBlock(blockPos, conversionRules.toState(), 3) || didSpread;
@@ -66,7 +72,7 @@ public class SpreadFunctionRunner {
         List<BlockPos> potentialBlocks = getAllNearbyBlocks(context.level(), rules.maxDistances, centerPos,
                 context.random());
         List<BlockPos> potentialButConvertableBlocks = filterConvertableBlocks(context.level(), potentialBlocks,
-                rules.conversionMap.keySet());
+                rules);
 
         if (potentialButConvertableBlocks.isEmpty()) {
             return null;
@@ -108,14 +114,25 @@ public class SpreadFunctionRunner {
     private static List<BlockPos> filterConvertableBlocks(
             ServerLevel level,
             Collection<BlockPos> filterableBlocks,
-            Collection<BlockState> targetBlocks) {
+            SpreadRules rules) {
         List<BlockPos> potentialButConvertableBlocks = new ArrayList<BlockPos>();
         for (BlockPos blockPos : filterableBlocks) {
-            if (targetBlocks.contains(level.getBlockState(blockPos))) {
+            if (getConversionRulesForBlockState(level.getBlockState(blockPos), rules) != null) {
                 potentialButConvertableBlocks.add(blockPos);
             }
         }
         return potentialButConvertableBlocks;
+    }
+
+    private static SpreadConverter getConversionRulesForBlockState(
+            BlockState blockState,
+            SpreadRules rules) {
+        SpreadConverter blockstateConversionRules = rules.conversionMap.get(blockState);
+        SpreadConverter blockConversionRules = rules.blockConversionMap.get(blockState.getBlock());
+
+        return ObjectUtils.firstNonNull(
+                blockstateConversionRules,
+                blockConversionRules);
     }
 
     private static List<BlockPos> getAllNearbyBlocks(ServerLevel level, Vec3i maxDistances, BlockPos centerPos,
