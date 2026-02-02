@@ -127,10 +127,17 @@ public class SpreadFunctionRunner {
     private static SpreadConverter getConversionRulesForBlockState(
             BlockState blockState,
             SpreadRules rules) {
+
+        SpreadConverter dynamicConversionRules = rules.dynamicConversions.stream()
+                .map(func -> func.apply(blockState))
+                .filter(conversion -> conversion != null)
+                .findFirst()
+                .orElse(null);
         SpreadConverter blockstateConversionRules = rules.conversionMap.get(blockState);
         SpreadConverter blockConversionRules = rules.blockConversionMap.get(blockState.getBlock());
 
         return ObjectUtils.firstNonNull(
+                dynamicConversionRules,
                 blockstateConversionRules,
                 blockConversionRules);
     }

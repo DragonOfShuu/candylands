@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceKey;
@@ -18,6 +19,7 @@ public class SpreadRules {
     // protected List<BlockState> convertToBlocks = new ArrayList<BlockState>();
     protected HashMap<BlockState, SpreadConverter> conversionMap = new HashMap<BlockState, SpreadConverter>();
     protected HashMap<Block, SpreadConverter> blockConversionMap = new HashMap<Block, SpreadConverter>();
+    protected List<Function<BlockState, SpreadConverter>> dynamicConversions = new ArrayList<Function<BlockState, SpreadConverter>>();
     /* The maximum distances in each direction for spreading */
     protected Vec3i maxDistances = new Vec3i(1, 1, 1);
     /*
@@ -57,6 +59,11 @@ public class SpreadRules {
         return this;
     }
 
+    public SpreadRules addDynamicConversion(Function<BlockState, SpreadConverter> conversionFunction) {
+        this.dynamicConversions.add(conversionFunction);
+        return this;
+    }
+
     public SpreadRules addConversions(HashMap<BlockState, SpreadConverter> conversions) {
         if (conversions == null || conversions.isEmpty())
             return this;
@@ -72,6 +79,13 @@ public class SpreadRules {
         for (var entry : conversions.entrySet()) {
             this.blockConversionMap.put(entry.getKey(), entry.getValue());
         }
+        return this;
+    }
+
+    public SpreadRules addDynamicConversions(Collection<Function<BlockState, SpreadConverter>> conversionFunctions) {
+        if (conversionFunctions == null || conversionFunctions.isEmpty())
+            return this;
+        this.dynamicConversions.addAll(conversionFunctions);
         return this;
     }
 
@@ -219,12 +233,11 @@ public class SpreadRules {
     @SuppressWarnings("unchecked")
     public SpreadRules extend() {
         return new SpreadRules()
-                // .addConversions((HashMap<BlockState, SpreadConverter>)
-                // this.conversionMap.clone())
-                // .addBlockConversions((HashMap<Block, SpreadConverter>)
-                // this.blockConversionMap.clone())
-                .addConversions(this.conversionMap)
-                .addBlockConversions(this.blockConversionMap)
+                .addConversions((HashMap<BlockState, SpreadConverter>) this.conversionMap.clone())
+                .addBlockConversions((HashMap<Block, SpreadConverter>) this.blockConversionMap.clone())
+                .addDynamicConversions((Collection<Function<BlockState, SpreadConverter>>) this.dynamicConversions
+                        .stream()
+                        .toList())
                 .setMaxDistances(this.maxDistances)
                 .addConditions(this.conditions)
                 .setBiome(this.biome)
