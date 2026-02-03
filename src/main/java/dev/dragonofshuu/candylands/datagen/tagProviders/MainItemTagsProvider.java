@@ -24,6 +24,13 @@ public class MainItemTagsProvider extends ItemTagsProvider {
 
         tag(ItemTags.PLANKS)
                 .addAll(MainBlockFamilies.getBaseBlocksFromWoodBlockFamilies().map(block -> block.asItem()));
+
+        tag(ItemTags.STONE_CRAFTING_MATERIALS)
+                .add(MainBlocks.CANDY_CANE_ROCK.get().asItem());
+
+        tag(ItemTags.STONE_TOOL_MATERIALS)
+                .add(MainBlocks.CANDY_CANE_ROCK.get().asItem());
+
     }
 
 }

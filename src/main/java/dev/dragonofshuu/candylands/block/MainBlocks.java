@@ -51,6 +51,11 @@ public class MainBlocks {
                         CandyIceBlock::new,
                         () -> BlockBehaviour.Properties.ofFullCopy(Blocks.FROSTED_ICE).randomTicks());
 
+        // ------ Candy Rock Types ------
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK = registerBlock("candy_cane_rock",
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.COLOR_RED)
+                                        .requiresCorrectToolForDrops());
+
         // ------ Licorice Wood Set ------
         public static final DeferredBlock<Block> LICORICE_LOG = registerBlock("licorice_log",
                         FlammableRotatedPillarBlock::new,

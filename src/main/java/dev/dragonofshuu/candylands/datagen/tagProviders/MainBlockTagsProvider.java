@@ -40,7 +40,8 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
                                 .add(MainBlocks.LICORICE_LEAVES.get());
 
                 tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                                .add(MainBlocks.CANDY_ICE_BLOCK.get());
+                                .add(MainBlocks.CANDY_ICE_BLOCK.get())
+                                .add(MainBlocks.CANDY_CANE_ROCK.get());
 
                 tag(BlockTags.MINEABLE_WITH_AXE)
                                 .addAll(MainBlockFamilies.getWoodBlockFamilies()

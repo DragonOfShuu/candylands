@@ -33,6 +33,8 @@ public class MainModelProvider extends ModelProvider {
         simpleBlockState(blockModels, MainBlocks.CANDY_GRASS_BLOCK);
         createTrivialTranslucentCube(blockModels, MainBlocks.CANDY_ICE_BLOCK);
 
+        blockModels.createTrivialCube(MainBlocks.CANDY_CANE_ROCK.get());
+
         var licoriceWood = MainBlocks.LICORICE_LOG.get();
         blockModels.woodProvider(licoriceWood).log(licoriceWood);
         createTrivialCutoutCube(blockModels, MainBlocks.LICORICE_LEAVES);
