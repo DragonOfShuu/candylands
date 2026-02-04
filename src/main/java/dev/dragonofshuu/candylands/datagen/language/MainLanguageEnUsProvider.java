@@ -33,6 +33,10 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
         add(MainBlocks.CANDY_ICE_BLOCK.get(), "Candy Ice Block");
 
         add(MainBlocks.CANDY_CANE_ROCK.get(), "Candy Cane Rock");
+        add(MainBlocks.CANDY_CANE_COBBLESTONE.get(), "Candy Cane Cobblestone");
+
+        add(MainBlocks.CANDY_CANE_FLOWER.get(), "Candy Cane Flower");
+        add(MainBlocks.CANDY_CANE_SHORT_GRASS.get(), "Candy Cane Short Grass");
 
         add(MainBlocks.LICORICE_LOG.get(), "Licorice Log");
         add(MainBlocks.LICORICE_LEAVES.get(), "Licorice Leaves");

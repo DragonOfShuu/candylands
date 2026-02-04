@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "stone_button",
+  "ingredients": [
+    "candylands:candy_cane_rock"
+  ],
+  "result": {
+    "count": 1,
+    "id": "candylands:candy_cane_rock_button"
+  }
+}

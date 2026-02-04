@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "stone_stairs",
+  "key": {
+    "#": "candylands:candy_cane_rock"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "candylands:candy_cane_rock_stairs"
+  }
+}

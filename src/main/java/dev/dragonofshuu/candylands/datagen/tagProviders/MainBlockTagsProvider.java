@@ -40,8 +40,11 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
                                 .add(MainBlocks.LICORICE_LEAVES.get());
 
                 tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                                .addAll(MainBlockFamilies.getStoneBlockFamilies()
+                                                .flatMap(family -> family.getVariants().values().stream()))
                                 .add(MainBlocks.CANDY_ICE_BLOCK.get())
-                                .add(MainBlocks.CANDY_CANE_ROCK.get());
+                                .add(MainBlocks.CANDY_CANE_ROCK.get())
+                                .add(MainBlocks.CANDY_CANE_COBBLESTONE.get());
 
                 tag(BlockTags.MINEABLE_WITH_AXE)
                                 .addAll(MainBlockFamilies.getWoodBlockFamilies()
@@ -57,7 +60,9 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
 
                 tag(BlockTags.NEEDS_STONE_TOOL)
                                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                                .add(MainBlocks.CANDY_DIRT_BLOCK.get());
+                                .add(MainBlocks.CANDY_DIRT_BLOCK.get())
+                                .add(MainBlocks.CANDY_CANE_ROCK.get())
+                                .add(MainBlocks.CANDY_CANE_COBBLESTONE.get());
         }
 
         private void blockTagTypes() {
@@ -166,7 +171,10 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
 
                 tag(BlockTags.REPLACEABLE)
                                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                                .add(MainBlocks.CANDY_DIRT_BLOCK.get());
+                                .add(MainBlocks.CANDY_DIRT_BLOCK.get())
+                                .add(MainBlocks.LICORICE_LEAVES.get())
+                                .add(MainBlocks.CANDY_CANE_ROCK.get())
+                                .add(MainBlocks.CANDY_CANE_COBBLESTONE.get());
 
                 tag(BlockTags.AZALEA_ROOT_REPLACEABLE)
                                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
@@ -205,7 +213,8 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
                 tag(MainTags.Blocks.CANDY_SPREADABLES)
                                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
                                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
-                                .add(MainBlocks.CANDY_ICE_BLOCK.get());
+                                .add(MainBlocks.CANDY_ICE_BLOCK.get())
+                                .add(MainBlocks.CANDY_CANE_ROCK.get());
         }
 
         private void miscTags() {

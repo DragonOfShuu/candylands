@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "stone_wall",
+  "key": {
+    "#": "candylands:candy_cane_rock"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "candylands:candy_cane_rock_wall"
+  }
+}

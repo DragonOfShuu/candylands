@@ -33,7 +33,12 @@ public class MainModelProvider extends ModelProvider {
         simpleBlockState(blockModels, MainBlocks.CANDY_GRASS_BLOCK);
         createTrivialTranslucentCube(blockModels, MainBlocks.CANDY_ICE_BLOCK);
 
-        blockModels.createTrivialCube(MainBlocks.CANDY_CANE_ROCK.get());
+        // blockModels.createTrivialCube(MainBlocks.CANDY_CANE_ROCK.get());
+        blockModels.createTrivialCube(MainBlocks.CANDY_CANE_COBBLESTONE.get());
+
+        createCutoutCrossblockWithDefaultItem(blockModels, MainBlocks.CANDY_CANE_FLOWER.get(), PlantType.NOT_TINTED);
+        createCutoutCrossblockWithDefaultItem(blockModels, MainBlocks.CANDY_CANE_SHORT_GRASS.get(),
+                PlantType.NOT_TINTED);
 
         var licoriceWood = MainBlocks.LICORICE_LOG.get();
         blockModels.woodProvider(licoriceWood).log(licoriceWood);

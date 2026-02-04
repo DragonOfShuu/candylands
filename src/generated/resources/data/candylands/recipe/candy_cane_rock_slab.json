@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "stone_slab",
+  "key": {
+    "#": "candylands:candy_cane_rock"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "candylands:candy_cane_rock_slab"
+  }
+}

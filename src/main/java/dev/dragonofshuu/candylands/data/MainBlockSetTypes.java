@@ -23,6 +23,18 @@ public class MainBlockSetTypes {
                     SoundEvents.WOODEN_BUTTON_CLICK_OFF,
                     SoundEvents.WOODEN_BUTTON_CLICK_ON));
 
+    public static final BlockSetType CANDY_CANE_ROCK = register(
+            new BlockSetType("candy_cane_rock", false, true, true, BlockSetType.PressurePlateSensitivity.MOBS,
+                    SoundType.STONE,
+                    SoundEvents.IRON_DOOR_CLOSE,
+                    SoundEvents.IRON_DOOR_OPEN,
+                    SoundEvents.IRON_TRAPDOOR_CLOSE,
+                    SoundEvents.IRON_TRAPDOOR_OPEN,
+                    SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF,
+                    SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON,
+                    SoundEvents.STONE_BUTTON_CLICK_OFF,
+                    SoundEvents.STONE_BUTTON_CLICK_ON));
+
     public static BlockSetType register(BlockSetType value) {
         TYPES.put(value.name(), value);
         return value;

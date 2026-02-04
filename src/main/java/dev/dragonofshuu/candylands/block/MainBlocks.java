@@ -1,5 +1,6 @@
 package dev.dragonofshuu.candylands.block;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -14,20 +15,25 @@ import dev.dragonofshuu.candylands.data.MainBlockSetTypes;
 import dev.dragonofshuu.candylands.data.MainWoodTypes;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.item.MainItems;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.sound.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -53,8 +59,20 @@ public class MainBlocks {
 
         // ------ Candy Rock Types ------
         public static final DeferredBlock<Block> CANDY_CANE_ROCK = registerBlock("candy_cane_rock",
+                        p -> new CandyVerticalSpread(MainBiomes.LICORICE_FOREST, p),
                         () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.COLOR_RED)
                                         .requiresCorrectToolForDrops());
+        public static final DeferredBlock<Block> CANDY_CANE_COBBLESTONE = registerBlock("candy_cane_cobblestone",
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.COLOR_PINK)
+                                        .requiresCorrectToolForDrops());
+
+        // ------ Candy Foliage Types ------
+        public static final DeferredBlock<Block> CANDY_CANE_FLOWER = registerBlock("candy_cane_flower",
+                        properties -> new FlowerBlock(MobEffects.SPEED, 5, properties),
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).mapColor(MapColor.COLOR_RED));
+        public static final DeferredBlock<Block> CANDY_CANE_SHORT_GRASS = registerBlock("candy_cane_short_grass",
+                        properties -> new FlowerBlock(MobEffects.SPEED, 2, properties),
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS).mapColor(MapColor.COLOR_RED));
 
         // ------ Licorice Wood Set ------
         public static final DeferredBlock<Block> LICORICE_LOG = registerBlock("licorice_log",
@@ -92,6 +110,37 @@ public class MainBlocks {
         public static final DeferredBlock<Block> LICORICE_STAIRS = registerBlock("licorice_stairs",
                         properties -> new StairBlock(LICORICE_PLANKS.get().defaultBlockState(), properties),
                         () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS).mapColor(MapColor.COLOR_PINK));
+
+        // ------- Candy Cane Rock Set - Building Blocks ------
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK_SLAB = registerBlock("candy_cane_rock_slab",
+                        SlabBlock::new,
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_SLAB).mapColor(MapColor.COLOR_PINK));
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK_STAIRS = registerBlock("candy_cane_rock_stairs",
+                        properties -> new StairBlock(CANDY_CANE_ROCK.get().defaultBlockState(), properties),
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_STAIRS).mapColor(MapColor.COLOR_PINK));
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK_WALL = registerBlock("candy_cane_rock_wall",
+                        properties -> new WallBlock(properties),
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL)
+                                        .mapColor(MapColor.COLOR_PINK));
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK_FENCE = registerBlock("candy_cane_rock_fence",
+                        FenceBlock::new,
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_BRICK_FENCE)
+                                        .mapColor(MapColor.COLOR_PINK).sound(SoundType.STONE));
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK_FENCE_GATE = registerBlock(
+                        "candy_cane_rock_fence_gate",
+                        properties -> new FenceGateBlock(Optional.empty(), properties,
+                                        Optional.of(SoundEvents.FENCE_GATE_OPEN),
+                                        Optional.of(SoundEvents.FENCE_GATE_CLOSE)),
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_BRICK_FENCE)
+                                        .mapColor(MapColor.COLOR_PINK));
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK_BUTTON = registerBlock("candy_cane_rock_button",
+                        properties -> new ButtonBlock(MainBlockSetTypes.CANDY_CANE_ROCK, 20, properties),
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BUTTON).mapColor(MapColor.COLOR_PINK));
+        public static final DeferredBlock<Block> CANDY_CANE_ROCK_PRESSURE_PLATE = registerBlock(
+                        "candy_cane_rock_pressure_plate",
+                        properties -> new PressurePlateBlock(MainBlockSetTypes.CANDY_CANE_ROCK, properties),
+                        () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_PRESSURE_PLATE)
+                                        .mapColor(MapColor.COLOR_PINK));
 
         // ------ Utility Methods ------
         private static DeferredBlock<Block> registerBlock(String name,

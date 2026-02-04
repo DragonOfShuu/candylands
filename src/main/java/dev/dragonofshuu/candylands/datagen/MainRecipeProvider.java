@@ -7,7 +7,6 @@ import dev.dragonofshuu.candylands.data.MainBlockFamilies;
 import dev.dragonofshuu.candylands.util.MainTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -25,6 +24,7 @@ public class MainRecipeProvider extends MainRecipeProviderBase {
     protected void buildRecipes() {
         this.generateForEnabledBlockFamilies(FeatureFlagSet.of(FeatureFlags.VANILLA));
         this.planksFromLog(MainBlocks.LICORICE_PLANKS.asItem(), MainTags.Items.LICORICE_LOGS, 4);
+        this.smeltingResultFromBase(MainBlocks.CANDY_CANE_ROCK.get(), MainBlocks.CANDY_CANE_COBBLESTONE.get());
     }
 
     protected void generateForEnabledBlockFamilies(FeatureFlagSet enabledFeatures) {

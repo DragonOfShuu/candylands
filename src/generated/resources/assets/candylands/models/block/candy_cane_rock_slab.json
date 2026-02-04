@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "candylands:block/candy_cane_rock",
+    "side": "candylands:block/candy_cane_rock",
+    "top": "candylands:block/candy_cane_rock"
+  }
+}

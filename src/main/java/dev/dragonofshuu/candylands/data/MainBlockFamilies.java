@@ -1,6 +1,7 @@
 package dev.dragonofshuu.candylands.data;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import com.google.common.collect.Maps;
@@ -14,7 +15,9 @@ import net.minecraft.world.level.block.Block;
 public class MainBlockFamilies {
     private static final Map<Block, BlockFamily> MAP = Maps.newHashMap();
     public static final String RECIPE_GROUP_PREFIX_WOODEN = "wooden";
+    public static final String RECIPE_GROUP_PREFIX_STONE = "stone";
     public static final String RECIPE_UNLOCKED_BY_HAS_PLANKS = "has_planks";
+    public static final String RECIPE_UNLOCKED_BY_HAS_CANDY_ROCK = "has_candy_rock";
 
     public static final BlockFamily LICORICE_WOOD = familyBuilder(MainBlocks.LICORICE_PLANKS.get())
             .slab(MainBlocks.LICORICE_SLAB.get())
@@ -25,6 +28,18 @@ public class MainBlockFamilies {
             .pressurePlate(MainBlocks.LICORICE_PRESSURE_PLATE.get())
             .recipeUnlockedBy(RECIPE_UNLOCKED_BY_HAS_PLANKS)
             .recipeGroupPrefix(RECIPE_GROUP_PREFIX_WOODEN)
+            .getFamily();
+
+    public static final BlockFamily CANDY_CANE_ROCK = familyBuilder(MainBlocks.CANDY_CANE_ROCK.get())
+            .slab(MainBlocks.CANDY_CANE_ROCK_SLAB.get())
+            .stairs(MainBlocks.CANDY_CANE_ROCK_STAIRS.get())
+            .wall(MainBlocks.CANDY_CANE_ROCK_WALL.get())
+            .fence(MainBlocks.CANDY_CANE_ROCK_FENCE.get())
+            .fenceGate(MainBlocks.CANDY_CANE_ROCK_FENCE_GATE.get())
+            .button(MainBlocks.CANDY_CANE_ROCK_BUTTON.get())
+            .pressurePlate(MainBlocks.CANDY_CANE_ROCK_PRESSURE_PLATE.get())
+            .recipeUnlockedBy(RECIPE_UNLOCKED_BY_HAS_CANDY_ROCK)
+            .recipeGroupPrefix(RECIPE_GROUP_PREFIX_STONE)
             .getFamily();
 
     private static BlockFamily.Builder familyBuilder(Block baseBlock) {
@@ -40,18 +55,28 @@ public class MainBlockFamilies {
 
     public static Stream<Block> getVariantFromBlockFamilies(Variant variant) {
         return getAllFamilies()
-                .map(family -> family.get(variant));
+                .map(family -> family.get(variant))
+                .filter(v -> Objects.nonNull(v));
     }
 
     public static Stream<Block> getBaseBlocksFromBlockFamilies() {
         return getAllFamilies()
-                .map(family -> family.getBaseBlock());
+                .map(family -> family.getBaseBlock())
+                .filter(v -> Objects.nonNull(v));
     }
 
     public static Stream<Block> getVariantFromWoodBlockFamilies(Variant variant) {
         return getAllFamilies()
                 .filter(family -> isFamilyWooden(family))
-                .map(family -> family.get(variant));
+                .map(family -> family.get(variant))
+                .filter(v -> Objects.nonNull(v));
+    }
+
+    public static Stream<Block> getVariantFromStoneBlockFamilies(Variant variant) {
+        return getAllFamilies()
+                .filter(family -> isFamilyStone(family))
+                .map(family -> family.get(variant))
+                .filter(v -> Objects.nonNull(v));
     }
 
     public static Stream<Block> getBaseBlocksFromWoodBlockFamilies() {
@@ -60,13 +85,28 @@ public class MainBlockFamilies {
                 .map(family -> family.getBaseBlock());
     }
 
+    public static Stream<Block> getBaseBlocksFromStoneBlockFamilies() {
+        return getAllFamilies()
+                .filter(family -> isFamilyStone(family))
+                .map(family -> family.getBaseBlock());
+    }
+
     public static Stream<BlockFamily> getWoodBlockFamilies() {
         return getAllFamilies()
                 .filter(family -> isFamilyWooden(family));
     }
 
+    public static Stream<BlockFamily> getStoneBlockFamilies() {
+        return getAllFamilies()
+                .filter(family -> isFamilyStone(family));
+    }
+
     public static boolean isFamilyWooden(BlockFamily family) {
         return family.getRecipeGroupPrefix().orElse("").equals(RECIPE_GROUP_PREFIX_WOODEN);
+    }
+
+    public static boolean isFamilyStone(BlockFamily family) {
+        return family.getRecipeGroupPrefix().orElse("").equals(RECIPE_GROUP_PREFIX_STONE);
     }
 
     public static Stream<BlockFamily> getAllFamilies() {

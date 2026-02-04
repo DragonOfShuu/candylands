@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "candylands:block/candy_cane_rock_slab"
+    },
+    "type=double": {
+      "model": "candylands:block/candy_cane_rock"
+    },
+    "type=top": {
+      "model": "candylands:block/candy_cane_rock_slab_top"
+    }
+  }
+}

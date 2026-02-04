@@ -29,7 +29,12 @@ public class MainBlockLootTable extends BlockLootSubProvider {
         dropSelf(MainBlocks.CANDY_DIRT_BLOCK.get());
         dropWhenSilkTouch(MainBlocks.CANDY_ICE_BLOCK.get());
 
-        dropSelf(MainBlocks.CANDY_CANE_ROCK.get());
+        add(MainBlocks.CANDY_CANE_ROCK.get(),
+                block -> this.createSingleItemTableWithSilkTouch(block, MainBlocks.CANDY_CANE_COBBLESTONE.get()));
+        dropSelf(MainBlocks.CANDY_CANE_COBBLESTONE.get());
+
+        add(MainBlocks.CANDY_CANE_FLOWER.get(), block -> this.createShearsOrSilkTouchOnlyDrop(block));
+        add(MainBlocks.CANDY_CANE_SHORT_GRASS.get(), block -> this.createShearsOrSilkTouchOnlyDrop(block));
 
         dropSelf(MainBlocks.LICORICE_LOG.get());
         add(MainBlocks.LICORICE_LEAVES.get(), block -> this.createLeavesDrops(block, MainBlocks.LICORICE_SPROUT.get(),
@@ -43,6 +48,14 @@ public class MainBlockLootTable extends BlockLootSubProvider {
         dropSelf(MainBlocks.LICORICE_FENCE.get());
         dropSelf(MainBlocks.LICORICE_FENCE_GATE.get());
         dropSelf(MainBlocks.LICORICE_STAIRS.get());
+
+        dropSlab(MainBlocks.CANDY_CANE_ROCK_SLAB.get());
+        dropSelf(MainBlocks.CANDY_CANE_ROCK_STAIRS.get());
+        dropSelf(MainBlocks.CANDY_CANE_ROCK_WALL.get());
+        dropSelf(MainBlocks.CANDY_CANE_ROCK_FENCE.get());
+        dropSelf(MainBlocks.CANDY_CANE_ROCK_FENCE_GATE.get());
+        dropSelf(MainBlocks.CANDY_CANE_ROCK_BUTTON.get());
+        dropSelf(MainBlocks.CANDY_CANE_ROCK_PRESSURE_PLATE.get());
     }
 
     public void dropSlab(Block block) {

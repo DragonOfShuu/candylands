@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "stone_fence",
+  "key": {
+    "#": "minecraft:stick",
+    "W": "candylands:candy_cane_rock"
+  },
+  "pattern": [
+    "W#W",
+    "W#W"
+  ],
+  "result": {
+    "count": 3,
+    "id": "candylands:candy_cane_rock_fence"
+  }
+}
