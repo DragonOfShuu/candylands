@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_candy_rock": {
+      "conditions": {
+        "items": [
+          {
+            "items": "candylands:candy_cane_rock"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "candylands:candy_cane_rock_door"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_candy_rock"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "candylands:candy_cane_rock_door"
+    ]
+  }
+}

@@ -16,29 +16,33 @@ public class MainBlockLootTable extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return MainBlocks.BLOCKS.getEntries()
-                .stream()
-                .map(e -> (Block) e.value())
-                .toList();
+        return MainBlocks.BLOCKS.getEntries().stream()
+                .map(e -> (Block) e.value()).toList();
     }
 
     @Override
     protected void generate() {
         add(MainBlocks.CANDY_GRASS_BLOCK.get(),
-                block -> this.createSingleItemTableWithSilkTouch(block, MainBlocks.CANDY_DIRT_BLOCK.get()));
+                block -> this.createSingleItemTableWithSilkTouch(block,
+                        MainBlocks.CANDY_DIRT_BLOCK.get()));
         dropSelf(MainBlocks.CANDY_DIRT_BLOCK.get());
         dropWhenSilkTouch(MainBlocks.CANDY_ICE_BLOCK.get());
 
         add(MainBlocks.CANDY_CANE_ROCK.get(),
-                block -> this.createSingleItemTableWithSilkTouch(block, MainBlocks.CANDY_CANE_COBBLESTONE.get()));
+                block -> this.createSingleItemTableWithSilkTouch(block,
+                        MainBlocks.CANDY_CANE_COBBLESTONE.get()));
         dropSelf(MainBlocks.CANDY_CANE_COBBLESTONE.get());
 
-        add(MainBlocks.CANDY_CANE_FLOWER.get(), block -> this.createShearsOrSilkTouchOnlyDrop(block));
-        add(MainBlocks.CANDY_CANE_SHORT_GRASS.get(), block -> this.createShearsOrSilkTouchOnlyDrop(block));
+        add(MainBlocks.CANDY_CANE_FLOWER.get(),
+                block -> this.createShearsOrSilkTouchOnlyDrop(block));
+        add(MainBlocks.CANDY_CANE_SHORT_GRASS.get(),
+                block -> this.createShearsOrSilkTouchOnlyDrop(block));
 
         dropSelf(MainBlocks.LICORICE_LOG.get());
-        add(MainBlocks.LICORICE_LEAVES.get(), block -> this.createLeavesDrops(block, MainBlocks.LICORICE_SPROUT.get(),
-                NORMAL_LEAVES_SAPLING_CHANCES));
+        add(MainBlocks.LICORICE_LEAVES.get(),
+                block -> this.createLeavesDrops(block,
+                        MainBlocks.LICORICE_SPROUT.get(),
+                        NORMAL_LEAVES_SAPLING_CHANCES));
         dropSelf(MainBlocks.LICORICE_SPROUT.get());
 
         dropSelf(MainBlocks.LICORICE_PLANKS.get());
@@ -54,6 +58,7 @@ public class MainBlockLootTable extends BlockLootSubProvider {
         dropSelf(MainBlocks.CANDY_CANE_ROCK_WALL.get());
         dropSelf(MainBlocks.CANDY_CANE_ROCK_FENCE.get());
         dropSelf(MainBlocks.CANDY_CANE_ROCK_FENCE_GATE.get());
+        dropDoor(MainBlocks.CANDY_CANE_ROCK_DOOR.get());
         dropSelf(MainBlocks.CANDY_CANE_ROCK_BUTTON.get());
         dropSelf(MainBlocks.CANDY_CANE_ROCK_PRESSURE_PLATE.get());
     }

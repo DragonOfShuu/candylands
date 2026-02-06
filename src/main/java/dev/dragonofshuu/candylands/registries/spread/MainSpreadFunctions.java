@@ -18,57 +18,56 @@ public class MainSpreadFunctions {
     public static final DeferredRegister<SpreadFunction> SPREAD_FUNCTIONS = DeferredRegister
             .create(MainRegistries.SPREAD_FUNCTION, CandyLands.MODID);
 
-    public static final Supplier<SpreadFunction> CANDY_GRASS_SPREAD = SPREAD_FUNCTIONS.register(
-            "candy_grass_spread",
-            () -> SpreadFunction.make()
-                    .usingDefaultSpreadRule(
-                            SpreadRules.spreadRules()
-                                    .addCondition(CandyGrassBlock::randomSpreadChance)
-                                    .setMaxDistances(new Vec3i(2, 3, 2))
-                                    .smart())
+    public static final Supplier<SpreadFunction> CANDY_GRASS_SPREAD = SPREAD_FUNCTIONS
+            .register("candy_grass_spread", () -> SpreadFunction.make()
+                    .usingDefaultSpreadRule(SpreadRules.spreadRules()
+                            .addCondition(CandyGrassBlock::randomSpreadChance)
+                            .setMaxDistances(new Vec3i(2, 3, 2)).smart())
                     .useSpreaders((defaultSpreader) -> List.of(
-                            defaultSpreader.extend()
-                                    .addBlockConversion(MainBlocks.CANDY_DIRT_BLOCK.get(),
-                                            SpreadConverter.of(
-                                                    MainBlocks.CANDY_GRASS_BLOCK
-                                                            .get()
-                                                            .defaultBlockState(),
-                                                    CandyGrassBlock::canPropagate))
+                            defaultSpreader.extend().addBlockConversion(
+                                    MainBlocks.CANDY_DIRT_BLOCK.get(),
+                                    SpreadConverter.of(
+                                            MainBlocks.CANDY_GRASS_BLOCK.get()
+                                                    .defaultBlockState(),
+                                            CandyGrassBlock::canPropagate))
                                     .addBlockConversion(Blocks.DIRT,
-                                            MainBlocks.CANDY_DIRT_BLOCK
-                                                    .get()
+                                            MainBlocks.CANDY_DIRT_BLOCK.get()
                                                     .defaultBlockState())
                                     .addBlockConversion(Blocks.ICE,
-                                            MainBlocks.CANDY_ICE_BLOCK
-                                                    .get()
+                                            MainBlocks.CANDY_ICE_BLOCK.get()
                                                     .defaultBlockState())
                                     .setMinMaxConversions(3, 20)
                                     .setBiome(MainBiomes.LICORICE_FOREST),
-                            defaultSpreader.extend()
-                                    .addBlockConversion(Blocks.GRASS_BLOCK,
-                                            SpreadConverter.of(
-                                                    MainBlocks.CANDY_DIRT_BLOCK
+                            defaultSpreader.extend().addBlockConversion(
+                                    Blocks.GRASS_BLOCK,
+                                    SpreadConverter.of(
+                                            MainBlocks.CANDY_DIRT_BLOCK.get()
+                                                    .defaultBlockState(),
+                                            CandyGrassBlock::canPropagate))
+                                    .setMinMaxConversions(1, 5))));
+
+    public static final Supplier<SpreadFunction> VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS
+            .register("vertical_only_spread",
+                    () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
+                            .extend());
+
+    public static final Supplier<SpreadFunction> ICE_SPREAD = SPREAD_FUNCTIONS
+            .register("ice_spread",
+                    () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
+                            .extend()
+                            .useSpreaders((defaultSpreader) -> List
+                                    .of(defaultSpreader.extend()
+                                            .setMaxDistances(new Vec3i(2, 3, 2))
+                                            .setBiome(null)
+                                            .addBlockConversions(
+                                                    List.of(Blocks.ICE,
+                                                            Blocks.PACKED_ICE,
+                                                            Blocks.BLUE_ICE,
+                                                            Blocks.FROSTED_ICE),
+                                                    MainBlocks.CANDY_ICE_BLOCK
                                                             .get()
-                                                            .defaultBlockState(),
-                                                    CandyGrassBlock::canPropagate))
-                                    .setMinMaxConversions(1, 5))));
-
-    public static final Supplier<SpreadFunction> VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS.register(
-            "vertical_only_spread",
-            () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER.extend());
-
-    public static final Supplier<SpreadFunction> ICE_SPREAD = SPREAD_FUNCTIONS.register(
-            "ice_spread",
-            () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER.extend()
-                    .useSpreaders((defaultSpreader) -> List.of(
-                            defaultSpreader.extend()
-                                    .setMaxDistances(new Vec3i(2, 3, 2))
-                                    .setBiome(null)
-                                    .addBlockConversions(List.of(Blocks.ICE,
-                                            Blocks.PACKED_ICE, Blocks.BLUE_ICE,
-                                            Blocks.FROSTED_ICE),
-                                            MainBlocks.CANDY_ICE_BLOCK.get().defaultBlockState())
-                                    .setMinMaxConversions(1, 5))));
+                                                            .defaultBlockState())
+                                            .setMinMaxConversions(1, 5))));
 
     /**
      * This registers the new custom registry.
