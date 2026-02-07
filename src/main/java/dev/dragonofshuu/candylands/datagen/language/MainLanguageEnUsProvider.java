@@ -61,6 +61,8 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
         add(MainBlocks.CANDY_CANE_ROCK_FENCE_GATE.get(),
                 "Candy Cane Rock Fence Gate");
         add(MainBlocks.CANDY_CANE_ROCK_DOOR.get(), "Candy Cane Rock Door");
+        add(MainBlocks.CANDY_CANE_ROCK_TRAPDOOR.get(),
+                "Candy Cane Rock Trapdoor");
         add(MainBlocks.CANDY_CANE_ROCK_BUTTON.get(), "Candy Cane Rock Button");
         add(MainBlocks.CANDY_CANE_ROCK_PRESSURE_PLATE.get(),
                 "Candy Cane Rock Pressure Plate");

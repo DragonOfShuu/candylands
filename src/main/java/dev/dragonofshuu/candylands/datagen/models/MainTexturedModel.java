@@ -1,11 +1,6 @@
 package dev.dragonofshuu.candylands.datagen.models;
 
-import net.minecraft.client.data.models.MultiVariant;
-import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
-import net.minecraft.world.level.block.Block;
 
 public class MainTexturedModel {
     public static final TexturedModel.Provider CUBE_ALL_CUTOUT = TexturedModel.CUBE

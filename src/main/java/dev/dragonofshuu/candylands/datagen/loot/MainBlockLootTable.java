@@ -59,6 +59,7 @@ public class MainBlockLootTable extends BlockLootSubProvider {
         dropSelf(MainBlocks.CANDY_CANE_ROCK_FENCE.get());
         dropSelf(MainBlocks.CANDY_CANE_ROCK_FENCE_GATE.get());
         dropDoor(MainBlocks.CANDY_CANE_ROCK_DOOR.get());
+        dropSelf(MainBlocks.CANDY_CANE_ROCK_TRAPDOOR.get());
         dropSelf(MainBlocks.CANDY_CANE_ROCK_BUTTON.get());
         dropSelf(MainBlocks.CANDY_CANE_ROCK_PRESSURE_PLATE.get());
     }

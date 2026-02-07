@@ -3,11 +3,8 @@ package dev.dragonofshuu.candylands.block.custom.bases;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
 public class FlammableRotatedPillarBlock extends RotatedPillarBlock {
 
@@ -16,12 +13,14 @@ public class FlammableRotatedPillarBlock extends RotatedPillarBlock {
     }
 
     @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public boolean isFlammable(BlockState state, BlockGetter level,
+            BlockPos pos, Direction direction) {
         return true;
     }
 
     @Override
-    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public int getFlammability(BlockState state, BlockGetter level,
+            BlockPos pos, Direction direction) {
         return 30;
     }
 }

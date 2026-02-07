@@ -38,6 +38,7 @@ public class MainBlockFamilies {
                     .fence(MainBlocks.CANDY_CANE_ROCK_FENCE.get())
                     .fenceGate(MainBlocks.CANDY_CANE_ROCK_FENCE_GATE.get())
                     .door(MainBlocks.CANDY_CANE_ROCK_DOOR.get())
+                    .trapdoor(MainBlocks.CANDY_CANE_ROCK_TRAPDOOR.get())
                     .button(MainBlocks.CANDY_CANE_ROCK_BUTTON.get())
                     .pressurePlate(
                             MainBlocks.CANDY_CANE_ROCK_PRESSURE_PLATE.get())

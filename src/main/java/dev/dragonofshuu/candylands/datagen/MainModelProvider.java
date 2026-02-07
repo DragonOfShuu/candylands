@@ -15,6 +15,7 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.BlockModelGenerators.BlockFamilyProvider;
 import net.minecraft.client.data.models.BlockModelGenerators.PlantType;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
@@ -52,6 +53,9 @@ public class MainModelProvider extends ModelProvider {
 
         ignoreBlockModelGen(MainBlocks.CANDY_CANE_ROCK_DOOR);
         createCutoutDoor(blockModels, MainBlocks.CANDY_CANE_ROCK_DOOR.get());
+        ignoreBlockModelGen(MainBlocks.CANDY_CANE_ROCK_TRAPDOOR);
+        createOrientableCutoutTrapdoor(blockModels,
+                MainBlocks.CANDY_CANE_ROCK_TRAPDOOR.get());
 
         MainBlockFamilies.getAllFamilies()
                 .filter(BlockFamily::shouldGenerateModel)
@@ -141,6 +145,29 @@ public class MainModelProvider extends ModelProvider {
                 doorBlock, multivariant, multivariant1, multivariant2,
                 multivariant3, multivariant4, multivariant5, multivariant6,
                 multivariant7));
+    }
+
+    public void createOrientableCutoutTrapdoor(BlockModelGenerators blockModels,
+            Block orientableTrapdoorBlock) {
+        TextureMapping texturemapping = TextureMapping
+                .defaultTexture(orientableTrapdoorBlock);
+        MultiVariant multivariant = BlockModelGenerators
+                .plainVariant(MainModelTemplates.ORIENTABLE_TRAPDOOR_TOP_CUTOUT
+                        .create(orientableTrapdoorBlock, texturemapping,
+                                blockModels.modelOutput));
+        ResourceLocation resourcelocation = MainModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM_CUTOUT
+                .create(orientableTrapdoorBlock, texturemapping,
+                        blockModels.modelOutput);
+        MultiVariant multivariant1 = BlockModelGenerators
+                .plainVariant(MainModelTemplates.ORIENTABLE_TRAPDOOR_OPEN_CUTOUT
+                        .create(orientableTrapdoorBlock, texturemapping,
+                                blockModels.modelOutput));
+        blockModels.blockStateOutput.accept(BlockModelGenerators
+                .createOrientableTrapdoor(orientableTrapdoorBlock, multivariant,
+                        BlockModelGenerators.plainVariant(resourcelocation),
+                        multivariant1));
+        blockModels.registerSimpleItemModel(orientableTrapdoorBlock,
+                resourcelocation);
     }
 
     private void ignoreBlockModelGen(DeferredBlock<Block> candyCaneRockDoor) {

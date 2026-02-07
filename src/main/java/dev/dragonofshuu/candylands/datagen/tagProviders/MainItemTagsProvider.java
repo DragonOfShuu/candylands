@@ -9,11 +9,11 @@ import dev.dragonofshuu.candylands.util.MainTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
 
 public class MainItemTagsProvider extends ItemTagsProvider {
-    public MainItemTagsProvider(PackOutput output, CompletableFuture<Provider> lookupProvider) {
+    public MainItemTagsProvider(PackOutput output,
+            CompletableFuture<Provider> lookupProvider) {
         super(output, lookupProvider, CandyLands.MODID);
     }
 
@@ -23,7 +23,8 @@ public class MainItemTagsProvider extends ItemTagsProvider {
                 .add(MainBlocks.LICORICE_LOG.get().asItem());
 
         tag(ItemTags.PLANKS)
-                .addAll(MainBlockFamilies.getBaseBlocksFromWoodBlockFamilies().map(block -> block.asItem()));
+                .addAll(MainBlockFamilies.getBaseBlocksFromWoodBlockFamilies()
+                        .map(block -> block.asItem()));
 
         tag(ItemTags.STONE_CRAFTING_MATERIALS)
                 .add(MainBlocks.CANDY_CANE_ROCK.get().asItem());

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "stone_trapdoor",
+  "key": {
+    "#": "candylands:candy_cane_rock"
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "id": "candylands:candy_cane_rock_trapdoor"
+  }
+}

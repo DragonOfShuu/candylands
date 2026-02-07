@@ -20,4 +20,11 @@ public class MainModelTemplates {
             .extend().renderType("minecraft:cutout").build();
     public static ExtendedModelTemplate DOOR_TOP_RIGHT_OPEN_CUTOUT = ModelTemplates.DOOR_TOP_RIGHT_OPEN
             .extend().renderType("minecraft:cutout").build();
+
+    public static ExtendedModelTemplate ORIENTABLE_TRAPDOOR_TOP_CUTOUT = ModelTemplates.ORIENTABLE_TRAPDOOR_TOP
+            .extend().renderType("minecraft:cutout").build();
+    public static ExtendedModelTemplate ORIENTABLE_TRAPDOOR_BOTTOM_CUTOUT = ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM
+            .extend().renderType("minecraft:cutout").build();
+    public static ExtendedModelTemplate ORIENTABLE_TRAPDOOR_OPEN_CUTOUT = ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN
+            .extend().renderType("minecraft:cutout").build();
 }

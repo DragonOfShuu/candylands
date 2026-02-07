@@ -30,11 +30,11 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.client.event.sound.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -176,6 +176,12 @@ public class MainBlocks {
             properties -> new DoorBlock(MainBlockSetTypes.CANDY_CANE_ROCK,
                     properties),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR)
+                    .mapColor(MapColor.COLOR_PINK).sound(SoundType.METAL));
+    public static final DeferredBlock<Block> CANDY_CANE_ROCK_TRAPDOOR = registerBlock(
+            "candy_cane_rock_trapdoor",
+            properties -> new TrapDoorBlock(MainBlockSetTypes.CANDY_CANE_ROCK,
+                    properties),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)
                     .mapColor(MapColor.COLOR_PINK).sound(SoundType.METAL));
     public static final DeferredBlock<Block> CANDY_CANE_ROCK_BUTTON = registerBlock(
             "candy_cane_rock_button",
