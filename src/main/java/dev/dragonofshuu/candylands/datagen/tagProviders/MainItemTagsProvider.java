@@ -22,6 +22,14 @@ public class MainItemTagsProvider extends ItemTagsProvider {
         tag(MainTags.Items.LICORICE_LOGS)
                 .add(MainBlocks.LICORICE_LOG.get().asItem());
 
+        tag(ItemTags.LOGS).add(MainBlocks.LICORICE_LOG.get().asItem());
+
+        tag(ItemTags.LOGS_THAT_BURN)
+                .add(MainBlocks.LICORICE_LOG.get().asItem());
+
+        tag(ItemTags.COMPLETES_FIND_TREE_TUTORIAL)
+                .add(MainBlocks.LICORICE_LOG.get().asItem());
+
         tag(ItemTags.PLANKS)
                 .addAll(MainBlockFamilies.getBaseBlocksFromWoodBlockFamilies()
                         .map(block -> block.asItem()));

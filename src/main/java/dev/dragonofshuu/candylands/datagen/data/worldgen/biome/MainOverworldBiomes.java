@@ -39,17 +39,14 @@ public class MainOverworldBiomes {
         BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder);
         BiomeDefaultFeatures
                 .addDefaultSoftDisks(biomegenerationsettings$builder);
-        // BiomeDefaultFeatures.addMountainForestTrees(biomegenerationsettings$builder);
         biomegenerationsettings$builder.addFeature(
                 GenerationStep.Decoration.VEGETAL_DECORATION,
-                MainPlacedVegetationFeatures.TREES_CANDY);
+                MainPlacedVegetationFeatures.TREES_LICORICE);
 
-        // BiomeDefaultFeatures.addDefaultFlowers(biomegenerationsettings$builder);
-        // BiomeDefaultFeatures.addDefaultGrass(biomegenerationsettings$builder);
-        // BiomeDefaultFeatures.addDefaultMushrooms(biomegenerationsettings$builder);
+        addDefaultCandyGrass(biomegenerationsettings$builder);
+        addDefaultCandyCaneFlowers(biomegenerationsettings$builder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(
                 biomegenerationsettings$builder, true);
-        // BiomeDefaultFeatures.addInfestedStone(biomegenerationsettings$builder);
 
         var specialEffects = new BiomeSpecialEffects.Builder()
                 .waterColor(0x9a21eb).waterFogColor(0xbc10e3).fogColor(0xd8a8e3)
@@ -75,6 +72,20 @@ public class MainOverworldBiomes {
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generationSettings);
         BiomeDefaultFeatures.addDefaultSprings(generationSettings);
         BiomeDefaultFeatures.addSurfaceFreezing(generationSettings);
+    }
+
+    public static void addDefaultCandyGrass(
+            BiomeGenerationSettings.Builder generationSettings) {
+        generationSettings.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                MainPlacedVegetationFeatures.PATCH_CANDY_GRASS);
+    }
+
+    public static void addDefaultCandyCaneFlowers(
+            BiomeGenerationSettings.Builder generationSettings) {
+        generationSettings.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                MainPlacedVegetationFeatures.FLOWER_CANDY_CANE);
     }
 
     private static Biome biome(boolean hasPercipitation, float temperature,
