@@ -20,12 +20,12 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.CherryTrunkPlacer
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 
 public class MainTreeFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LICORICE = MainFeatures
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LICORICE = MainConfiguredFeatures
             .createKey("licorice");
 
     public static void bootstrap(
             BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        MainFeatures.register(context, LICORICE, Feature.TREE,
+        MainConfiguredFeatures.register(context, LICORICE, Feature.TREE,
                 cherry(MainBlocks.LICORICE_LOG.get(),
                         MainBlocks.LICORICE_LEAVES.get()).build());
     }

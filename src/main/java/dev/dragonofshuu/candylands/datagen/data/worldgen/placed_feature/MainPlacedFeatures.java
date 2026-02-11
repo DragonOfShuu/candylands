@@ -11,12 +11,16 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class MainPlacedFeatures {
     public static void bootstrap(BootstrapContext<PlacedFeature> bootstrap) {
-        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatureHolder = bootstrap.lookup(Registries.CONFIGURED_FEATURE);
+        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatureHolder = bootstrap
+                .lookup(Registries.CONFIGURED_FEATURE);
 
         MainPlacedOres.register(bootstrap, configuredFeatureHolder);
         MainPlacedCaveFeatures.register(bootstrap, configuredFeatureHolder);
         MainPlacedTreeFeatures.register(bootstrap, configuredFeatureHolder);
-        MainPlacedVegetationFeatures.register(bootstrap, configuredFeatureHolder);
+        MainMiscOverworldPlacements.register(bootstrap,
+                configuredFeatureHolder);
+        MainPlacedVegetationFeatures.register(bootstrap,
+                configuredFeatureHolder);
     }
 
     public static ResourceKey<PlacedFeature> createKey(String key) {

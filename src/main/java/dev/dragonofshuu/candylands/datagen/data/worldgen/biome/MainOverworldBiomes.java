@@ -2,6 +2,7 @@ package dev.dragonofshuu.candylands.datagen.data.worldgen.biome;
 
 import javax.annotation.Nullable;
 
+import dev.dragonofshuu.candylands.datagen.data.worldgen.placed_feature.MainMiscOverworldPlacements;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.placed_feature.MainPlacedVegetationFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -36,6 +37,9 @@ public class MainOverworldBiomes {
         BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(
                 placed_features_holder, configured_carver_holder);
         globalOverworldGeneration(biomegenerationsettings$builder);
+        biomegenerationsettings$builder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                MainMiscOverworldPlacements.CANDY_CANE_ARCH);
         BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder);
         BiomeDefaultFeatures
                 .addDefaultSoftDisks(biomegenerationsettings$builder);

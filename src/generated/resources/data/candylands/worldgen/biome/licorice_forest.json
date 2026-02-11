@@ -28,7 +28,8 @@
       "minecraft:lake_lava_surface"
     ],
     [
-      "minecraft:amethyst_geode"
+      "minecraft:amethyst_geode",
+      "candylands:candy_cane_arch"
     ],
     [
       "minecraft:monster_room",

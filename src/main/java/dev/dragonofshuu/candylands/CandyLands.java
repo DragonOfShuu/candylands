@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
 import dev.dragonofshuu.candylands.block.MainBlocks;
+import dev.dragonofshuu.candylands.feature.MainFeatures;
 import dev.dragonofshuu.candylands.item.MainItems;
 import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.util.MainGameRules;
@@ -78,6 +79,7 @@ public class CandyLands {
         // Register the Deferred Register to the mod event bus so
         // items get registered
         MainItems.register(modEventBus);
+        MainFeatures.register(modEventBus);
         // Register the Deferred Register to the mod event bus so
         // tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);

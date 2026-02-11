@@ -20,11 +20,11 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class MainVegetationFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_LICORICE = MainFeatures
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_LICORICE = MainConfiguredFeatures
             .createKey("trees_licorice");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_CANDY_GRASS = MainFeatures
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_CANDY_GRASS = MainConfiguredFeatures
             .createKey("patch_candy_grass");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_CANDY_CANE = MainFeatures
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_CANDY_CANE = MainConfiguredFeatures
             .createKey("flower_candy_cane");
 
     public static void bootstrap(
@@ -33,15 +33,19 @@ public class MainVegetationFeatures {
                 .lookup(Registries.PLACED_FEATURE);
         var licoriceTreePlaced = placedFeatureHolder
                 .getOrThrow(MainPlacedTreeFeatures.LICORICE_CHECKED);
-        FeatureUtils.register(context, TREES_LICORICE, Feature.RANDOM_SELECTOR,
+        MainConfiguredFeatures.register(context, TREES_LICORICE,
+                Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(List.of(
                         new WeightedPlacedFeature(licoriceTreePlaced, 0.01f)),
                         licoriceTreePlaced));
-        FeatureUtils.register(context, PATCH_CANDY_GRASS, Feature.RANDOM_PATCH,
-                FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK,
+        MainConfiguredFeatures.register(context, PATCH_CANDY_GRASS,
+                Feature.RANDOM_PATCH,
+                MainConfiguredFeatures.simplePatchConfiguration(
+                        Feature.SIMPLE_BLOCK,
                         new SimpleBlockConfiguration(BlockStateProvider.simple(
                                 MainBlocks.CANDY_CANE_SHORT_GRASS.get()))));
-        FeatureUtils.register(context, FLOWER_CANDY_CANE, Feature.FLOWER,
+        MainConfiguredFeatures.register(context, FLOWER_CANDY_CANE,
+                Feature.FLOWER,
                 new RandomPatchConfiguration(96, 7, 3,
                         PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
                                 new SimpleBlockConfiguration(BlockStateProvider

@@ -1,0 +1,8 @@
+{
+  "type": "candylands:arch",
+  "config": {
+    "state": {
+      "Name": "candylands:candy_cane_rock"
+    }
+  }
+}
