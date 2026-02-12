@@ -1,8 +1,12 @@
 package dev.dragonofshuu.candylands.feature.custom;
 
 import java.util.Iterator;
+
+import org.slf4j.Logger;
+
 import com.mojang.serialization.Codec;
 
+import dev.dragonofshuu.candylands.CandyLands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -13,6 +17,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfi
 import net.minecraft.world.phys.Vec3;
 
 public class ArchFeature extends Feature<BlockStateConfiguration> {
+    private static Logger LOGGER = CandyLands.LOGGER;
+
+
     public ArchFeature(Codec<BlockStateConfiguration> codec) {
         super(codec);
     }
@@ -32,58 +39,39 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
 
         BlockState blockToPlace = placeContext.config().state;
 
-        double randomHeight = randomsource.nextDouble() * 2 + 3;
-        double randomLength = randomsource.nextDouble() * 1.8 + 0.2;
+        double randomHeight = randomsource.nextDouble() * 1.4 + 3.6;
+        double randomLength = randomsource.nextDouble() * 0.2 + 0.15;
         double randomRotation = randomsource.nextDouble() * Math.PI * 2;
 
         FollowAlongArchIterator archIterator = new FollowAlongArchIterator(
                 surfaceBlockPos.getCenter(), randomHeight, randomLength,
                 randomRotation);
 
-        BlockPos finalSurfaceBlockPos = getFinalSurfaceBlockPos(worldgenlevel,
-                archIterator);
-
-        archIterator.reset();
-
-        drawArch(worldgenlevel, blockToPlace, archIterator,
-                finalSurfaceBlockPos);
+        drawArch(worldgenlevel, blockToPlace, archIterator);
 
         return true;
     }
 
     private void drawArch(WorldGenLevel worldgenlevel, BlockState blockToPlace,
-            FollowAlongArchIterator archIterator,
-            BlockPos finalSurfaceBlockPos) {
-        while (archIterator.hasNext()) {
+            FollowAlongArchIterator archIterator) {
+        Boolean breakFlag = false;
+        while (archIterator.hasNext() && !breakFlag) {
             Vec3 marker = archIterator.next();
             var markerBlockPos = new BlockPos((int) Math.floor(marker.x()),
                     (int) Math.floor(marker.y()), (int) Math.floor(marker.z()));
-            if (markerBlockPos.equals(finalSurfaceBlockPos)) {
-                break;
+            if (isDirt(worldgenlevel.getBlockState(markerBlockPos))
+                    || isStone(worldgenlevel.getBlockState(markerBlockPos))
+                    || markerBlockPos.getY() <= worldgenlevel.getMinY() + 6) {
+                breakFlag = true;
             }
             makeBlob(worldgenlevel, marker, blockToPlace, 4);
         }
     }
 
-    private BlockPos getFinalSurfaceBlockPos(WorldGenLevel worldgenlevel,
-            FollowAlongArchIterator archIterator) {
-        while (archIterator.hasNext()) {
-            Vec3 marker = archIterator.next();
-            var markerBlockPos = new BlockPos((int) Math.floor(marker.x()),
-                    (int) Math.floor(marker.y()), (int) Math.floor(marker.z()));
-            if (!worldgenlevel.isEmptyBlock(markerBlockPos)
-                    || markerBlockPos.getY() <= worldgenlevel.getMinY() + 3) {
-                return markerBlockPos;
-            }
-        }
-        throw new IllegalStateException(
-                "Arch iterator should never run out of blocks to check");
-    }
-
     private BlockPos findSurfaceBlockPos(BlockPos pos,
             WorldGenLevel worldgenlevel) {
         for (var blockpos = pos.immutable(); blockpos.getY() > worldgenlevel
-                .getMinY() + 3; blockpos = blockpos.below()) {
+                .getMinY() + 6; blockpos = blockpos.below()) {
             if (!worldgenlevel.isEmptyBlock(blockpos.below())) {
                 BlockState blockstate = worldgenlevel
                         .getBlockState(blockpos.below());
@@ -136,11 +124,14 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
 
         @Override
         public Vec3 next() {
-            double y = -(Math.pow(x - length, 2) - Math.pow(height, 2));
+            // double y = -(Math.pow(x - length, 2) - Math.pow(height,
+            // 2));
+            double y = -Math.pow(length * x - height, 2) + Math.pow(height, 2);
             Vec3 marker = new Vec3(startMarker.x() + x * Math.cos(rotationRad),
                     startMarker.y() + y,
                     startMarker.z() + x * Math.sin(rotationRad));
             x++;
+            CandyLands.LOGGER.debug("Placing next at: " + marker.toString());
             return marker;
         }
 
