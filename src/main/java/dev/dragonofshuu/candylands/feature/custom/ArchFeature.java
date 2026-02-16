@@ -1,24 +1,17 @@
 package dev.dragonofshuu.candylands.feature.custom;
 
-import java.util.Iterator;
-
-import org.slf4j.Logger;
-
 import com.mojang.serialization.Codec;
 
-import dev.dragonofshuu.candylands.CandyLands;
+import dev.dragonofshuu.candylands.block.MainBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import net.minecraft.world.phys.Vec3;
 
 public class ArchFeature extends Feature<BlockStateConfiguration> {
-    private static Logger LOGGER = CandyLands.LOGGER;
-
 
     public ArchFeature(Codec<BlockStateConfiguration> codec) {
         super(codec);
@@ -28,115 +21,104 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
     public boolean place(
             FeaturePlaceContext<BlockStateConfiguration> placeContext) {
 
-        BlockPos blockpos = placeContext.origin();
-        WorldGenLevel worldgenlevel = placeContext.level();
-        RandomSource randomsource = placeContext.random();
+        WorldGenLevel level = placeContext.level();
+        BlockPos real_origin = placeContext.origin();
+        ChunkPos chunkPos = new ChunkPos(real_origin);
+        BlockPos origin = chunkPos.getMiddleBlockPosition(real_origin.getY());
 
-        BlockPos surfaceBlockPos = findSurfaceBlockPos(blockpos, worldgenlevel);
-        if (surfaceBlockPos == null) {
-            return false;
+        // Define the spacing of the arches (e.g., every 64 blocks)
+        int spacing = 64;
+        int currentGridX = Math.floorDiv(origin.getX(), spacing);
+        int currentGridZ = Math.floorDiv(origin.getZ(), spacing);
+
+        for (int cellX = -3; cellX <= 3; cellX++) {
+            for (int cellZ = -3; cellZ <= 3; cellZ++) {
+                int gridX = (currentGridX + cellX) * spacing;
+                int gridZ = (currentGridZ + cellZ) * spacing;
+
+                RandomSource random = RandomSource
+                        .create(level.getSeed() ^ (gridX * 9223372036854775807L)
+                                ^ (gridZ * 4294967291L));
+
+                // Randomize arch properties
+                double angle = random.nextDouble() * Math.PI; // Random rotation
+                double archHeight = 3.6d + random.nextDouble() * 1.4d;
+                double archWidth = 0.10d + random.nextDouble() * 0.2d;
+                int archCenterX = gridX + spacing / 2 + random.nextInt(spacing);
+                int archCenterZ = gridZ + spacing / 2 + random.nextInt(spacing);
+                BlockPos archCenter = new BlockPos(archCenterX,
+                        random.nextInt(40) + 70, archCenterZ);
+
+                iterateThroughChunk(level, origin, archHeight, archWidth,
+                        archCenter, angle);
+            }
         }
-
-        BlockState blockToPlace = placeContext.config().state;
-
-        double randomHeight = randomsource.nextDouble() * 1.4 + 3.6;
-        double randomLength = randomsource.nextDouble() * 0.2 + 0.15;
-        double randomRotation = randomsource.nextDouble() * Math.PI * 2;
-
-        FollowAlongArchIterator archIterator = new FollowAlongArchIterator(
-                surfaceBlockPos.getCenter(), randomHeight, randomLength,
-                randomRotation);
-
-        drawArch(worldgenlevel, blockToPlace, archIterator);
-
         return true;
     }
 
-    private void drawArch(WorldGenLevel worldgenlevel, BlockState blockToPlace,
-            FollowAlongArchIterator archIterator) {
-        Boolean breakFlag = false;
-        while (archIterator.hasNext() && !breakFlag) {
-            Vec3 marker = archIterator.next();
-            var markerBlockPos = new BlockPos((int) Math.floor(marker.x()),
-                    (int) Math.floor(marker.y()), (int) Math.floor(marker.z()));
-            if (isDirt(worldgenlevel.getBlockState(markerBlockPos))
-                    || isStone(worldgenlevel.getBlockState(markerBlockPos))
-                    || markerBlockPos.getY() <= worldgenlevel.getMinY() + 6) {
-                breakFlag = true;
-            }
-            makeBlob(worldgenlevel, marker, blockToPlace, 4);
-        }
-    }
+    private void iterateThroughChunk(WorldGenLevel level, BlockPos origin,
+            double archHeight, double archWidth, BlockPos archCenter,
+            double angle) {
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                int worldX = origin.getX() + x - 8;
+                int worldZ = origin.getZ() + z - 8;
 
-    private BlockPos findSurfaceBlockPos(BlockPos pos,
-            WorldGenLevel worldgenlevel) {
-        for (var blockpos = pos.immutable(); blockpos.getY() > worldgenlevel
-                .getMinY() + 6; blockpos = blockpos.below()) {
-            if (!worldgenlevel.isEmptyBlock(blockpos.below())) {
-                BlockState blockstate = worldgenlevel
-                        .getBlockState(blockpos.below());
-                if (isDirt(blockstate) || isStone(blockstate)) {
-                    return blockpos;
+                // Calculate distance from the arch's center line
+                double dx = worldX - archCenter.getX();
+                double dz = worldZ - archCenter.getZ();
+
+                double localX = dx * Math.cos(angle) - dz * Math.sin(angle);
+                double localZ = dx * Math.sin(angle) + dz * Math.cos(angle);
+
+                // Calculate the IDEAL Y for this localX
+                double idealY = archCenter.getY() + archHeight
+                        - Math.pow(localX * archWidth, 2);
+
+                // Iterate through a small vertical range to fill the
+                // arch's "body"
+                for (int y = -3; y <= 3; y++) {
+                    int worldY = (int) Math.round(idealY) + y;
+
+                    // Calculate distance from the current block to the ideal
+                    // arch point (localX, idealY, 0)
+                    // We use localZ here because in "local space" the arch is
+                    // always at Z=0
+                    double distSq = Math.pow(worldY - idealY, 2)
+                            + Math.pow(localZ, 2);
+
+                    // If distance is less than radius squared (e.g., radius of
+                    // 4.0)
+                    if (distSq < 4.0) {
+                        mutable.set(worldX, worldY, worldZ);
+                        level.setBlock(mutable, MainBlocks.CANDY_CANE_ROCK.get()
+                                .defaultBlockState(), 2);
+                    }
                 }
             }
         }
-
-        return null;
     }
 
-    private boolean makeBlob(WorldGenLevel worldgenlevel, Vec3 pos,
-            BlockState blockToPlace, int radius) {
-        var flooredBlockPos = new BlockPos((int) Math.floor(pos.x()),
-                (int) Math.floor(pos.y()), (int) Math.floor(pos.z()));
-        var ceiledBlockPos = new BlockPos((int) Math.ceil(pos.x()),
-                (int) Math.ceil(pos.y()), (int) Math.ceil(pos.z()));
+    // private boolean makeBlob(WorldGenLevel worldgenlevel,
+    // Vec3 pos,
+    // BlockState blockToPlace, int radius) {
+    // var flooredBlockPos = new BlockPos((int)
+    // Math.floor(pos.x()),
+    // (int) Math.floor(pos.y()), (int) Math.floor(pos.z()));
+    // var ceiledBlockPos = new BlockPos((int)
+    // Math.ceil(pos.x()),
+    // (int) Math.ceil(pos.y()), (int) Math.ceil(pos.z()));
 
-        for (BlockPos blockpos : BlockPos.betweenClosed(
-                flooredBlockPos.offset(-radius, -radius, -radius),
-                ceiledBlockPos.offset(radius, radius, radius))) {
-            if (blockpos.distToCenterSqr(pos) <= (double) (radius * radius)) {
-                worldgenlevel.setBlock(blockpos, blockToPlace, 3);
-            }
-        }
+    // for (BlockPos blockpos : BlockPos.betweenClosed(
+    // flooredBlockPos.offset(-radius, -radius, -radius),
+    // ceiledBlockPos.offset(radius, radius, radius))) {
+    // if (blockpos.distToCenterSqr(pos) <= (double) (radius *
+    // radius)) {
+    // worldgenlevel.setBlock(blockpos, blockToPlace, 3);
+    // }
+    // }
 
-        return true;
-    }
-
-    class FollowAlongArchIterator implements Iterator<Vec3> {
-        private final double height;
-        private final double length;
-        private final double rotationRad;
-        private final Vec3 startMarker;
-        private int x = 0;
-
-        public FollowAlongArchIterator(Vec3 startMarker, double height,
-                double length, double rotationRad) {
-            this.startMarker = startMarker;
-            this.height = height;
-            this.length = length;
-            this.rotationRad = rotationRad;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return true; // Infinite iterator
-        }
-
-        @Override
-        public Vec3 next() {
-            // double y = -(Math.pow(x - length, 2) - Math.pow(height,
-            // 2));
-            double y = -Math.pow(length * x - height, 2) + Math.pow(height, 2);
-            Vec3 marker = new Vec3(startMarker.x() + x * Math.cos(rotationRad),
-                    startMarker.y() + y,
-                    startMarker.z() + x * Math.sin(rotationRad));
-            x++;
-            CandyLands.LOGGER.debug("Placing next at: " + marker.toString());
-            return marker;
-        }
-
-        public void reset() {
-            x = 0;
-        }
-    }
+    // return true;
+    // }
 }

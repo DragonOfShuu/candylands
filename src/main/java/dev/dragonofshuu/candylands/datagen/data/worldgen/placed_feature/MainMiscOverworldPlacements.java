@@ -11,7 +11,6 @@ import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
 
 public class MainMiscOverworldPlacements {
     public static final ResourceKey<PlacedFeature> CANDY_CANE_ARCH = MainPlacedFeatures
@@ -23,8 +22,7 @@ public class MainMiscOverworldPlacements {
         Holder<ConfiguredFeature<?, ?>> candyCaneArchHolder = configuredFeaturesHolder
                 .getOrThrow(MainMiscOverworldFeatures.CANDY_CANE_ARCH);
         PlacementUtils.register(bootstrap, CANDY_CANE_ARCH, candyCaneArchHolder,
-                new PlacementModifier[] { RarityFilter.onAverageOnceEvery(2),
-                        PlacementUtils.HEIGHTMAP, InSquarePlacement.spread(),
+                new PlacementModifier[] { PlacementUtils.HEIGHTMAP,
                         BiomeFilter.biome() });
     }
 }

@@ -2,15 +2,8 @@
   "feature": "candylands:candy_cane_arch",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 2
-    },
-    {
       "type": "minecraft:heightmap",
       "heightmap": "MOTION_BLOCKING"
-    },
-    {
-      "type": "minecraft:in_square"
     },
     {
       "type": "minecraft:biome"
