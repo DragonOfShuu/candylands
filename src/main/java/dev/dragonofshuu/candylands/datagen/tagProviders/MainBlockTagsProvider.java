@@ -43,7 +43,8 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .addAll(MainBlockFamilies.getWoodBlockFamilies().flatMap(
                         family -> family.getVariants().values().stream()))
-                .add(MainBlocks.LICORICE_LOG.get());
+                .add(MainBlocks.LICORICE_LOG.get())
+                .add(MainBlocks.LICORICE_WOOD.get());
 
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
@@ -67,9 +68,11 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.SAPLINGS).add(MainBlocks.LICORICE_SPROUT.get());
 
-        tag(BlockTags.LOGS).add(MainBlocks.LICORICE_LOG.get());
+        tag(BlockTags.LOGS).add(MainBlocks.LICORICE_LOG.get())
+                .add(MainBlocks.LICORICE_WOOD.get());
 
-        tag(BlockTags.LOGS_THAT_BURN).add(MainBlocks.LICORICE_LOG.get());
+        tag(BlockTags.LOGS_THAT_BURN).add(MainBlocks.LICORICE_LOG.get())
+                .add(MainBlocks.LICORICE_WOOD.get());
 
         tag(Tags.Blocks.NATURAL_LOGS).add(MainBlocks.LICORICE_LOG.get());
 

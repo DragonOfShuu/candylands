@@ -44,6 +44,7 @@ public class MainBlockLootTable extends BlockLootSubProvider {
                         MainBlocks.LICORICE_SPROUT.get(),
                         NORMAL_LEAVES_SAPLING_CHANCES));
         dropSelf(MainBlocks.LICORICE_SPROUT.get());
+        dropSelf(MainBlocks.LICORICE_WOOD.get());
 
         dropSelf(MainBlocks.LICORICE_PLANKS.get());
         dropSlab(MainBlocks.LICORICE_SLAB.get());

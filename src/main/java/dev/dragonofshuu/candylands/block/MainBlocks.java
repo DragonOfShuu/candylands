@@ -104,6 +104,10 @@ public class MainBlocks {
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .mapColor(MapColor.COLOR_PINK)
                     .sound(SoundType.CHERRY_LEAVES));
+    public static final DeferredBlock<Block> LICORICE_WOOD = registerBlock(
+            "licorice_wood", FlammableRotatedPillarBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+                    .mapColor(MapColor.COLOR_PINK));
 
     // ------ Licorice Wood Set - Building Blocks ------
     public static final DeferredBlock<Block> LICORICE_PLANKS = registerBlock(

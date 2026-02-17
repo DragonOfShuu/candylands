@@ -29,7 +29,8 @@
     ],
     [
       "minecraft:amethyst_geode",
-      "candylands:candy_cane_arch"
+      "candylands:licorice_arch",
+      "candylands:candy_cane_blob"
     ],
     [
       "minecraft:monster_room",

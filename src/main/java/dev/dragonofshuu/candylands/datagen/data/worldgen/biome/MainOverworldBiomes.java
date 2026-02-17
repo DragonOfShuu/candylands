@@ -39,7 +39,10 @@ public class MainOverworldBiomes {
         globalOverworldGeneration(biomegenerationsettings$builder);
         biomegenerationsettings$builder.addFeature(
                 GenerationStep.Decoration.LOCAL_MODIFICATIONS,
-                MainMiscOverworldPlacements.CANDY_CANE_ARCH);
+                MainMiscOverworldPlacements.LICORICE_ARCH);
+        biomegenerationsettings$builder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                MainMiscOverworldPlacements.CANDY_CANE_BLOB);
         BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder);
         BiomeDefaultFeatures
                 .addDefaultSoftDisks(biomegenerationsettings$builder);

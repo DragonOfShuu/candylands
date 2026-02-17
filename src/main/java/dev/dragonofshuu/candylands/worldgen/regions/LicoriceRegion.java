@@ -26,6 +26,9 @@ public class LicoriceRegion extends Region {
         this.addModifiedVanillaOverworldBiomes(mapper, builder -> {
             builder.replaceBiome(Biomes.SNOWY_TAIGA,
                     MainBiomes.LICORICE_FOREST);
+            builder.replaceBiome(Biomes.SNOWY_PLAINS,
+                    MainBiomes.LICORICE_FOREST);
+            builder.replaceBiome(Biomes.TAIGA, MainBiomes.LICORICE_FOREST);
         });
     }
 }

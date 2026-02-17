@@ -44,6 +44,7 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
         add(MainBlocks.LICORICE_LOG.get(), "Licorice Log");
         add(MainBlocks.LICORICE_LEAVES.get(), "Licorice Leaves");
         add(MainBlocks.LICORICE_SPROUT.get(), "Licorice Sprout");
+        add(MainBlocks.LICORICE_WOOD.get(), "Licorice Wood");
 
         add(MainBlocks.LICORICE_PLANKS.get(), "Licorice Planks");
         add(MainBlocks.LICORICE_SLAB.get(), "Licorice Slab");

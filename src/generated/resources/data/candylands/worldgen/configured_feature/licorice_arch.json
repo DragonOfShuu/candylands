@@ -1,0 +1,11 @@
+{
+  "type": "candylands:arch",
+  "config": {
+    "state": {
+      "Name": "candylands:licorice_wood",
+      "Properties": {
+        "axis": "y"
+      }
+    }
+  }
+}

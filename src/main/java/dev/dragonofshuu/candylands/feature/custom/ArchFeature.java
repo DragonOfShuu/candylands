@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
@@ -26,13 +27,23 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
         ChunkPos chunkPos = new ChunkPos(real_origin);
         BlockPos origin = chunkPos.getMiddleBlockPosition(real_origin.getY());
 
+        BlockState blockState = placeContext.config().state;
+
         // Define the spacing of the arches (e.g., every 64 blocks)
         int spacing = 64;
         int currentGridX = Math.floorDiv(origin.getX(), spacing);
         int currentGridZ = Math.floorDiv(origin.getZ(), spacing);
 
-        for (int cellX = -3; cellX <= 3; cellX++) {
-            for (int cellZ = -3; cellZ <= 3; cellZ++) {
+        buildCellifiedArches(level, blockState, origin, spacing, currentGridX,
+                currentGridZ, 3);
+        return true;
+    }
+
+    private void buildCellifiedArches(WorldGenLevel level,
+            BlockState blockState, BlockPos origin, int spacing,
+            int currentGridX, int currentGridZ, int count) {
+        for (int cellX = -count; cellX <= count; cellX++) {
+            for (int cellZ = -count; cellZ <= count; cellZ++) {
                 int gridX = (currentGridX + cellX) * spacing;
                 int gridZ = (currentGridZ + cellZ) * spacing;
 
@@ -49,16 +60,15 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
                 BlockPos archCenter = new BlockPos(archCenterX,
                         random.nextInt(40) + 70, archCenterZ);
 
-                iterateThroughChunk(level, origin, archHeight, archWidth,
-                        archCenter, angle);
+                iterateThroughChunk(level, blockState, origin, archHeight,
+                        archWidth, archCenter, angle);
             }
         }
-        return true;
     }
 
-    private void iterateThroughChunk(WorldGenLevel level, BlockPos origin,
-            double archHeight, double archWidth, BlockPos archCenter,
-            double angle) {
+    private void iterateThroughChunk(WorldGenLevel level, BlockState blockState,
+            BlockPos origin, double archHeight, double archWidth,
+            BlockPos archCenter, double angle) {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
@@ -92,33 +102,10 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
                     // 4.0)
                     if (distSq < 4.0) {
                         mutable.set(worldX, worldY, worldZ);
-                        level.setBlock(mutable, MainBlocks.CANDY_CANE_ROCK.get()
-                                .defaultBlockState(), 2);
+                        level.setBlock(mutable, blockState, 2);
                     }
                 }
             }
         }
     }
-
-    // private boolean makeBlob(WorldGenLevel worldgenlevel,
-    // Vec3 pos,
-    // BlockState blockToPlace, int radius) {
-    // var flooredBlockPos = new BlockPos((int)
-    // Math.floor(pos.x()),
-    // (int) Math.floor(pos.y()), (int) Math.floor(pos.z()));
-    // var ceiledBlockPos = new BlockPos((int)
-    // Math.ceil(pos.x()),
-    // (int) Math.ceil(pos.y()), (int) Math.ceil(pos.z()));
-
-    // for (BlockPos blockpos : BlockPos.betweenClosed(
-    // flooredBlockPos.offset(-radius, -radius, -radius),
-    // ceiledBlockPos.offset(radius, radius, radius))) {
-    // if (blockpos.distToCenterSqr(pos) <= (double) (radius *
-    // radius)) {
-    // worldgenlevel.setBlock(blockpos, blockToPlace, 3);
-    // }
-    // }
-
-    // return true;
-    // }
 }

@@ -45,8 +45,10 @@ public class MainModelProvider extends ModelProvider {
         createCutoutCrossblockWithDefaultItem(blockModels,
                 MainBlocks.CANDY_CANE_SHORT_GRASS.get(), PlantType.NOT_TINTED);
 
-        var licoriceWood = MainBlocks.LICORICE_LOG.get();
-        blockModels.woodProvider(licoriceWood).log(licoriceWood);
+        var licoriceLog = MainBlocks.LICORICE_LOG.get();
+        var licoriceWood = MainBlocks.LICORICE_WOOD.get();
+        blockModels.woodProvider(licoriceLog).log(licoriceLog)
+                .wood(licoriceWood);
         createTrivialCutoutCube(blockModels, MainBlocks.LICORICE_LEAVES);
         createCutoutCrossblockWithDefaultItem(blockModels,
                 MainBlocks.LICORICE_SPROUT.get(), PlantType.NOT_TINTED);

@@ -22,23 +22,32 @@ public class MainRecipeProvider extends MainRecipeProviderBase {
 
     @Override
     protected void buildRecipes() {
-        this.generateForEnabledBlockFamilies(FeatureFlagSet.of(FeatureFlags.VANILLA));
-        this.planksFromLog(MainBlocks.LICORICE_PLANKS.asItem(), MainTags.Items.LICORICE_LOGS, 4);
-        this.smeltingResultFromBase(MainBlocks.CANDY_CANE_ROCK.get(), MainBlocks.CANDY_CANE_COBBLESTONE.get());
+        this.generateForEnabledBlockFamilies(
+                FeatureFlagSet.of(FeatureFlags.VANILLA));
+        this.planksFromLog(MainBlocks.LICORICE_PLANKS.asItem(),
+                MainTags.Items.LICORICE_LOGS, 4);
+        this.woodFromLogs(MainBlocks.LICORICE_WOOD, MainBlocks.LICORICE_LOG);
+        this.smeltingResultFromBase(MainBlocks.CANDY_CANE_ROCK.get(),
+                MainBlocks.CANDY_CANE_COBBLESTONE.get());
     }
 
-    protected void generateForEnabledBlockFamilies(FeatureFlagSet enabledFeatures) {
-        MainBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateRecipe)
-                .forEach(family -> this.generateRecipes(family, enabledFeatures));
+    protected void generateForEnabledBlockFamilies(
+            FeatureFlagSet enabledFeatures) {
+        MainBlockFamilies.getAllFamilies()
+                .filter(BlockFamily::shouldGenerateRecipe)
+                .forEach(family -> this.generateRecipes(family,
+                        enabledFeatures));
     }
 
     public static class Runner extends RecipeProvider.Runner {
-        public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        public Runner(PackOutput output,
+                CompletableFuture<HolderLookup.Provider> lookupProvider) {
             super(output, lookupProvider);
         }
 
         @Override
-        protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput output) {
+        protected RecipeProvider createRecipeProvider(
+                HolderLookup.Provider provider, RecipeOutput output) {
             return new MainRecipeProvider(provider, output);
         }
 

@@ -15,7 +15,7 @@ import terrablender.api.SurfaceRuleManager;
 public class MainBiomeWorldgen {
 
     public static void registerAll() {
-        registerRegion("licorice", LicoriceRegion::new, 10);
+        registerRegion("licorice", LicoriceRegion::new, 20);
 
         registerSurfaceRule(SurfaceRuleManager.RuleCategory.OVERWORLD,
                 LicoriceSurfaceRuleData::makeRules);

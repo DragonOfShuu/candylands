@@ -20,12 +20,14 @@ public class MainItemTagsProvider extends ItemTagsProvider {
     @Override
     protected void addTags(Provider provider) {
         tag(MainTags.Items.LICORICE_LOGS)
-                .add(MainBlocks.LICORICE_LOG.get().asItem());
+                .add(MainBlocks.LICORICE_LOG.get().asItem())
+                .add(MainBlocks.LICORICE_WOOD.get().asItem());
 
-        tag(ItemTags.LOGS).add(MainBlocks.LICORICE_LOG.get().asItem());
+        tag(ItemTags.LOGS).add(MainBlocks.LICORICE_LOG.get().asItem())
+                .add(MainBlocks.LICORICE_WOOD.get().asItem());
 
-        tag(ItemTags.LOGS_THAT_BURN)
-                .add(MainBlocks.LICORICE_LOG.get().asItem());
+        tag(ItemTags.LOGS_THAT_BURN).add(MainBlocks.LICORICE_LOG.get().asItem())
+                .add(MainBlocks.LICORICE_WOOD.get().asItem());
 
         tag(ItemTags.COMPLETES_FIND_TREE_TUTORIAL)
                 .add(MainBlocks.LICORICE_LOG.get().asItem());
