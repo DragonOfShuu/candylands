@@ -2,7 +2,6 @@ package dev.dragonofshuu.candylands.feature.custom;
 
 import com.mojang.serialization.Codec;
 
-import dev.dragonofshuu.candylands.block.MainBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -70,10 +69,11 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
             BlockPos origin, double archHeight, double archWidth,
             BlockPos archCenter, double angle) {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int worldX = origin.getX() + x - 8;
-                int worldZ = origin.getZ() + z - 8;
+        int checkSize = 32; // Check a 32x32 area around the chunk center
+        for (int x = 0; x < checkSize; x++) {
+            for (int z = 0; z < checkSize; z++) {
+                int worldX = origin.getX() + x - checkSize / 2;
+                int worldZ = origin.getZ() + z - checkSize / 2;
 
                 // Calculate distance from the arch's center line
                 double dx = worldX - archCenter.getX();
@@ -100,7 +100,7 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
 
                     // If distance is less than radius squared (e.g., radius of
                     // 4.0)
-                    if (distSq < 4.0) {
+                    if (distSq < 6.0) {
                         mutable.set(worldX, worldY, worldZ);
                         level.setBlock(mutable, blockState, 2);
                     }

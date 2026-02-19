@@ -1,7 +1,6 @@
 package dev.dragonofshuu.candylands.registries.spread;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.MainBlocks;
@@ -11,6 +10,7 @@ import dev.dragonofshuu.candylands.registries.MainRegistries;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
@@ -18,7 +18,7 @@ public class MainSpreadFunctions {
     public static final DeferredRegister<SpreadFunction> SPREAD_FUNCTIONS = DeferredRegister
             .create(MainRegistries.SPREAD_FUNCTION, CandyLands.MODID);
 
-    public static final Supplier<SpreadFunction> CANDY_GRASS_SPREAD = SPREAD_FUNCTIONS
+    public static final DeferredHolder<SpreadFunction, SpreadFunction> CANDY_GRASS_SPREAD = SPREAD_FUNCTIONS
             .register("candy_grass_spread", () -> SpreadFunction.make()
                     .usingDefaultSpreadRule(SpreadRules.spreadRules()
                             .addCondition(CandyGrassBlock::randomSpreadChance)
@@ -46,12 +46,12 @@ public class MainSpreadFunctions {
                                             CandyGrassBlock::canPropagate))
                                     .setMinMaxConversions(1, 5))));
 
-    public static final Supplier<SpreadFunction> VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS
+    public static final DeferredHolder<SpreadFunction, SpreadFunction> VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS
             .register("vertical_only_spread",
                     () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
                             .extend());
 
-    public static final Supplier<SpreadFunction> ICE_SPREAD = SPREAD_FUNCTIONS
+    public static final DeferredHolder<SpreadFunction, SpreadFunction> ICE_SPREAD = SPREAD_FUNCTIONS
             .register("ice_spread",
                     () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
                             .extend()

@@ -38,6 +38,8 @@ public class MainModelProvider extends ModelProvider {
         simpleBlockState(blockModels, MainBlocks.CANDY_GRASS_BLOCK);
         createTrivialTranslucentCube(blockModels, MainBlocks.CANDY_ICE_BLOCK);
 
+        simpleBlockState(blockModels, MainBlocks.LICORICE_GRASS_BLOCK);
+
         blockModels.createTrivialCube(MainBlocks.CANDY_CANE_COBBLESTONE.get());
 
         createCutoutCrossblockWithDefaultItem(blockModels,

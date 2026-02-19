@@ -28,6 +28,8 @@ public class MainBlockLootTable extends BlockLootSubProvider {
         dropSelf(MainBlocks.CANDY_DIRT_BLOCK.get());
         dropWhenSilkTouch(MainBlocks.CANDY_ICE_BLOCK.get());
 
+        dropSelf(MainBlocks.LICORICE_GRASS_BLOCK.get());
+
         add(MainBlocks.CANDY_CANE_ROCK.get(),
                 block -> this.createSingleItemTableWithSilkTouch(block,
                         MainBlocks.CANDY_CANE_COBBLESTONE.get()));
