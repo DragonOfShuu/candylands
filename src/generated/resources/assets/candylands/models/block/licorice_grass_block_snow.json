@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "candylands:block/licorice_dirt_block",
+    "particle": "candylands:block/licorice_dirt_block",
+    "side": "candylands:block/licorice_grass_block_snow",
+    "top": "candylands:block/licorice_grass_block_top"
+  }
+}

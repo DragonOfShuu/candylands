@@ -49,7 +49,8 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.MINEABLE_WITH_HOE).add(MainBlocks.LICORICE_LEAVES.get());
 
@@ -62,7 +63,8 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
     private void blockTagTypes() {
         tag(BlockTags.DIRT).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.ICE).add(MainBlocks.CANDY_ICE_BLOCK.get());
 
@@ -133,28 +135,34 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
     private void spawningTags() {
         tag(BlockTags.VALID_SPAWN).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.FOXES_SPAWNABLE_ON).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
         tag(BlockTags.ANIMALS_SPAWNABLE_ON)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
         tag(BlockTags.FROGS_SPAWNABLE_ON).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.RABBITS_SPAWNABLE_ON)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.WOLVES_SPAWNABLE_ON)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
     }
 
     private void replaceableTags() {
@@ -166,6 +174,7 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.REPLACEABLE).add(MainBlocks.CANDY_GRASS_BLOCK.get())
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get())
                 .add(MainBlocks.LICORICE_LEAVES.get())
                 .add(MainBlocks.CANDY_CANE_ROCK.get())
                 .add(MainBlocks.CANDY_CANE_COBBLESTONE.get());
@@ -173,39 +182,47 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.AZALEA_ROOT_REPLACEABLE)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.SCULK_REPLACEABLE).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.LUSH_GROUND_REPLACEABLE)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
         tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
         tag(BlockTags.MOSS_REPLACEABLE).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.SCULK_REPLACEABLE_WORLD_GEN)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
     }
 
     private void growsOnTags() {
         tag(BlockTags.AZALEA_GROWS_ON).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.DRY_VEGETATION_MAY_PLACE_ON)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
     }
 
     private void spreadableTags() {
@@ -214,17 +231,20 @@ public class MainBlockTagsProvider extends BlockTagsProvider {
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_ICE_BLOCK.get())
                 .add(MainBlocks.CANDY_CANE_ROCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
     }
 
     private void miscTags() {
         tag(BlockTags.BIG_DRIPLEAF_PLACEABLE)
                 .add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
 
         tag(BlockTags.ENDERMAN_HOLDABLE).add(MainBlocks.CANDY_DIRT_BLOCK.get())
                 .add(MainBlocks.CANDY_GRASS_BLOCK.get())
-                .add(MainBlocks.LICORICE_GRASS_BLOCK.get());
+                .add(MainBlocks.LICORICE_GRASS_BLOCK.get())
+                .add(MainBlocks.LICORICE_DIRT_BLOCK.get());
     }
 }

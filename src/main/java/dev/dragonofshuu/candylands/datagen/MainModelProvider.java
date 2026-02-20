@@ -15,12 +15,16 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.BlockModelGenerators.BlockFamilyProvider;
 import net.minecraft.client.data.models.BlockModelGenerators.PlantType;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -38,7 +42,13 @@ public class MainModelProvider extends ModelProvider {
         simpleBlockState(blockModels, MainBlocks.CANDY_GRASS_BLOCK);
         createTrivialTranslucentCube(blockModels, MainBlocks.CANDY_ICE_BLOCK);
 
-        simpleBlockState(blockModels, MainBlocks.LICORICE_GRASS_BLOCK);
+        // simpleBlockState(blockModels,
+        // MainBlocks.LICORICE_GRASS_BLOCK);
+        // blockModels.createGrassLikeBlock(null, null, null);
+        // blockModels.createtrivi
+        blockModels.createTrivialCube(MainBlocks.LICORICE_DIRT_BLOCK.get());
+        createGrassBlock(MainBlocks.LICORICE_DIRT_BLOCK.get(),
+                MainBlocks.LICORICE_GRASS_BLOCK.get(), blockModels);
 
         blockModels.createTrivialCube(MainBlocks.CANDY_CANE_COBBLESTONE.get());
 
@@ -90,7 +100,10 @@ public class MainModelProvider extends ModelProvider {
 
     private void simpleBlockState(BlockModelGenerators blockModels,
             DeferredBlock<? extends Block> block) {
-        ResourceLocation parentLocation = asBlockParentResource(block);
+        // ResourceLocation parentLocation =
+        // asBlockParentResource(block);
+        ResourceLocation parentLocation = TextureMapping
+                .getBlockTexture(block.get());
         blockModels.blockStateOutput
                 .accept(MultiVariantGenerator.dispatch(block.get(),
                         BlockModelGenerators.plainVariant(parentLocation)));
@@ -174,6 +187,33 @@ public class MainModelProvider extends ModelProvider {
                 resourcelocation);
     }
 
+    private void createGrassBlock(Block dirtBlock, Block grassBlock,
+            BlockModelGenerators blockModels) {
+        ResourceLocation dirtTexture = TextureMapping
+                .getBlockTexture(dirtBlock);
+
+        TextureMapping snowTextureMapping = (new TextureMapping())
+                .put(TextureSlot.BOTTOM, dirtTexture)
+                .copyForced(TextureSlot.BOTTOM, TextureSlot.PARTICLE)
+                .put(TextureSlot.TOP,
+                        TextureMapping.getBlockTexture(grassBlock, "_top"))
+                .put(TextureSlot.SIDE,
+                        TextureMapping.getBlockTexture(grassBlock, "_snow"));
+
+        MultiVariant snowVariant = BlockModelGenerators.plainVariant(
+                ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(grassBlock,
+                        "_snow", snowTextureMapping, blockModels.modelOutput));
+
+        MultiVariant normalVariant = BlockModelGenerators
+                .plainVariant(ModelTemplates.CUBE_BOTTOM_TOP.create(grassBlock,
+                        TextureMapping.cubeBottomTop(grassBlock)
+                                .copyAndUpdate(TextureSlot.BOTTOM, dirtTexture),
+                        blockModels.modelOutput));
+
+        blockModels.createGrassLikeBlock(grassBlock, normalVariant,
+                snowVariant);
+    }
+
     private void ignoreBlockModelGen(DeferredBlock<Block> candyCaneRockDoor) {
         skipGeneratingModelsFor.add(candyCaneRockDoor.get());
     }
@@ -185,15 +225,17 @@ public class MainModelProvider extends ModelProvider {
         return familyProvider;
     }
 
-    private <T extends Block> String asBlockParent(DeferredBlock<T> block) {
-        String newLocation = new StringBuilder()
-                .append(block.getId().getNamespace()).append(':')
-                .append("block/").append(block.getId().getPath()).toString();
-        return newLocation;
-    }
+    // private <T extends Block> String
+    // asBlockParent(DeferredBlock<T> block) {
+    // String newLocation = new StringBuilder()
+    // .append(block.getId().getNamespace()).append(':')
+    // .append("block/").append(block.getId().getPath()).toString();
+    // return newLocation;
+    // }
 
-    private <T extends Block> ResourceLocation asBlockParentResource(
-            DeferredBlock<T> block) {
-        return ResourceLocation.parse(asBlockParent(block));
-    }
+    // private <T extends Block> ResourceLocation
+    // asBlockParentResource(
+    // DeferredBlock<T> block) {
+    // return ResourceLocation.parse(asBlockParent(block));
+    // }
 }

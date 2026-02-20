@@ -4,6 +4,7 @@
     "candylands:candy_dirt_block",
     "candylands:candy_ice_block",
     "candylands:candy_cane_rock",
-    "candylands:licorice_grass_block"
+    "candylands:licorice_grass_block",
+    "candylands:licorice_dirt_block"
   ]
 }

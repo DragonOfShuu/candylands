@@ -11,6 +11,7 @@ import dev.dragonofshuu.candylands.block.custom.CandyVerticalSpread;
 import dev.dragonofshuu.candylands.block.custom.TintedParticularParticleLeavesBlock;
 import dev.dragonofshuu.candylands.block.custom.bases.CustomMemoizedSpreadBlock;
 import dev.dragonofshuu.candylands.block.custom.bases.FlammableRotatedPillarBlock;
+import dev.dragonofshuu.candylands.block.custom.bases.SnowySpreadBlock;
 import dev.dragonofshuu.candylands.block.grower.MainTreeGrower;
 import dev.dragonofshuu.candylands.data.MainBlockSetTypes;
 import dev.dragonofshuu.candylands.data.MainWoodTypes;
@@ -68,10 +69,18 @@ public class MainBlocks {
     // ------ Licorice Dirt Types ------
     public static final DeferredBlock<Block> LICORICE_GRASS_BLOCK = registerBlock(
             "licorice_grass_block",
-            properties -> new CustomMemoizedSpreadBlock(properties,
+            properties -> new SnowySpreadBlock(properties,
                     MainSpreadFunctions.CANDY_GRASS_SPREAD.getKey()),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
                     .mapColor(MapColor.COLOR_RED)
+                    .requiresCorrectToolForDrops());
+
+    public static final DeferredBlock<Block> LICORICE_DIRT_BLOCK = registerBlock(
+            "licorice_dirt_block",
+            (properties) -> new CandyVerticalSpread(MainBiomes.LICORICE_FOREST,
+                    properties),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
+                    .randomTicks().mapColor(MapColor.COLOR_RED)
                     .requiresCorrectToolForDrops());
 
     // ------ Candy Rock Types ------

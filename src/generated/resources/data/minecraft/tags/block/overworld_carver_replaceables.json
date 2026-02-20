@@ -2,6 +2,7 @@
   "values": [
     "candylands:candy_dirt_block",
     "candylands:candy_grass_block",
-    "candylands:licorice_grass_block"
+    "candylands:licorice_grass_block",
+    "candylands:licorice_dirt_block"
   ]
 }
