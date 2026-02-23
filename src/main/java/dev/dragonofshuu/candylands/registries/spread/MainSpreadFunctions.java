@@ -4,7 +4,6 @@ import java.util.List;
 
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.MainBlocks;
-import dev.dragonofshuu.candylands.block.custom.CandyGrassBlock;
 import dev.dragonofshuu.candylands.block.custom.bases.SnowySpreadBlock;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.registries.MainRegistries;
