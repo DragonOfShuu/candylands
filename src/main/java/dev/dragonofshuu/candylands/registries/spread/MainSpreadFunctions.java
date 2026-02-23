@@ -5,6 +5,7 @@ import java.util.List;
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.block.custom.CandyGrassBlock;
+import dev.dragonofshuu.candylands.block.custom.bases.SnowySpreadBlock;
 import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.registries.MainRegistries;
 import net.minecraft.core.Vec3i;
@@ -21,7 +22,7 @@ public class MainSpreadFunctions {
     public static final DeferredHolder<SpreadFunction, SpreadFunction> CANDY_GRASS_SPREAD = SPREAD_FUNCTIONS
             .register("candy_grass_spread", () -> SpreadFunction.make()
                     .usingDefaultSpreadRule(SpreadRules.spreadRules()
-                            .addCondition(CandyGrassBlock::randomSpreadChance)
+                            .addCondition(SnowySpreadBlock::randomSpreadChance)
                             .setMaxDistances(new Vec3i(2, 3, 2)).smart())
                     .useSpreaders((defaultSpreader) -> List.of(
                             defaultSpreader.extend().addBlockConversion(
@@ -29,7 +30,7 @@ public class MainSpreadFunctions {
                                     SpreadConverter.of(
                                             MainBlocks.CANDY_GRASS_BLOCK.get()
                                                     .defaultBlockState(),
-                                            CandyGrassBlock::canPropagate))
+                                            SnowySpreadBlock::canPropagate))
                                     .addBlockConversion(Blocks.DIRT,
                                             MainBlocks.CANDY_DIRT_BLOCK.get()
                                                     .defaultBlockState())
@@ -43,16 +44,16 @@ public class MainSpreadFunctions {
                                     SpreadConverter.of(
                                             MainBlocks.CANDY_DIRT_BLOCK.get()
                                                     .defaultBlockState(),
-                                            CandyGrassBlock::canPropagate))
+                                            SnowySpreadBlock::canPropagate))
                                     .setMinMaxConversions(1, 5))));
 
-    public static final DeferredHolder<SpreadFunction, SpreadFunction> VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS
-            .register("vertical_only_spread",
+    public static final DeferredHolder<SpreadFunction, SpreadFunction> CANDY_VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS
+            .register("candy_vertical_only_spread",
                     () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
                             .extend());
 
-    public static final DeferredHolder<SpreadFunction, SpreadFunction> ICE_SPREAD = SPREAD_FUNCTIONS
-            .register("ice_spread",
+    public static final DeferredHolder<SpreadFunction, SpreadFunction> CANDY_ICE_SPREAD = SPREAD_FUNCTIONS
+            .register("candy_ice_spread",
                     () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
                             .extend()
                             .useSpreaders((defaultSpreader) -> List

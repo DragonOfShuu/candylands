@@ -2,11 +2,9 @@ package dev.dragonofshuu.candylands.block.custom;
 
 import java.util.function.Consumer;
 
-import org.slf4j.Logger;
 
 import com.mojang.serialization.MapCodec;
 
-import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.MainBlocks;
 import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import dev.dragonofshuu.candylands.registries.spread.SpreadContext;
@@ -36,8 +34,6 @@ public class CandyIceBlock extends IceBlock implements IOnFall {
     private static final int MAX_SPREAD_ATTEMPTS = 3;
     private static final SpreadMemoizer SPREAD_MEMOIZER = new SpreadMemoizer(
             SPREAD_ATTEMPTS, MAX_SPREAD_ATTEMPTS);
-
-    private static final Logger LOGGER = CandyLands.LOGGER;
 
     public CandyIceBlock(Properties properties) {
         super(properties);
@@ -69,7 +65,7 @@ public class CandyIceBlock extends IceBlock implements IOnFall {
             SPREAD_MEMOIZER.setSpreadAttempts(level, state, pos,
                     (old) -> old + 1);
         };
-        MainSpreadFunctions.ICE_SPREAD.get().tick(state, level, pos,
+        MainSpreadFunctions.CANDY_ICE_SPREAD.get().tick(state, level, pos,
                 onCantSpread, (c) -> {
                 }, random);
     }
@@ -95,16 +91,10 @@ public class CandyIceBlock extends IceBlock implements IOnFall {
         Level level = entity.level();
         if (level.isClientSide())
             return;
-        LOGGER.debug("Entity {} fell on CandyIceBlock at {}, in block {}",
-                entity, entity.blockPosition().below(),
-                level.getBlockState(entity.blockPosition()));
         BlockPos inPos = entity.blockPosition();
         BlockPos belowPos = entity.blockPosition().below();
         if (level.getBlockState(inPos).getBlock().equals(Blocks.SNOW)) {
             int radius = 5;
-            LOGGER.debug(
-                    "Entity is inside snow, melting nearby ice blocks in radius {}",
-                    radius);
             BlockPos.betweenClosed(belowPos.offset(-radius, 0, -radius),
                     belowPos.offset(radius, 0, radius)).forEach((pos) -> {
                         if (level.getBlockState(pos).getBlock()

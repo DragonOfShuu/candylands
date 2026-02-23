@@ -38,11 +38,6 @@ public class MemoizedSpreadBlock extends Block {
     }
 
     @Override
-    protected boolean isRandomlyTicking(BlockState state) {
-        return SPREAD_MEMOIZER.canTrySpread(state);
-    }
-
-    @Override
     protected BlockState updateShape(BlockState state, LevelReader level,
             ScheduledTickAccess scheduledTickAccess, BlockPos pos,
             Direction direction, BlockPos neighborPos, BlockState neighborState,
@@ -53,12 +48,11 @@ public class MemoizedSpreadBlock extends Block {
     @Override
     protected final void randomTick(BlockState state, ServerLevel level,
             BlockPos pos, RandomSource random) {
-        if (!isRandomlyTicking(state)) {
-            throw new IllegalStateException(
-                    "randomTick called on non-randomly ticking block state");
+        if (!preSpreadTick(state, level, pos, random)) {
+            return;
         }
 
-        if (!preSpreadTick(state, level, pos, random)) {
+        if (!SPREAD_MEMOIZER.canTrySpread(state)) {
             return;
         }
 

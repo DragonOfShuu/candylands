@@ -26,7 +26,7 @@ public class CustomMemoizedSpreadBlock extends MemoizedSpreadBlock {
                             .forGetter(b -> b.spreadFunction))
                     .apply(instance, CustomMemoizedSpreadBlock::new));
 
-    private final ResourceKey<SpreadFunction> spreadFunction;
+    protected final ResourceKey<SpreadFunction> spreadFunction;
 
     public CustomMemoizedSpreadBlock(Properties properties,
             ResourceKey<SpreadFunction> spreadFunction) {

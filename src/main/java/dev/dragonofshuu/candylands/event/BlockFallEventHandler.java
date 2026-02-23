@@ -13,16 +13,12 @@ import dev.dragonofshuu.candylands.block.custom.IOnFall;
 
 @EventBusSubscriber(modid = CandyLands.MODID)
 public class BlockFallEventHandler {
-    private static final Logger LOGGER = CandyLands.LOGGER;
-
     @SubscribeEvent
     public static void onLivingFall(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
         // The block the player is inside of
         Block blockInside = entity.getInBlockState().getBlock();
         Block blockOn = entity.getBlockStateOn().getBlock();
-        LOGGER.debug("Entity {} fell, block inside: {}, block on: {}", entity,
-                blockInside, blockOn);
         if (blockInside instanceof IOnFall) {
             ((IOnFall) blockInside).OnFallIn(entity);
         }

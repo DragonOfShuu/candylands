@@ -37,8 +37,8 @@ public class CandyVerticalSpread extends MemoizedSpreadBlock {
     @Override
     protected void spreadTick(BlockState state, ServerLevel level, BlockPos pos,
             Consumer<SpreadContext> cantSpreadHook, RandomSource random) {
-        MainSpreadFunctions.VERTICAL_ONLY_SPREAD.get().tick(state, level, pos,
-                cantSpreadHook, (c) -> {
+        MainSpreadFunctions.CANDY_VERTICAL_ONLY_SPREAD.get().tick(state, level,
+                pos, cantSpreadHook, (c) -> {
                 }, random);
     }
 }

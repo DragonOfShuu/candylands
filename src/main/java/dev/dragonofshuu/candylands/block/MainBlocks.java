@@ -47,12 +47,6 @@ public class MainBlocks {
             .createBlocks(CandyLands.MODID);
 
     // ------ Candy Dirt Types ------
-    public static final DeferredBlock<Block> CANDY_GRASS_BLOCK = registerBlock(
-            "candy_grass_block", CandyGrassBlock::new,
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
-                    .mapColor(MapColor.COLOR_PINK)
-                    .requiresCorrectToolForDrops());
-
     public static final DeferredBlock<Block> CANDY_DIRT_BLOCK = registerBlock(
             "candy_dirt_block",
             (properties) -> new CandyVerticalSpread(MainBiomes.LICORICE_FOREST,
@@ -61,26 +55,36 @@ public class MainBlocks {
                     .randomTicks().mapColor(MapColor.CRIMSON_NYLIUM)
                     .requiresCorrectToolForDrops());
 
+    public static final DeferredBlock<Block> CANDY_GRASS_BLOCK = registerBlock(
+            "candy_grass_block",
+            p -> new SnowySpreadBlock(p,
+                    MainSpreadFunctions.CANDY_GRASS_SPREAD.getKey(),
+                    MainBlocks.CANDY_DIRT_BLOCK.getKey()),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .mapColor(MapColor.COLOR_PINK)
+                    .requiresCorrectToolForDrops());
+
     public static final DeferredBlock<Block> CANDY_ICE_BLOCK = registerBlock(
             "candy_ice_block", CandyIceBlock::new,
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.FROSTED_ICE)
                     .randomTicks());
 
     // ------ Licorice Dirt Types ------
-    public static final DeferredBlock<Block> LICORICE_GRASS_BLOCK = registerBlock(
-            "licorice_grass_block",
-            properties -> new SnowySpreadBlock(properties,
-                    MainSpreadFunctions.CANDY_GRASS_SPREAD.getKey()),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
-                    .mapColor(MapColor.COLOR_RED)
-                    .requiresCorrectToolForDrops());
-
     public static final DeferredBlock<Block> LICORICE_DIRT_BLOCK = registerBlock(
             "licorice_dirt_block",
             (properties) -> new CandyVerticalSpread(MainBiomes.LICORICE_FOREST,
                     properties),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
                     .randomTicks().mapColor(MapColor.COLOR_RED)
+                    .requiresCorrectToolForDrops());
+
+    public static final DeferredBlock<Block> LICORICE_GRASS_BLOCK = registerBlock(
+            "licorice_grass_block",
+            properties -> new SnowySpreadBlock(properties,
+                    MainSpreadFunctions.CANDY_GRASS_SPREAD.getKey(),
+                    MainBlocks.LICORICE_DIRT_BLOCK.getKey()),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .mapColor(MapColor.COLOR_RED)
                     .requiresCorrectToolForDrops());
 
     // ------ Candy Rock Types ------
