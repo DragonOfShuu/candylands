@@ -46,14 +46,47 @@ public class MainSpreadFunctions {
                                             SnowySpreadBlock::canPropagate))
                                     .setMinMaxConversions(1, 5))));
 
+    public static final DeferredHolder<SpreadFunction, SpreadFunction> LICORICE_GRASS_SPREAD = SPREAD_FUNCTIONS
+            .register("licorice_grass_spread", () -> SpreadFunction.make()
+                    .usingDefaultSpreadRule(SpreadRules.spreadRules()
+                            .addCondition(SnowySpreadBlock::randomSpreadChance)
+                            .setMaxDistances(new Vec3i(2, 3, 2)).smart())
+                    .useSpreaders((defaultSpreader) -> List.of(
+                            defaultSpreader.extend().addBlockConversion(
+                                    MainBlocks.LICORICE_DIRT_BLOCK.get(),
+                                    SpreadConverter.of(
+                                            MainBlocks.LICORICE_GRASS_BLOCK
+                                                    .get().defaultBlockState(),
+                                            SnowySpreadBlock::canPropagate))
+                                    .addBlockConversion(Blocks.DIRT,
+                                            MainBlocks.LICORICE_DIRT_BLOCK.get()
+                                                    .defaultBlockState())
+                                    // .addBlockConversion(Blocks.ICE,
+                                    // MainBlocks.LICORICE_ICE_BLOCK.get()
+                                    // .defaultBlockState())
+                                    .setMinMaxConversions(3, 20)
+                                    .setBiome(MainBiomes.LICORICE_FOREST),
+                            defaultSpreader.extend().addBlockConversion(
+                                    Blocks.GRASS_BLOCK,
+                                    SpreadConverter.of(
+                                            MainBlocks.LICORICE_DIRT_BLOCK.get()
+                                                    .defaultBlockState(),
+                                            SnowySpreadBlock::canPropagate))
+                                    .setMinMaxConversions(1, 5))));
+
     public static final DeferredHolder<SpreadFunction, SpreadFunction> CANDY_VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS
             .register("candy_vertical_only_spread",
-                    () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
+                    () -> MainBaseSpreadFunctions.CANDY_VERTICAL_SPREAD_SPREADER
+                            .extend());
+
+    public static final DeferredHolder<SpreadFunction, SpreadFunction> LICORICE_VERTICAL_ONLY_SPREAD = SPREAD_FUNCTIONS
+            .register("licorice_vertical_only_spread",
+                    () -> MainBaseSpreadFunctions.LICORICE_VERTICAL_SPREAD_SPREADER
                             .extend());
 
     public static final DeferredHolder<SpreadFunction, SpreadFunction> CANDY_ICE_SPREAD = SPREAD_FUNCTIONS
             .register("candy_ice_spread",
-                    () -> MainBaseSpreadFunctions.VERTICAL_SPREAD_SPREADER
+                    () -> MainBaseSpreadFunctions.CANDY_VERTICAL_SPREAD_SPREADER
                             .extend()
                             .useSpreaders((defaultSpreader) -> List
                                     .of(defaultSpreader.extend()

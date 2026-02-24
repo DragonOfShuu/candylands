@@ -13,10 +13,10 @@ public class LicoriceSurfaceRuleData {
     // private static final SurfaceRules.RuleSource GRASS_BLOCK
     // = makeStateRule(
     // Blocks.GRASS_BLOCK);
-    private static final SurfaceRules.RuleSource CANDY_GRASS_BLOCK = makeStateRule(
-            MainBlocks.CANDY_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource CANDY_DIRT_BLOCK = makeStateRule(
-            MainBlocks.CANDY_DIRT_BLOCK.get());
+    private static final SurfaceRules.RuleSource LICORICE_GRASS_BLOCK = makeStateRule(
+            MainBlocks.LICORICE_GRASS_BLOCK.get());
+    private static final SurfaceRules.RuleSource LICORICE_DIRT_BLOCK = makeStateRule(
+            MainBlocks.LICORICE_DIRT_BLOCK.get());
 
     public static RuleSource makeRules() {
         // SurfaceRules.ConditionSource isAtOrAboveWaterLevel =
@@ -28,9 +28,9 @@ public class LicoriceSurfaceRuleData {
                 SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                        CANDY_GRASS_BLOCK),
+                                        LICORICE_GRASS_BLOCK),
                                 SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
-                                        CANDY_DIRT_BLOCK))))
+                                        LICORICE_DIRT_BLOCK))))
         // SurfaceRules.ifTrue(SurfaceRules.isBiome(MainBiomes.COLD_BLUE),
         // BLUE_TERRACOTTA),
 

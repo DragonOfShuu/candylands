@@ -21,6 +21,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -48,6 +50,8 @@ public class SnowySpreadBlock extends CustomMemoizedSpreadBlock {
             ResourceKey<SpreadFunction> spreadFunction,
             ResourceKey<Block> dirtBlock) {
         super(properties, spreadFunction);
+        this.registerDefaultState(
+                this.stateDefinition.any().setValue(SNOWY, false));
         this.dirtBlock = dirtBlock;
     }
 
@@ -132,7 +136,10 @@ public class SnowySpreadBlock extends CustomMemoizedSpreadBlock {
             BlockPos pos) {
         BlockPos blockAbove = pos.above();
         BlockState blockstate = levelReader.getBlockState(blockAbove);
-        if (blockstate.getFluidState().getAmount() == 8) {
+        if (blockstate.is(Blocks.SNOW)
+                && (Integer) blockstate.getValue(SnowLayerBlock.LAYERS) == 1) {
+            return true;
+        } else if (blockstate.getFluidState().getAmount() == 8) {
             return false;
         } else {
             int i = LightEngine.getLightBlockInto(state, blockstate,
