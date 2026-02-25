@@ -6,8 +6,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 
-import org.slf4j.Logger;
-
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.custom.IOnFall;
 

@@ -7,7 +7,6 @@ import dev.dragonofshuu.candylands.datagen.data.worldgen.placed_feature.MainPlac
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.sounds.Music;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
@@ -30,8 +29,6 @@ public class MainOverworldBiomes {
         BiomeDefaultFeatures.farmAnimals(mobspawnsettings$builder);
         mobspawnsettings$builder.addSpawn(MobCategory.CREATURE, 1,
                 new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 10));
-        mobspawnsettings$builder.addSpawn(MobCategory.MONSTER, 4,
-                new MobSpawnSettings.SpawnerData(EntityType.CAVE_SPIDER, 5, 6));
         BiomeDefaultFeatures.commonSpawns(mobspawnsettings$builder);
 
         BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(
@@ -50,8 +47,48 @@ public class MainOverworldBiomes {
                 GenerationStep.Decoration.VEGETAL_DECORATION,
                 MainPlacedVegetationFeatures.TREES_LICORICE);
 
-        addDefaultCandyGrass(biomegenerationsettings$builder);
-        addDefaultCandyCaneFlowers(biomegenerationsettings$builder);
+        MainBiomeDefaults.addDefaultCandyGrass(biomegenerationsettings$builder);
+        MainBiomeDefaults
+                .addDefaultCandyCaneFlowers(biomegenerationsettings$builder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(
+                biomegenerationsettings$builder, true);
+
+        var specialEffects = new BiomeSpecialEffects.Builder()
+                .waterColor(0xbd3a62).waterFogColor(0xbd3a62).fogColor(0xbd3a62)
+                .skyColor(0xbd3a62).grassColorOverride(0xbd3a62)
+                .foliageColorOverride(0xbd3a62)
+                .dryFoliageColorOverride(0xbd3a62)
+                .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                .backgroundMusic(NORMAL_MUSIC);
+
+        return new Biome.BiomeBuilder().hasPrecipitation(true)
+                .temperature(-1.5F).downfall(0.4F)
+                .specialEffects(specialEffects.build())
+                .mobSpawnSettings(mobspawnsettings$builder.build())
+                .generationSettings(biomegenerationsettings$builder.build())
+                .build();
+    }
+
+    public static Biome cottonCandyPlains(
+            HolderGetter<PlacedFeature> placed_features_holder,
+            HolderGetter<ConfiguredWorldCarver<?>> configured_carver_holder) {
+        MobSpawnSettings.Builder mobspawnsettings$builder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.farmAnimals(mobspawnsettings$builder);
+        BiomeDefaultFeatures.commonSpawns(mobspawnsettings$builder);
+
+        BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(
+                placed_features_holder, configured_carver_holder);
+        globalOverworldGeneration(biomegenerationsettings$builder);
+
+        // Local Features -- Placeholder
+
+        BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder);
+        BiomeDefaultFeatures
+                .addDefaultSoftDisks(biomegenerationsettings$builder);
+        biomegenerationsettings$builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                MainPlacedVegetationFeatures.TREES_LICORICE);
+
         BiomeDefaultFeatures.addDefaultExtraVegetation(
                 biomegenerationsettings$builder, true);
 
@@ -63,9 +100,8 @@ public class MainOverworldBiomes {
                 .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                 .backgroundMusic(NORMAL_MUSIC);
 
-        return new Biome.BiomeBuilder().hasPrecipitation(true)
-                .temperature(-0.5F).downfall(0.4F)
-                .specialEffects(specialEffects.build())
+        return new Biome.BiomeBuilder().hasPrecipitation(true).temperature(1.5F)
+                .downfall(0.4F).specialEffects(specialEffects.build())
                 .mobSpawnSettings(mobspawnsettings$builder.build())
                 .generationSettings(biomegenerationsettings$builder.build())
                 .build();
@@ -79,62 +115,5 @@ public class MainOverworldBiomes {
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generationSettings);
         BiomeDefaultFeatures.addDefaultSprings(generationSettings);
         BiomeDefaultFeatures.addSurfaceFreezing(generationSettings);
-    }
-
-    public static void addDefaultCandyGrass(
-            BiomeGenerationSettings.Builder generationSettings) {
-        generationSettings.addFeature(
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                MainPlacedVegetationFeatures.PATCH_CANDY_GRASS);
-    }
-
-    public static void addDefaultCandyCaneFlowers(
-            BiomeGenerationSettings.Builder generationSettings) {
-        generationSettings.addFeature(
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                MainPlacedVegetationFeatures.FLOWER_CANDY_CANE);
-    }
-
-    private static Biome biome(boolean hasPercipitation, float temperature,
-            float downfall, MobSpawnSettings.Builder mobSpawnSettings,
-            BiomeGenerationSettings.Builder generationSettings,
-            @Nullable Music backgroundMusic) {
-        return biome(hasPercipitation, temperature, downfall, 4159204, 329011,
-                null, null, mobSpawnSettings, generationSettings,
-                backgroundMusic);
-    }
-
-    private static Biome biome(boolean hasPrecipitation, float temperature,
-            float downfall, int waterColor, int waterFogColor,
-            @Nullable Integer grassColorOverride,
-            @Nullable Integer foliageColorOverride,
-            MobSpawnSettings.Builder mobSpawnSettings,
-            BiomeGenerationSettings.Builder generationSettings,
-            @Nullable Music backgroundMusic) {
-        BiomeSpecialEffects.Builder biomespecialeffects$builder = new BiomeSpecialEffects.Builder()
-                .waterColor(waterColor).waterFogColor(waterFogColor)
-                .fogColor(12638463).skyColor(calculateSkyColor(temperature))
-                .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                .backgroundMusic(backgroundMusic);
-        if (grassColorOverride != null) {
-            biomespecialeffects$builder.grassColorOverride(grassColorOverride);
-        }
-
-        if (foliageColorOverride != null) {
-            biomespecialeffects$builder
-                    .foliageColorOverride(foliageColorOverride);
-        }
-
-        return new Biome.BiomeBuilder().hasPrecipitation(hasPrecipitation)
-                .temperature(temperature).downfall(downfall)
-                .specialEffects(biomespecialeffects$builder.build())
-                .mobSpawnSettings(mobSpawnSettings.build())
-                .generationSettings(generationSettings.build()).build();
-    }
-
-    protected static int calculateSkyColor(float temperature) {
-        float $$1 = temperature / 3.0F;
-        $$1 = Mth.clamp($$1, -1.0F, 1.0F);
-        return Mth.hsvToRgb(0.62222224F - $$1 * 0.05F, 0.5F + $$1 * 0.1F, 1.0F);
     }
 }

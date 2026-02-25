@@ -4,8 +4,9 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import dev.dragonofshuu.candylands.CandyLands;
+import dev.dragonofshuu.candylands.worldgen.regions.CottonCandyRegion;
 import dev.dragonofshuu.candylands.worldgen.regions.LicoriceRegion;
-import dev.dragonofshuu.candylands.worldgen.surfaceRules.LicoriceSurfaceRuleData;
+import dev.dragonofshuu.candylands.worldgen.surfaceRules.OverworldSurfaceRuleData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
 import terrablender.api.Region;
@@ -16,9 +17,10 @@ public class MainBiomeWorldgen {
 
     public static void registerAll() {
         registerRegion("licorice", LicoriceRegion::new, 20);
+        registerRegion("cotton_candy", CottonCandyRegion::new, 20);
 
         registerSurfaceRule(SurfaceRuleManager.RuleCategory.OVERWORLD,
-                LicoriceSurfaceRuleData::makeRules);
+                OverworldSurfaceRuleData::makeRules);
     }
 
     private static void registerRegion(String name,

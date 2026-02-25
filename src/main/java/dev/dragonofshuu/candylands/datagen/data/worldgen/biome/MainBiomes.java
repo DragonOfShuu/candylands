@@ -7,11 +7,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 
 public class MainBiomes {
-    public static final ResourceKey<Biome> LICORICE_FOREST = createKey("licorice_forest");
+    public static final ResourceKey<Biome> LICORICE_FOREST = createKey(
+            "licorice_forest");
+    public static final ResourceKey<Biome> COTTON_CANDY_PLAINS = createKey(
+            "cotton_candy_plains");
 
     public static ResourceKey<Biome> createKey(String key) {
-        return ResourceKey.create(
-                Registries.BIOME,
+        return ResourceKey.create(Registries.BIOME,
                 ResourceLocation.fromNamespaceAndPath(CandyLands.MODID, key));
     }
 }

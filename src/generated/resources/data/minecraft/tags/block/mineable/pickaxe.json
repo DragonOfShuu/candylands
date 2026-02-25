@@ -1,14 +1,14 @@
 {
   "values": [
-    "candylands:candy_cane_rock_button",
+    "candylands:candy_cane_rock_fence_gate",
+    "candylands:candy_cane_rock_pressure_plate",
+    "candylands:candy_cane_rock_slab",
+    "candylands:candy_cane_rock_stairs",
+    "candylands:candy_cane_rock_fence",
+    "candylands:candy_cane_rock_trapdoor",
     "candylands:candy_cane_rock_wall",
     "candylands:candy_cane_rock_door",
-    "candylands:candy_cane_rock_pressure_plate",
-    "candylands:candy_cane_rock_stairs",
-    "candylands:candy_cane_rock_trapdoor",
-    "candylands:candy_cane_rock_fence",
-    "candylands:candy_cane_rock_fence_gate",
-    "candylands:candy_cane_rock_slab",
+    "candylands:candy_cane_rock_button",
     "candylands:candy_ice_block",
     "candylands:candy_cane_rock",
     "candylands:candy_cane_cobblestone"
