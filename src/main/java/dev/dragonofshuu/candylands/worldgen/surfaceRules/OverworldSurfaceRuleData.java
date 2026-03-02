@@ -17,14 +17,20 @@ public class OverworldSurfaceRuleData {
             MainBlocks.LICORICE_DIRT_BLOCK.get());
 
     public static RuleSource makeRules() {
-        return SurfaceRules.sequence(SurfaceRules.ifTrue(
-                SurfaceRules.isBiome(MainBiomes.COTTON_CANDY_PLAINS),
-                SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
-                        SurfaceRules.sequence(
-                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                        COTTON_CANDY_GRASS_BLOCK),
-                                SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
-                                        COTTON_CANDY_DIRT_BLOCK)))),
+        return SurfaceRules.sequence( // A comment for the formatting
+                SurfaceRules.ifTrue(
+                        SurfaceRules.isBiome(MainBiomes.COTTON_CANDY_PLAINS),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.abovePreliminarySurface(),
+                                SurfaceRules.sequence(SurfaceRules.ifTrue(
+                                        SurfaceRules.ON_FLOOR,
+                                        SurfaceRules.ifTrue(
+                                                SurfaceRules.waterBlockCheck(0,
+                                                        0),
+                                                COTTON_CANDY_GRASS_BLOCK)),
+                                        SurfaceRules.ifTrue(
+                                                SurfaceRules.UNDER_FLOOR,
+                                                COTTON_CANDY_DIRT_BLOCK)))),
                 SurfaceRules.ifTrue(
                         SurfaceRules.isBiome(MainBiomes.LICORICE_FOREST),
                         SurfaceRules.ifTrue(
@@ -32,7 +38,9 @@ public class OverworldSurfaceRuleData {
                                 SurfaceRules.sequence(
                                         SurfaceRules.ifTrue(
                                                 SurfaceRules.ON_FLOOR,
-                                                LICORICE_GRASS_BLOCK),
+                                                SurfaceRules.ifTrue(SurfaceRules
+                                                        .waterBlockCheck(0, 0),
+                                                        LICORICE_GRASS_BLOCK)),
                                         SurfaceRules.ifTrue(
                                                 SurfaceRules.UNDER_FLOOR,
                                                 LICORICE_DIRT_BLOCK)))));

@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 
 import dev.dragonofshuu.candylands.CandyLands;
 import dev.dragonofshuu.candylands.block.custom.CandyIceBlock;
-import dev.dragonofshuu.candylands.block.custom.CandyVerticalSpread;
 import dev.dragonofshuu.candylands.block.custom.TintedParticularParticleLeavesBlock;
 import dev.dragonofshuu.candylands.block.custom.bases.CustomMemoizedSpreadBlock;
 import dev.dragonofshuu.candylands.block.custom.bases.FlammableRotatedPillarBlock;
@@ -14,7 +13,6 @@ import dev.dragonofshuu.candylands.block.custom.bases.SnowySpreadBlock;
 import dev.dragonofshuu.candylands.block.grower.MainTreeGrower;
 import dev.dragonofshuu.candylands.data.MainBlockSetTypes;
 import dev.dragonofshuu.candylands.data.MainWoodTypes;
-import dev.dragonofshuu.candylands.datagen.data.worldgen.biome.MainBiomes;
 import dev.dragonofshuu.candylands.item.MainItems;
 import dev.dragonofshuu.candylands.registries.spread.MainSpreadFunctions;
 import net.minecraft.sounds.SoundEvents;
@@ -48,8 +46,8 @@ public class MainBlocks {
     // ------ Candy Dirt Types ------
     public static final DeferredBlock<Block> CANDY_DIRT_BLOCK = registerBlock(
             "candy_dirt_block",
-            (properties) -> new CandyVerticalSpread(MainBiomes.LICORICE_FOREST,
-                    properties),
+            (properties) -> new CustomMemoizedSpreadBlock(properties,
+                    MainSpreadFunctions.CANDY_VERTICAL_ONLY_SPREAD.getKey()),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
                     .randomTicks().mapColor(MapColor.CRIMSON_NYLIUM)
                     .requiresCorrectToolForDrops());

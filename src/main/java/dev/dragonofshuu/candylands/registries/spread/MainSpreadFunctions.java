@@ -37,7 +37,7 @@ public class MainSpreadFunctions {
                                             MainBlocks.CANDY_ICE_BLOCK.get()
                                                     .defaultBlockState())
                                     .setMinMaxConversions(3, 20)
-                                    .setBiome(MainBiomes.LICORICE_FOREST),
+                                    .setBiome(MainBiomes.COTTON_CANDY_PLAINS),
                             defaultSpreader.extend().addBlockConversion(
                                     Blocks.GRASS_BLOCK,
                                     SpreadConverter.of(

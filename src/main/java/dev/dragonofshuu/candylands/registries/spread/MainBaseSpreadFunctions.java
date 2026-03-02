@@ -12,7 +12,7 @@ public class MainBaseSpreadFunctions {
             .make()
             .usingDefaultSpreadRule(SpreadRules.spreadRules()
                     .setMaxDistances(new Vec3i(0, 3, 0))
-                    .setBiome(MainBiomes.LICORICE_FOREST).smart())
+                    .setBiome(MainBiomes.COTTON_CANDY_PLAINS).smart())
             .useSpreaders((defaultSpreader) -> List.of(defaultSpreader.extend()
                     .addConversion(Blocks.DIRT.defaultBlockState(),
                             MainBlocks.CANDY_DIRT_BLOCK.get()
@@ -31,8 +31,5 @@ public class MainBaseSpreadFunctions {
                     .addConversion(Blocks.DIRT.defaultBlockState(),
                             MainBlocks.LICORICE_DIRT_BLOCK.get()
                                     .defaultBlockState())
-                    // .addConversion(Blocks.ICE.defaultBlockState(),
-                    // MainBlocks.LICORICE_ICE_BLOCK.get()
-                    // .defaultBlockState())
                     .setMinMaxConversions(1, 5)));
 }
