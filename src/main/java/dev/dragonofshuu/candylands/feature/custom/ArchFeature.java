@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.phys.Vec3;
 
 public class ArchFeature extends Feature<BlockStateConfiguration> {
 
@@ -86,26 +87,57 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
                 double idealY = archCenter.getY() + archHeight
                         - Math.pow(localX * archWidth, 2);
 
-                // Iterate through a small vertical range to fill the
-                // arch's "body"
-                for (int y = -3; y <= 3; y++) {
-                    int worldY = (int) Math.round(idealY) + y;
-
-                    // Calculate distance from the current block to the ideal
-                    // arch point (localX, idealY, 0)
-                    // We use localZ here because in "local space" the arch is
-                    // always at Z=0
-                    double distSq = Math.pow(worldY - idealY, 2)
-                            + Math.pow(localZ, 2);
-
-                    // If distance is less than radius squared (e.g., radius of
-                    // 4.0)
-                    if (distSq < 6.0) {
-                        mutable.set(worldX, worldY, worldZ);
-                        level.setBlock(mutable, blockState, 2);
-                    }
+                if (Math.abs(localZ) < 1.5) {
+                    var position = new Vec3(worldX, idealY, worldZ);
+                    // var radius = Math.max(0,
+                    // 3 - (int) Math.abs((localZ + localX) / 2));
+                    var radius = 4;
+                    makeBlob(level, position, blockState, radius);
                 }
+
+                // // Iterate through a small vertical range to fill the
+                // // arch's "body"
+                // for (int y = -3; y <= 3; y++) {
+                // int worldY = (int) Math.round(idealY) + y;
+
+                // // Calculate distance from the current block to the ideal
+                // // arch point (localX, idealY, 0)
+                // // We use localZ here because in "local space" the arch
+                // is
+                // // always at Z=0
+                // double distSq = Math.pow(worldY - idealY, 2)
+                // + Math.pow(localZ, 2);
+
+                // // If distance is less than radius squared (e.g., radius
+                // of
+                // // 4.0)
+                // if (distSq < 6.0) {
+                // mutable.set(worldX, worldY, worldZ);
+                // level.setBlock(mutable, blockState, 2);
+                // }
+                // }
             }
         }
+    }
+
+    private boolean makeBlob(WorldGenLevel worldgenlevel, Vec3 pos,
+            BlockState blockToPlace, int radius) {
+        if (radius <= 0) {
+            return false;
+        }
+        var flooredBlockPos = new BlockPos((int) Math.floor(pos.x()),
+                (int) Math.floor(pos.y()), (int) Math.floor(pos.z()));
+        var ceiledBlockPos = new BlockPos((int) Math.ceil(pos.x()),
+                (int) Math.ceil(pos.y()), (int) Math.ceil(pos.z()));
+
+        for (BlockPos blockpos : BlockPos.betweenClosed(
+                flooredBlockPos.offset(-radius, -radius, -radius),
+                ceiledBlockPos.offset(radius, radius, radius))) {
+            if (blockpos.distToCenterSqr(pos) <= (double) (radius * radius)) {
+                worldgenlevel.setBlock(blockpos, blockToPlace, 3);
+            }
+        }
+
+        return true;
     }
 }
