@@ -81,5 +81,6 @@ public class MainLanguageEnUsProvider extends MainLanguageBaseProvider {
         add("CandyLands.configuration.items", "Item List");
 
         add("gamerule.candySpreadChance", "Candy Spread Chance");
+        add("message.candylands.enter_nether", "The powers of true Candylands have been unleashed upon the world!");
     }
 }

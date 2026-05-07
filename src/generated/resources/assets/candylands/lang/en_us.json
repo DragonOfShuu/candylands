@@ -33,5 +33,6 @@
   "block.candylands.licorice_sprout": "Licorice Sprout",
   "block.candylands.licorice_stairs": "Licorice Stairs",
   "block.candylands.licorice_wood": "Licorice Wood",
-  "gamerule.candySpreadChance": "Candy Spread Chance"
+  "gamerule.candySpreadChance": "Candy Spread Chance",
+  "message.candylands.enter_nether": "The powers of true Candylands have been unleashed upon the world!"
 }

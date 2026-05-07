@@ -69,7 +69,6 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
     private void iterateThroughChunk(WorldGenLevel level, BlockState blockState,
             BlockPos origin, double archHeight, double archWidth,
             BlockPos archCenter, double angle) {
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         int checkSize = 32; // Check a 32x32 area around the chunk center
         for (int x = 0; x < checkSize; x++) {
             for (int z = 0; z < checkSize; z++) {
@@ -94,28 +93,6 @@ public class ArchFeature extends Feature<BlockStateConfiguration> {
                     var radius = 4;
                     makeBlob(level, position, blockState, radius);
                 }
-
-                // // Iterate through a small vertical range to fill the
-                // // arch's "body"
-                // for (int y = -3; y <= 3; y++) {
-                // int worldY = (int) Math.round(idealY) + y;
-
-                // // Calculate distance from the current block to the ideal
-                // // arch point (localX, idealY, 0)
-                // // We use localZ here because in "local space" the arch
-                // is
-                // // always at Z=0
-                // double distSq = Math.pow(worldY - idealY, 2)
-                // + Math.pow(localZ, 2);
-
-                // // If distance is less than radius squared (e.g., radius
-                // of
-                // // 4.0)
-                // if (distSq < 6.0) {
-                // mutable.set(worldX, worldY, worldZ);
-                // level.setBlock(mutable, blockState, 2);
-                // }
-                // }
             }
         }
     }
